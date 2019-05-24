@@ -8,7 +8,7 @@ class Post {
   final int num2;
   final int result;
 
-  String url = 'http://192.168.0.12:9000/suma/?format=json';
+  String url = 'https://pidefacil-back.herokuapp.com/suma/?format=json';
 
   Post({this.num1, this.num2, this.result});
 
@@ -38,7 +38,7 @@ class Post {
     if (response.statusCode == 200) {
       // If request is successful, decode the JSON response
       final resp = json.decode(response.body);
-      return Post.fromJson(resp[2]);
+      return Post.fromJson(resp[0]);
     }
     else
       throw Exception('Cannot get response from API');

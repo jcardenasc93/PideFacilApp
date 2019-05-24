@@ -95,21 +95,25 @@ class _MyCustomFormState extends State<MyCustomForm> {
         ) ,
       ),
       floatingActionButton: Column(
-        children: <Widget>[
-          FloatingActionButton(
-            // When the user presses the button, get the result of addition
-            onPressed: () => _sumIntegersGetApi(),
-            tooltip: 'Add two numbers!',
-            child: Icon(Icons.cloud_download),
-          ),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
           FloatingActionButton(
             // When the user presses the button, post two integers to sum
             onPressed: () async => _sumIntegersPostApi(num1Controller.text, num2Controller.text),
             tooltip: 'Add two numbers!',
             child: Icon(Icons.cloud_upload),
           ),
+          FloatingActionButton(
+            // When the user presses the button, get the result of addition
+            onPressed: () => _sumIntegersGetApi(),
+            tooltip: 'Add two numbers!',
+            child: Icon(Icons.cloud_download),
+          ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
