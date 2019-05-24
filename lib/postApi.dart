@@ -1,33 +1,61 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 
 class Post {
-  final int userID;
-  final int id;
-  final String title;
-  final String body;
+  final int num1;
+  final int num2;
+  final int result;
 
-  Post({this.userID, this.id, this.title, this.body});
+  String url = 'http://192.168.0.12:9000/suma/?format=json';
+
+  Post({this.num1, this.num2, this.result});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      userID: json['userId'],
-      id: json['id'],
-      title: json['title'],
-      body: json['body'],
+      num1: json['num1'],
+      num2: json['num2'],
+      result: json['result'],
+
     );
   }
 
+  String postToJson(Post data) {
+    final dyn = data.toJson();
+    return json.encode(dyn);
+  }
+
+  Map<String, dynamic> toJson() => {
+    "num1": num1,
+    "num2": num2,
+  };
+
   Future<Post> fetchPost() async {
     final response =
-      await http.get('https://jsonplaceholder.typicode.com/posts/1');
+    await http.get(url);
 
-    if (response.statusCode == 200)
+    if (response.statusCode == 200) {
       // If request is successful, decode the JSON response
-      return Post.fromJson(json.decode(response.body));
+      final resp = json.decode(response.body);
+      return Post.fromJson(resp[2]);
+    }
     else
       throw Exception('Cannot get response from API');
   }
+
+  Future<dynamic> postPost(Post body) async{
+    final response = await http
+        .post(
+          Uri.encodeFull(url),
+          body: postToJson(body),
+          headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+        );
+  }
 }
+
+
+
+
+
 

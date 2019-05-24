@@ -34,8 +34,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
   final num1Controller = TextEditingController();
   final num2Controller = TextEditingController();
 
-  // Create the suma var
-  int _suma = 0;
   String _responseApi = "";
 
   @override
@@ -46,37 +44,27 @@ class _MyCustomFormState extends State<MyCustomForm> {
     super.dispose();
   }
 
-  void _sumIntegersApi(String num1, String num2) {
+  void _sumIntegersGetApi() {
     var api = new Post();
-    /*FutureBuilder<Post>(
-      future: api.fetchPost(),
-      builder: (context, snapshot){
-        if(snapshot.hasData)
-          return Text(snapshot.data.body);
-        else if(snapshot.hasError)
-          return Text("${snapshot.error}");
-
-        return CircularProgressIndicator();
-      },
-    );*/
-
     api.fetchPost().then((post) {
       setState(() {
-        _responseApi = post.title;
+        _responseApi= post.result.toString();
       });
     }, onError: (error) {
       setState(() {
         _responseApi = error.toString();
       });
     });
-    /*setState(() {
-      int a = int.parse(num1);
-      int b = int.parse(num2);
-      _suma = a + b;
+  }
 
-      _responseApi = api.fetchPost()
-
-    });*/
+  void _sumIntegersPostApi(String number1, String number2) {
+    Post data = new Post(num1: int.parse(number1), num2: int.parse(number2));
+    data.postPost(data).then((response){
+      if (response.statusCode < 200 || response.statusCode > 400 || json == null)
+        throw Exception('Cannot post data to API');
+      var _decoder;
+      return _decoder.convert(response.body);
+    });
   }
 
   @override
@@ -106,12 +94,21 @@ class _MyCustomFormState extends State<MyCustomForm> {
           ],
         ) ,
       ),
-      floatingActionButton: FloatingActionButton(
-        // When the user presses the button, show an alert dialog with the
-        // result of the addition
-        onPressed: () => _sumIntegersApi(num1Controller.text, num2Controller.text),
-        tooltip: 'Add two numbers!',
-        child: Icon(Icons.add),
+      floatingActionButton: Column(
+        children: <Widget>[
+          FloatingActionButton(
+            // When the user presses the button, get the result of addition
+            onPressed: () => _sumIntegersGetApi(),
+            tooltip: 'Add two numbers!',
+            child: Icon(Icons.cloud_download),
+          ),
+          FloatingActionButton(
+            // When the user presses the button, post two integers to sum
+            onPressed: () async => _sumIntegersPostApi(num1Controller.text, num2Controller.text),
+            tooltip: 'Add two numbers!',
+            child: Icon(Icons.cloud_upload),
+          ),
+        ],
       ),
     );
   }
