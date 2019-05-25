@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 
 class Post {
   final int num1;
   final int num2;
   final int result;
 
-  String url = 'https://pidefacil-back.herokuapp.com/suma/?format=json';
+  String url = 'https://pidefacil-back.herokuapp.com/sumando/';
 
   Post({this.num1, this.num2, this.result});
 
@@ -51,6 +50,11 @@ class Post {
           body: postToJson(body),
           headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
         );
+    if (response.statusCode < 200 || response.statusCode > 400 || json == null)
+      throw Exception('Cannot post data to API');
+
+    final resp = json.decode(response.body);
+    return resp;
   }
 }
 

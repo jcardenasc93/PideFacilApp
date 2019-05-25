@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'dart:convert';
-
 import 'postApi.dart';
 
 void main() => runApp(MyApp());
@@ -44,7 +41,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     super.dispose();
   }
 
-  void _sumIntegersGetApi() {
+  /*void _sumIntegersGetApi() {
     var api = new Post();
     api.fetchPost().then((post) {
       setState(() {
@@ -55,15 +52,18 @@ class _MyCustomFormState extends State<MyCustomForm> {
         _responseApi = error.toString();
       });
     });
-  }
+  }*/
 
   void _sumIntegersPostApi(String number1, String number2) {
     Post data = new Post(num1: int.parse(number1), num2: int.parse(number2));
-    data.postPost(data).then((response){
-      if (response.statusCode < 200 || response.statusCode > 400 || json == null)
-        throw Exception('Cannot post data to API');
-      var _decoder;
-      return _decoder.convert(response.body);
+    data.postPost(data).then((post) {
+      setState(() {
+        _responseApi= post.toString();
+      });
+    }, onError: (error) {
+      setState(() {
+        _responseApi = error.toString();
+      });
     });
   }
 
@@ -103,13 +103,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
             // When the user presses the button, post two integers to sum
             onPressed: () async => _sumIntegersPostApi(num1Controller.text, num2Controller.text),
             tooltip: 'Add two numbers!',
-            child: Icon(Icons.cloud_upload),
-          ),
-          FloatingActionButton(
-            // When the user presses the button, get the result of addition
-            onPressed: () => _sumIntegersGetApi(),
-            tooltip: 'Add two numbers!',
-            child: Icon(Icons.cloud_download),
+            child: Icon(Icons.add),
           ),
         ],
       ),
