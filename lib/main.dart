@@ -123,41 +123,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
           )
         ],
       ),
-      /*body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            Text(
-              'El Hambriento',
-              style: new TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-            ),
-            ListView(
-              children: const <Widget>[
-                Card(child: ListTile(title: Text('One-line ListTile'))),
-                Card(
-                  child: ListTile(
-                    leading: FlutterLogo(),
-                    title: Text('One-line with leading widget'),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    title: Text('One-line with trailing widget'),
-                    trailing: Icon(Icons.more_vert),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ) ,
-      ),*/
-      /*floatingActionButton:
-          FloatingActionButton(
-            // When the user presses the button, post two integers to sum
-            onPressed: () async => _sumIntegersPostApi(num1Controller.text, num2Controller.text),
-            tooltip: 'Add two numbers!',
-            child: Icon(Icons.add),
-          ),*/
     );
   }
 }
