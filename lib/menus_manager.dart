@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import './pages/menu.dart';
-import './postApi.dart' as post;
 import './menu_model.dart';
 import 'dart:async';
 import 'dart:convert';
