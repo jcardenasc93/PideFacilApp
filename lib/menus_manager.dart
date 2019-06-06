@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import './pages/menu.dart';
+import './postApi.dart' as post;
+import './menu_model.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import './menu_model.dart';
 
 class MenusManager extends StatefulWidget {
   @override
@@ -9,12 +15,28 @@ class MenusManager extends StatefulWidget {
 }
 
 class _MenusManagerState extends State<MenusManager> {
-  String _responseApi = '';
+  List<Menu> list = List();
+  var loading = false;
+  String url = 'https://pidefacil-back.herokuapp.com/menu_list/';
+
+  _getMenus() async {
+    final response =
+        await http.get(url, headers: {"Accept": "application/json"});
+    if (response.statusCode == 200) {
+      setState(() {
+        list = (json.decode(response.body) as List)
+          .map((data) => new Menu.fromJson(data))
+          .toList();
+      });
+    } else {
+      throw Exception('Failed to get menus');
+    }
+  }
 
   @override
   void initState() {
-    // TODO: implement getApi for first state
     super.initState();
+    _getMenus();
   }
 
   void _tappedMenu(String texto) {
@@ -48,53 +70,20 @@ class _MenusManagerState extends State<MenusManager> {
           height: 1.5,
           indent: 5.5,
         ),
-        Card(
-          child: ListTile(
-            title: Text('Entradas'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => _tappedMenu('Entradas'),
-          ),
-          margin: EdgeInsets.all(2.0),
-        ),
-        Card(
-          child: ListTile(
-            title: Text('Platos fuertes'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => _tappedMenu('Platos fuertes'),
-          ),
-          margin: EdgeInsets.all(2.0),
-        ),
-        Card(
-          child: ListTile(
-            title: Text('Bebidas'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => _tappedMenu('Bebidas'),
-          ),
-          margin: EdgeInsets.all(2.0),
-        ),
-        Card(
-          child: ListTile(
-            title: Text('Vinos'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => _tappedMenu('Vinos'),
-          ),
-          margin: EdgeInsets.all(2.0),
-        ),
-        Card(
-          child: ListTile(
-            title: Text('Postres'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () => _tappedMenu('Postres'),
-          ),
-          margin: EdgeInsets.all(2.0),
-        ),
-        Text(
-          '$_responseApi',
-          style: TextStyle(
-            fontSize: 18.0,
-          ),
-          textAlign: TextAlign.center,
-        )
+        ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: list.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                child: ListTile(
+                  title: new Text(list[index].nombreMenu),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: () => _tappedMenu('Entradas'),
+                ),
+                margin: EdgeInsets.all(2.0),
+              );
+            }),
       ],
     );
   }
