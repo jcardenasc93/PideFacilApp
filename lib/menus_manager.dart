@@ -72,6 +72,7 @@ class _MenusManagerState extends State<MenusManager> {
         ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
             itemCount: list.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
