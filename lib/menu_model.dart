@@ -6,8 +6,7 @@ class Menu {
 
   factory Menu.fromJson(Map<String, dynamic> parsedJson) {
     return Menu(
-      idRestaurante: parsedJson['id_restaurante'],
-      nombreMenu: parsedJson['nombre_menu']
-    );
+        idRestaurante: parsedJson['id_restaurante'],
+        nombreMenu: parsedJson['nombre_menu']);
   }
 }
