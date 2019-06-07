@@ -55,17 +55,6 @@ class _MenusManagerState extends State<MenusManager> {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Text(
-            'El Hambriento',
-            style: new TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF666666)),
-            textAlign: TextAlign.center,
-          ),
-        ),
         new Divider(
           color: Colors.grey,
           height: 1.5,
