@@ -3,6 +3,11 @@ import '../styles/menu_style.dart';
 import '../menus_manager.dart';
 
 class MenusListPage extends StatelessWidget {
+  final String pageTitle;
+  final String imageUrl;
+
+  MenusListPage({this.pageTitle, this.imageUrl});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -11,7 +16,10 @@ class MenusListPage extends StatelessWidget {
           appBar: AppBar(
             automaticallyImplyLeading: true,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(
+                Icons.camera_alt,
+                color: Color(0xFF666666),
+              ),
               onPressed: () => Navigator.pop(context, false),
             ),
             title: Row(
@@ -21,12 +29,10 @@ class MenusListPage extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(2.0),
-                  child: Image.network(
-                    'https://st2.depositphotos.com/8301258/11963/v/950/depositphotos_119634124-stock-illustration-restaurant-logo-cutlery-design.jpg',
-                  ),
+                  child: Image.network(imageUrl),
                 ),
                 new Text(
-                  'El Hambriento',
+                  pageTitle,
                   style: new TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,

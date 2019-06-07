@@ -11,7 +11,11 @@ class MainPage extends State<HomePage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => MenusListPage()));
+              builder: (BuildContext context) => MenusListPage(
+                    pageTitle: 'El Hambriento',
+                    imageUrl:
+                        'https://st2.depositphotos.com/8301258/11963/v/950/depositphotos_119634124-stock-illustration-restaurant-logo-cutlery-design.jpg',
+                  )));
     });
   }
 
