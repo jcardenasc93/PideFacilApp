@@ -71,3 +71,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+
+  fonts:
+     - family: Qrcode
+       fonts:
+         - asset: lib/assets/fonts/ic_qrscan.ttf

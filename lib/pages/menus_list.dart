@@ -31,7 +31,6 @@ class _MenusListState extends State<MenusListPage> {
   final Future<Restaurante> restaurante;
   _MenusListState({this.restaurante});
 
-  //String pageTitle = 'Test';
   String imageUrl =
       'https://laherradura.com.co/wp-content/uploads/2017/08/frisby-logo.png';
 
@@ -48,8 +47,8 @@ class _MenusListState extends State<MenusListPage> {
         appBar: AppBar(
           automaticallyImplyLeading: true,
           leading: IconButton(
-            icon: Icon(
-              Icons.camera_alt,
+            icon: new Icon(
+              const IconData(0xe900, fontFamily: 'Qrcode'),
               color: Color(0xFF666666),
             ),
             onPressed: () => Navigator.pop(context, false),
@@ -61,7 +60,22 @@ class _MenusListState extends State<MenusListPage> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.all(2.0),
-                child: Image.network(imageUrl),
+                child: FutureBuilder<Restaurante>(
+                  future: restaurante,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Image.network(imageUrl);
+                      //return Image.network(snapshot.data.urlImagRestaurante);
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return new SizedBox(
+                      child: Container(),
+                      height: 25.0,
+                      width: 25.0,
+                    );
+                  },
+                ),
               ),
               FutureBuilder<Restaurante>(
                 future: restaurante,
