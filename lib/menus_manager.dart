@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import './pages/menu.dart';
 import './menu_model.dart';
+import './platos_model.dart';
 
 class MenusManager extends StatefulWidget {
-  final List<Menu> list;
-  MenusManager({this.list});
+  final List<Menu> listMenus;
+
+  MenusManager({this.listMenus});
 
   @override
   State<StatefulWidget> createState() {
-    return _MenusManagerState(listOfMenus: list);
+    return _MenusManagerState(listOfMenus: listMenus);
   }
 }
 
@@ -17,18 +19,14 @@ class _MenusManagerState extends State<MenusManager> {
 
   _MenusManagerState({this.listOfMenus});
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void _tappedMenu(String texto) {
+  void _tappedMenu(String texto, Menu menu) {
     setState(() {
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => MenuPage(
                     menuText: texto,
+                    menu: menu,
                   )));
     });
   }
@@ -52,7 +50,8 @@ class _MenusManagerState extends State<MenusManager> {
                 child: ListTile(
                   title: new Text(listOfMenus[index].nombreMenu),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: () => _tappedMenu('Entradas'),
+                  onTap: () => _tappedMenu(
+                      listOfMenus[index].nombreMenu, listOfMenus[index]),
                 ),
                 margin: EdgeInsets.all(2.0),
               );

@@ -82,7 +82,8 @@ class _MenusListState extends State<MenusListPage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return Text(
-                      snapshot.data.nombreRestaurante,
+                      //snapshot.data.nombreRestaurante,
+                      '',
                       style: new TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
@@ -112,7 +113,7 @@ class _MenusListState extends State<MenusListPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return MenusManager(
-                list: snapshot.data.menus,
+                listMenus: snapshot.data.menus,
               );
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
