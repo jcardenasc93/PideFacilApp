@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import './menusList.dart';
+import './menus_list.dart';
 
 class HomePage extends StatefulWidget {
   MainPage createState() => MainPage();
 }
 
 class MainPage extends State<HomePage> {
-  void _changeView() {
+  void _changeView(String urlApiGetIdRest) {
     setState(() {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => MenusListPage(
-                    pageTitle: 'El Hambriento',
-                    imageUrl:
-                        'https://st2.depositphotos.com/8301258/11963/v/950/depositphotos_119634124-stock-illustration-restaurant-logo-cutlery-design.jpg',
-                  )));
+              builder: (BuildContext context) => MenusListPage(urlApiGet: urlApiGetIdRest,)));
     });
   }
 
@@ -32,7 +28,8 @@ class MainPage extends State<HomePage> {
         body: new Center(
           child: new RaisedButton(
             child: Text('Carga menus'),
-            onPressed: _changeView,
+            //onPressed: _changeView(),
+            onPressed: () => _changeView('https://pidefacil-back.herokuapp.com/api/restaurante/2/'),
           ),
         ));
   }

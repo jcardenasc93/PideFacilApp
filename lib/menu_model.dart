@@ -1,12 +1,11 @@
 class Menu {
-  int idRestaurante;
+  //int idRestaurante;
   String nombreMenu;
 
-  Menu({this.idRestaurante, this.nombreMenu});
+  //Menu({this.idRestaurante, this.nombreMenu});
+  Menu({this.nombreMenu});
 
   factory Menu.fromJson(Map<String, dynamic> parsedJson) {
-    return Menu(
-        idRestaurante: parsedJson['id_restaurante'],
-        nombreMenu: parsedJson['nombre_menu']);
+    return Menu(nombreMenu: parsedJson['nombre_menu']);
   }
 }
