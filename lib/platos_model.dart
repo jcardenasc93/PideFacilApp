@@ -3,6 +3,7 @@ class Plato {
   String nombrePlato; //nombre_plato
   int precioPlato; //precio
   String descripcionPlato; //descripcion
+  int cantidad = 0;
 
   Plato(
       {this.idPlato,
