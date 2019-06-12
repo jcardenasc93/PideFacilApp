@@ -93,14 +93,14 @@ class _MenusListState extends State<MenusListPage> {
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-                  return new SizedBox(
+                  return new SizedBox(/*
                     child: new CircularProgressIndicator(
                       valueColor:
                           new AlwaysStoppedAnimation<Color>(Color(0xFF666666)),
                       strokeWidth: 3.0,
                     ),
                     height: 25.0,
-                    width: 25.0,
+                    width: 25.0,*/
                   );
                 },
               ),

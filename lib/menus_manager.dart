@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './pages/menu.dart';
 import './menu_model.dart';
-import './platos_model.dart';
 
 class MenusManager extends StatefulWidget {
   final List<Menu> listMenus;
