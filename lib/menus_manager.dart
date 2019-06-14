@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import './pages/menu.dart';
+import './pages/dishes_list.dart';
 import './menu_model.dart';
 
+/// Manage the rendering of menus.
 class MenusManager extends StatefulWidget {
+  /// The list of menus.
   final List<Menu> listMenus;
-
+  // MenusManager constructor.
   MenusManager({this.listMenus});
 
   @override
@@ -12,18 +14,20 @@ class MenusManager extends StatefulWidget {
     return _MenusManagerState(listOfMenus: listMenus);
   }
 }
-
+/// State class for MenusManager.
 class _MenusManagerState extends State<MenusManager> {
+  /// The list of menus to be displayed.
   final List<Menu> listOfMenus;
-
+  // _MenusManagerState constructor.
   _MenusManagerState({this.listOfMenus});
 
+  /// Displays the dishes list of the [menu] tapped.
   void _tappedMenu(String texto, Menu menu) {
     setState(() {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => MenuPage(
+              builder: (BuildContext context) => DishesPage(
                     menuText: texto,
                     menu: menu,
                   )));
@@ -39,6 +43,7 @@ class _MenusManagerState extends State<MenusManager> {
           height: 1.5,
           indent: 5.5,
         ),
+        // Create a scrollable ListView of the menus.
         ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,

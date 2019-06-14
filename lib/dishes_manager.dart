@@ -1,26 +1,33 @@
-import 'package:flutter/material.dart';
-import './pages/menu.dart';
-import './platos_model.dart';
 import "package:intl/intl.dart";
+import 'package:flutter/material.dart';
 
-class MenuManager extends StatefulWidget {
-  final String menuText;
+import './pages/dishes_list.dart';
+import './platos_model.dart';
+
+/// Manage the dishes rendering.
+class DishManager extends StatefulWidget {
+  /// The dishes list.
   final List<Plato> listPlatos;
-
-  MenuManager({this.menuText, this.listPlatos});
+  // DishManager constructor.
+  DishManager({this.listPlatos});
 
   @override
   State<StatefulWidget> createState() {
-    return _MenuManagerState(listOfPlatos: listPlatos);
+    return _DishManagerState(listOfPlatos: listPlatos);
   }
 }
 
-class _MenuManagerState extends State<MenuManager> {
+/// State class for DishManager.
+class _DishManagerState extends State<DishManager> {
+  /// The dishes list to be render.
   final List<Plato> listOfPlatos;
-  final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
-  _MenuManagerState({this.listOfPlatos});
 
-  void _addPlatoToOrder(String texto) {
+  /// The price wiht currency format.
+  final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
+  _DishManagerState({this.listOfPlatos});
+
+  /// Add dish element to the order.
+  void _addDishToOrder(String texto, int cant) {
     setState(() {
       // TODO: push notification of item added to the order
     });
@@ -30,6 +37,7 @@ class _MenuManagerState extends State<MenuManager> {
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
+        // Create a scrollable ListView with the dishes list.
         ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -38,12 +46,14 @@ class _MenuManagerState extends State<MenuManager> {
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: ListTile(
+                  // Display dish name.
                   title: new Text(
                     listOfPlatos[index].nombrePlato,
                     style: new TextStyle(
                       fontSize: 16.0,
                     ),
                   ),
+                  // Display dish description.
                   subtitle: new Text(
                     listOfPlatos[index].descripcionPlato,
                     style: TextStyle(
@@ -58,6 +68,7 @@ class _MenuManagerState extends State<MenuManager> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
+                          // Display dish price.
                           new Text(
                             '${formatPrice.format(listOfPlatos[index].precioPlato)}',
                             style: new TextStyle(
@@ -67,6 +78,7 @@ class _MenuManagerState extends State<MenuManager> {
                             ),
                             textAlign: TextAlign.end,
                           ),
+                          // Display dish quantity control.
                           new Container(
                               margin: EdgeInsets.all(5.0),
                               alignment: Alignment(0.0, 0.0),
@@ -77,6 +89,7 @@ class _MenuManagerState extends State<MenuManager> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   Container(
+                                    // Add minus button.
                                     decoration: BoxDecoration(
                                       color: Colors.redAccent,
                                       border: Border.all(
@@ -91,6 +104,7 @@ class _MenuManagerState extends State<MenuManager> {
                                         color: Colors.white,
                                         size: 18.0,
                                       ),
+                                      /// Reduce minus 1 [listOfPlatos(index).cantidad] if quantity is greater to zero
                                       onTap: () => setState(() =>
                                           listOfPlatos[index].cantidad > 0
                                               ? listOfPlatos[index].cantidad--
@@ -103,6 +117,7 @@ class _MenuManagerState extends State<MenuManager> {
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 1.0, vertical: 1.0),
+                                      // Display dish quantity.
                                       child: new Text(
                                         listOfPlatos[index].cantidad.toString(),
                                         textAlign: TextAlign.center,
@@ -113,6 +128,7 @@ class _MenuManagerState extends State<MenuManager> {
                                     ),
                                   ),
                                   Container(
+                                    // Add plus button.
                                     decoration: BoxDecoration(
                                       color: Colors.greenAccent,
                                       border: Border.all(
@@ -127,6 +143,7 @@ class _MenuManagerState extends State<MenuManager> {
                                         color: Colors.white,
                                         size: 18.0,
                                       ),
+                                      /// Increases dish quantity.
                                       onTap: () => setState(
                                           () => listOfPlatos[index].cantidad++),
                                     ),
@@ -138,6 +155,7 @@ class _MenuManagerState extends State<MenuManager> {
                     ),
                     width: 100.0,
                   ),
+                  // Enable three line to dish description.
                   isThreeLine: true,
                 ),
                 margin: EdgeInsets.all(2.0),

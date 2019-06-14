@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+
 import './menus_list.dart';
 
 class HomePage extends StatefulWidget {
   MainPage createState() => MainPage();
 }
 
+/// First page of the app that access to the camera to scan QR code.
 class MainPage extends State<HomePage> {
-  void _changeView(String urlApiGetIdRest) {
+  /// Request API get restaurant menu throught [urlApiGetIdRest] and display it.
+  void _getMenu(String urlApiGetIdRest) {
     setState(() {
+      // Change view.
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => MenusListPage(urlApiGet: urlApiGetIdRest,)));
+              builder: (BuildContext context) => MenusListPage(
+                    urlApiGet: urlApiGetIdRest,
+                  )));
     });
   }
 
@@ -28,8 +34,8 @@ class MainPage extends State<HomePage> {
         body: new Center(
           child: new RaisedButton(
             child: Text('Carga menus'),
-            //onPressed: _changeView(),
-            onPressed: () => _changeView('https://pidefacil-back.herokuapp.com/api/restaurante/2/'),
+            onPressed: () => _getMenu(
+                'https://pidefacil-back.herokuapp.com/api/restaurante/2/'),
           ),
         ));
   }

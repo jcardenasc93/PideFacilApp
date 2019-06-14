@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import '../menu_manager.dart';
+import '../dishes_manager.dart';
 import '../menu_model.dart';
 
-class MenuPage extends StatelessWidget {
+/// Page that list all dishes of a menu.
+class DishesPage extends StatelessWidget {
+  /// The menu name.
   final String menuText;
+  /// Menu object to be render.
   final Menu menu;
   // Constructor
-  MenuPage({this.menuText, this.menu});
+  DishesPage({this.menuText, this.menu});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
+        // Add back button.
         leading: IconButton(
           icon: new Icon(
             Icons.arrow_back,
@@ -19,6 +23,7 @@ class MenuPage extends StatelessWidget {
           ),
           onPressed: () => Navigator.pop(context, false),
         ),
+        // Display menu name on top center.
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -41,8 +46,9 @@ class MenuPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: MenuManager(
-        menuText: menuText,
+      // Render dishes in body.
+      body: DishManager(
+        //menuText: menuText,
         listPlatos: menu.platoMenu,
       ),
     );
