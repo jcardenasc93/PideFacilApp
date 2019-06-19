@@ -1,15 +1,63 @@
 import 'package:flutter/material.dart';
 import '../dishes_manager.dart';
 import '../menu_model.dart';
+import '../platos_model.dart';
 
 /// Page that list all dishes of a menu.
-class DishesPage extends StatelessWidget {
+class DishesPage extends StatefulWidget {
   /// The menu name.
   final String menuText;
+
   /// Menu object to be render.
   final Menu menu;
   // Constructor
   DishesPage({this.menuText, this.menu});
+
+  @override
+  State<StatefulWidget> createState() {
+    return DishesPageState();
+  }
+}
+
+class DishesPageState extends State<DishesPage> {
+  var orderUpdated = <Plato>[];
+  _backToMenus(BuildContext context) {
+    Navigator.pop(context, orderUpdated);
+  }
+
+  updateOrder(newOrder) {
+    setState(() {
+      newOrder.forEach((d) => orderUpdated.add(d));
+    });
+  }
+
+  FloatingActionButton _manageButton() {
+    FloatingActionButton ordenButton;
+    Color emptyColor = new Color(0xFFEAECEF);
+    Color orderColor = new Color(0xFF00E676);
+    var orden = orderUpdated.where((d) => d.cantidad > 0);
+    if (orden.isEmpty) {
+      ordenButton = FloatingActionButton(
+        backgroundColor: emptyColor,
+        child: Icon(
+          Icons.playlist_add_check,
+          color: Colors.white,
+        ),
+        onPressed: () {},
+      );
+    } else {
+      ordenButton = FloatingActionButton(
+        backgroundColor: orderColor,
+        child: Icon(
+          Icons.playlist_add_check,
+          color: Colors.white,
+        ),
+        onPressed: () {},
+      );
+    }
+    return ordenButton;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +69,8 @@ class DishesPage extends StatelessWidget {
             Icons.arrow_back,
             color: Color(0xFF666666),
           ),
-          onPressed: () => Navigator.pop(context, false),
+          //onPressed: _backToMenus(context),
+          onPressed: () {Navigator.pop(context);},
         ),
         // Display menu name on top center.
         title: Row(
@@ -30,7 +79,7 @@ class DishesPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              menuText,
+              widget.menuText,
               style: new TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -49,8 +98,10 @@ class DishesPage extends StatelessWidget {
       // Render dishes in body.
       body: DishManager(
         //menuText: menuText,
-        listPlatos: menu.platoMenu,
+        listPlatos: widget.menu.platoMenu,
+        updateOrder: updateOrder,
       ),
+      floatingActionButton: _manageButton(),
     );
   }
 }

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+
 import './pages/dishes_list.dart';
 import './menu_model.dart';
+import './platos_model.dart';
 
 /// Manage the rendering of menus.
 class MenusManager extends StatefulWidget {
   /// The list of menus.
   final List<Menu> listMenus;
+  var ordTest = <Plato>[];
   // MenusManager constructor.
   MenusManager({this.listMenus});
 
@@ -14,6 +17,7 @@ class MenusManager extends StatefulWidget {
     return _MenusManagerState(listOfMenus: listMenus);
   }
 }
+
 /// State class for MenusManager.
 class _MenusManagerState extends State<MenusManager> {
   /// The list of menus to be displayed.
@@ -22,17 +26,18 @@ class _MenusManagerState extends State<MenusManager> {
   _MenusManagerState({this.listOfMenus});
 
   /// Displays the dishes list of the [menu] tapped.
-  void _tappedMenu(String texto, Menu menu) {
+  void _tappedMenu(String texto, Menu menu) async {
+    final updatedOrder = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => DishesPage(
+                  menuText: texto,
+                  menu: menu,
+                )));
     setState(() {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => DishesPage(
-                    menuText: texto,
-                    menu: menu,
-                  )));
+      widget.ordTest = updatedOrder;
     });
-  }
+  }  
 
   @override
   Widget build(BuildContext context) {

@@ -8,8 +8,9 @@ import './platos_model.dart';
 class DishManager extends StatefulWidget {
   /// The dishes list.
   final List<Plato> listPlatos;
+  Function(List<Plato>) updateOrder;
   // DishManager constructor.
-  DishManager({this.listPlatos});
+  DishManager({this.listPlatos, this.updateOrder});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,16 +22,42 @@ class DishManager extends StatefulWidget {
 class _DishManagerState extends State<DishManager> {
   /// The dishes list to be render.
   final List<Plato> listOfPlatos;
-
+  var orderList;
   /// The price wiht currency format.
   final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
   _DishManagerState({this.listOfPlatos});
 
   /// Add dish element to the order.
-  void _addDishToOrder(String texto, int cant) {
+  void _addDishesToOrder() {
     setState(() {
-      // TODO: push notification of item added to the order
+      orderList = listOfPlatos.where((d) => d.cantidad > 0);
+      if (orderList.isNotEmpty) {
+        List<Plato> order = [];
+        orderList.forEach((d) => order.add(d));
+        widget.updateOrder(order);
+      } else{
+        List<Plato> order = [];
+        widget.updateOrder(order);
+      }
     });
+  }
+
+  /// Reduce minus 1 [listOfPlatos(index).cantidad] if quantity is greater to zero
+  void _restCant(int index) {
+    setState(() {
+      listOfPlatos[index].cantidad > 0
+          ? listOfPlatos[index].cantidad--
+          : listOfPlatos[index].cantidad = 0;
+    });
+    _addDishesToOrder();
+  }
+
+  /// Increases dish quantity.
+  void _addCant(int index) {
+    setState(() {
+      listOfPlatos[index].cantidad++;
+    });
+    _addDishesToOrder();
   }
 
   @override
@@ -104,12 +131,9 @@ class _DishManagerState extends State<DishManager> {
                                         color: Colors.white,
                                         size: 18.0,
                                       ),
+
                                       /// Reduce minus 1 [listOfPlatos(index).cantidad] if quantity is greater to zero
-                                      onTap: () => setState(() =>
-                                          listOfPlatos[index].cantidad > 0
-                                              ? listOfPlatos[index].cantidad--
-                                              : listOfPlatos[index].cantidad =
-                                                  0),
+                                      onTap: () => _restCant(index),
                                     ),
                                   ),
                                   Container(
@@ -143,9 +167,9 @@ class _DishManagerState extends State<DishManager> {
                                         color: Colors.white,
                                         size: 18.0,
                                       ),
+
                                       /// Increases dish quantity.
-                                      onTap: () => setState(
-                                          () => listOfPlatos[index].cantidad++),
+                                      onTap: () => _addCant(index),
                                     ),
                                   )
                                 ],
