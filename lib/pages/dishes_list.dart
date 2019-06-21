@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../dishes_manager.dart';
 import '../menu_model.dart';
+import './order_view.dart';
 import '../platos_model.dart';
 
 /// Page that list all dishes of a menu.
@@ -35,6 +36,8 @@ class DishesPageState extends State<DishesPage> {
   updateOrder(newOrder) {
     setState(() {
       newOrder.forEach((d) => orderUpdated.add(d));
+      // Delete repeated items in the order.
+      orderUpdated = orderUpdated.toSet().toList();
     });
   }
 
@@ -62,10 +65,24 @@ class DishesPageState extends State<DishesPage> {
           Icons.playlist_add_check,
           color: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          _showOrder(orderUpdated);
+        },
       );
     }
     return ordenButton;
+  }
+
+  _showOrder(List<Plato> ordenFinal) {
+    setState(() {
+      // Change view.
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => OrderView(
+                    orden: ordenFinal,
+                  )));
+    });
   }
 
   @override

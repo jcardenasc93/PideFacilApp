@@ -8,6 +8,7 @@ import 'package:pide_facil/platos_model.dart';
 import '../styles/menu_style.dart';
 import '../menus_manager.dart';
 import '../restaurante_model.dart';
+import './order_view.dart';
 
 /// Page that list all the menus of a restaurant.
 class MenusListPage extends StatefulWidget {
@@ -37,14 +38,14 @@ class MenusListPage extends StatefulWidget {
 class _MenusListState extends State<MenusListPage> {
   /// The restaurant object to be displayed
   final Future<Restaurante> restaurante;
+
+  /// Store the order.
+  List<Plato> order = [];
   // _MenusListState constructor.
   _MenusListState({this.restaurante});
   // TODO: Delete this variable after assets can be stored on server.
   String imageUrl =
       'https://laherradura.com.co/wp-content/uploads/2017/08/frisby-logo.png';
-
-  /// Store the order.
-  List<Plato> order = [];
 
   /// Update changes in the final order.
   getFinalOrder(finalOrder) {
@@ -77,10 +78,24 @@ class _MenusListState extends State<MenusListPage> {
           Icons.playlist_add_check,
           color: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          _showOrder(order);
+        },
       );
     }
     return ordenButton;
+  }
+
+  _showOrder(List<Plato> ordenFinal) {
+    setState(() {
+      // Change view.
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => OrderView(
+                    orden: ordenFinal,
+                  )));
+    });
   }
 
   @override

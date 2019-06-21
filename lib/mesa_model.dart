@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import './platos_model.dart';
 
 class Mesa {
