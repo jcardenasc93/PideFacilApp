@@ -10,32 +10,42 @@ class DishesPage extends StatefulWidget {
 
   /// Menu object to be render.
   final Menu menu;
+
+  /// The order.
+  List<Plato> orden;
   // Constructor
-  DishesPage({this.menuText, this.menu});
+  DishesPage({this.menuText, this.orden, this.menu});
 
   @override
   State<StatefulWidget> createState() {
-    return DishesPageState();
+    return DishesPageState(orderUpdated: orden);
   }
 }
 
 class DishesPageState extends State<DishesPage> {
-  var orderUpdated = <Plato>[];
+  List<Plato> orderUpdated;
+  DishesPageState({this.orderUpdated});
+
+  /// Back to Menu's view and pass the last order update.
   _backToMenus(BuildContext context) {
     Navigator.pop(context, orderUpdated);
   }
 
+  ///Update the order with a given value.
   updateOrder(newOrder) {
     setState(() {
       newOrder.forEach((d) => orderUpdated.add(d));
     });
   }
 
+  /// Controls button behavior in function of empty order.
   FloatingActionButton _manageButton() {
     FloatingActionButton ordenButton;
     Color emptyColor = new Color(0xFFEAECEF);
     Color orderColor = new Color(0xFF00E676);
+    // Search for dishes with quantity major to zero.
     var orden = orderUpdated.where((d) => d.cantidad > 0);
+    // If orden is empty disable button.
     if (orden.isEmpty) {
       ordenButton = FloatingActionButton(
         backgroundColor: emptyColor,
@@ -69,8 +79,9 @@ class DishesPageState extends State<DishesPage> {
             Icons.arrow_back,
             color: Color(0xFF666666),
           ),
-          //onPressed: _backToMenus(context),
-          onPressed: () {Navigator.pop(context);},
+          onPressed: () {
+            _backToMenus(context);
+          },
         ),
         // Display menu name on top center.
         title: Row(

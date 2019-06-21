@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pide_facil/platos_model.dart';
 
 import '../styles/menu_style.dart';
 import '../menus_manager.dart';
@@ -41,6 +42,46 @@ class _MenusListState extends State<MenusListPage> {
   // TODO: Delete this variable after assets can be stored on server.
   String imageUrl =
       'https://laherradura.com.co/wp-content/uploads/2017/08/frisby-logo.png';
+
+  /// Store the order.
+  List<Plato> order = [];
+
+  /// Update changes in the final order.
+  getFinalOrder(finalOrder) {
+    setState(() {
+      order = finalOrder;
+    });
+  }
+
+  /// Controls button behavior in function of empty order.
+  FloatingActionButton _manageButton() {
+    FloatingActionButton ordenButton;
+    Color emptyColor = new Color(0xFFEAECEF);
+    Color orderColor = new Color(0xFF00E676);
+    // Search for dishes with quantity major to zero.
+    var orden = order.where((d) => d.cantidad > 0);
+    // If orden is empty disable button.
+    if (orden.isEmpty) {
+      ordenButton = FloatingActionButton(
+        backgroundColor: emptyColor,
+        child: Icon(
+          Icons.playlist_add_check,
+          color: Colors.white,
+        ),
+        onPressed: () {},
+      );
+    } else {
+      ordenButton = FloatingActionButton(
+        backgroundColor: orderColor,
+        child: Icon(
+          Icons.playlist_add_check,
+          color: Colors.white,
+        ),
+        onPressed: () {},
+      );
+    }
+    return ordenButton;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +152,8 @@ class _MenusListState extends State<MenusListPage> {
             if (snapshot.hasData) {
               return MenusManager(
                 listMenus: snapshot.data.menus,
+                getOrder: getFinalOrder,
+                orden: order,
               );
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
@@ -129,6 +172,7 @@ class _MenusListState extends State<MenusListPage> {
             );
           },
         ),
+        floatingActionButton: _manageButton(),
       ),
     );
   }

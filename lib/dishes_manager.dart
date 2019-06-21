@@ -1,13 +1,14 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
 
-import './pages/dishes_list.dart';
 import './platos_model.dart';
 
 /// Manage the dishes rendering.
 class DishManager extends StatefulWidget {
   /// The dishes list.
   final List<Plato> listPlatos;
+
+  /// Function to update the order.
   Function(List<Plato>) updateOrder;
   // DishManager constructor.
   DishManager({this.listPlatos, this.updateOrder});
@@ -22,20 +23,27 @@ class DishManager extends StatefulWidget {
 class _DishManagerState extends State<DishManager> {
   /// The dishes list to be render.
   final List<Plato> listOfPlatos;
-  var orderList;
+
   /// The price wiht currency format.
   final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
-  _DishManagerState({this.listOfPlatos});
+  // Local var to store changes in an order.
+  var orderList;
+  // _DishManagerState constructor.
+  _DishManagerState({this.listOfPlatos, this.orderList});
 
   /// Add dish element to the order.
   void _addDishesToOrder() {
+    /// Update the order only with dishes that have quantity mayor than zero.
     setState(() {
       orderList = listOfPlatos.where((d) => d.cantidad > 0);
       if (orderList.isNotEmpty) {
         List<Plato> order = [];
         orderList.forEach((d) => order.add(d));
+        print(order);
         widget.updateOrder(order);
-      } else{
+      } else {
+        /// When none of the dishes quantity is mayor than zero just return an empty
+        /// order to control the order button successfuly.
         List<Plato> order = [];
         widget.updateOrder(order);
       }
@@ -52,7 +60,7 @@ class _DishManagerState extends State<DishManager> {
     _addDishesToOrder();
   }
 
-  /// Increases dish quantity.
+  /// Increases dish quantity [listOfPlatos(index).cantidad].
   void _addCant(int index) {
     setState(() {
       listOfPlatos[index].cantidad++;

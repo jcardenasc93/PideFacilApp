@@ -8,9 +8,14 @@ import './platos_model.dart';
 class MenusManager extends StatefulWidget {
   /// The list of menus.
   final List<Menu> listMenus;
-  var ordTest = <Plato>[];
+
+  /// Inherited order.
+  List<Plato> orden;
+
+  /// Function to update order.
+  Function(List<Plato>) getOrder;
   // MenusManager constructor.
-  MenusManager({this.listMenus});
+  MenusManager({this.listMenus, this.orden, this.getOrder});
 
   @override
   State<StatefulWidget> createState() {
@@ -22,22 +27,28 @@ class MenusManager extends StatefulWidget {
 class _MenusManagerState extends State<MenusManager> {
   /// The list of menus to be displayed.
   final List<Menu> listOfMenus;
+  // Store order changes.
+  List<Plato> ordenAct;
   // _MenusManagerState constructor.
   _MenusManagerState({this.listOfMenus});
 
-  /// Displays the dishes list of the [menu] tapped.
-  void _tappedMenu(String texto, Menu menu) async {
+  /// Displays the dishes list of the [menu] tapped and wait for order changes.
+  void _tappedMenu(String texto, Menu menu, BuildContext context) async {
+    /// Pass context to updates order values.
     final updatedOrder = await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => DishesPage(
+            builder: (context) => DishesPage(
                   menuText: texto,
                   menu: menu,
+                  orden: widget.orden,
                 )));
+
+    /// Updates the order with last changes.
     setState(() {
-      widget.ordTest = updatedOrder;
+      widget.getOrder(updatedOrder);
     });
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +70,8 @@ class _MenusManagerState extends State<MenusManager> {
                 child: ListTile(
                   title: new Text(listOfMenus[index].nombreMenu),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: () => _tappedMenu(
-                      listOfMenus[index].nombreMenu, listOfMenus[index]),
+                  onTap: () => _tappedMenu(listOfMenus[index].nombreMenu,
+                      listOfMenus[index], context),
                 ),
                 margin: EdgeInsets.all(2.0),
               );
