@@ -35,7 +35,7 @@ class MainPage extends State<HomePage> {
           child: new RaisedButton(
             child: Text('Carga menus'),
             onPressed: () => _getMenu(
-                'https://pidefacil-back.herokuapp.com/api/restaurante/2/'),
+                'https://pidefacil-back.herokuapp.com/api/restaurante/3/'),
           ),
         ));
   }

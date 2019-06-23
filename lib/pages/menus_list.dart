@@ -45,7 +45,7 @@ class _MenusListState extends State<MenusListPage> {
   _MenusListState({this.restaurante});
   // TODO: Delete this variable after assets can be stored on server.
   String imageUrl =
-      'https://laherradura.com.co/wp-content/uploads/2017/08/frisby-logo.png';
+      'https://pbs.twimg.com/profile_images/1280924607/LOGO_400x400.png';
 
   /// Update changes in the final order.
   getFinalOrder(finalOrder) {
