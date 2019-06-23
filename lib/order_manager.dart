@@ -31,7 +31,7 @@ class OrderManagerState extends State<OrderManager> {
           ? orden[index].cantidad--
           : orden[index].cantidad = 0;
       //Update the total value of the dish respect to the quantity.
-      orden[index].precioPlato =
+      orden[index].precioTotalPlato =
           orden[index].precioPlato * orden[index].cantidad;
     });
     //_addDishesToOrder();
@@ -42,10 +42,18 @@ class OrderManagerState extends State<OrderManager> {
     setState(() {
       orden[index].cantidad++;
       //Update the total value of the dish respect to the quantity.
-      orden[index].precioPlato =
+      orden[index].precioTotalPlato =
           orden[index].precioPlato * orden[index].cantidad;
     });
     //_addDishesToOrder();
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      orden.forEach((d) => d.precioTotalPlato = d.precioPlato * d.cantidad);
+    });
+    super.initState();
   }
 
   @override
@@ -78,7 +86,7 @@ class OrderManagerState extends State<OrderManager> {
                         children: <Widget>[
                           // Display dish price.
                           new Text(
-                            '${formatPrice.format(orden[index].precioPlato * orden[index].cantidad)}',
+                            '${formatPrice.format(orden[index].precioTotalPlato)}',
                             style: new TextStyle(
                               color: Color(0xFF66666F),
                               fontSize: 12.0,

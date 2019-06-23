@@ -1,8 +1,9 @@
 class Plato {
-  int idPlato; //id
-  String nombrePlato; //nombre_plato
-  int precioPlato; //precio
-  String descripcionPlato; //descripcion
+  int idPlato; //id.
+  String nombrePlato; //nombre_plato.
+  int precioPlato; //precio.
+  int precioTotalPlato = 0; // precio * cantidad.
+  String descripcionPlato; //descripcion.
   int cantidad = 0;
 
   Plato(
