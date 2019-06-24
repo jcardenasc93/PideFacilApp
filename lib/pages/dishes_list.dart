@@ -26,6 +26,8 @@ class DishesPage extends StatefulWidget {
 class DishesPageState extends State<DishesPage> {
   List<Plato> orderUpdated;
   DishesPageState({this.orderUpdated});
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  VoidCallback _showFinalOrderCallback;
 
   /// Back to Menu's view and pass the last order update.
   _backToMenus(BuildContext context) {
@@ -65,29 +67,49 @@ class DishesPageState extends State<DishesPage> {
           Icons.playlist_add_check,
           color: Colors.white,
         ),
-        onPressed: () {
+        /*onPressed: () {
           _showOrder(orderUpdated);
-        },
+        },*/
+        onPressed: _showFinalOrderCallback,
       );
     }
     return ordenButton;
   }
 
-  _showOrder(List<Plato> ordenFinal) {
+  @override
+  void initState() {
+    super.initState();
+    // Disable action on the button.
+    _showFinalOrderCallback = _showOrderFun;
+  }
+
+  void _showOrderFun() {
     setState(() {
-      // Change view.
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => OrderView(
-                    orden: ordenFinal,
-                  )));
+      _showFinalOrderCallback = null;
     });
+    _scaffoldKey.currentState
+        .showBottomSheet((context) {
+          /*return new Container(
+            child: OrderManager(
+              order: orderUpdated,
+            ),
+          );*/
+          return OrderView(orden: orderUpdated);
+        })
+        .closed
+        .whenComplete(() {
+          if (mounted) {
+            setState(() {
+              _showFinalOrderCallback = _showOrderFun;
+            });
+          }
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         automaticallyImplyLeading: true,
         // Add back button.

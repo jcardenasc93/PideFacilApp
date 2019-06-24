@@ -41,6 +41,8 @@ class _MenusListState extends State<MenusListPage> {
 
   /// Store the order.
   List<Plato> order = [];
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  VoidCallback _showFinalOrderCallback;
   // _MenusListState constructor.
   _MenusListState({this.restaurante});
   // TODO: Delete this variable after assets can be stored on server.
@@ -73,29 +75,44 @@ class _MenusListState extends State<MenusListPage> {
       );
     } else {
       ordenButton = FloatingActionButton(
-        backgroundColor: orderColor,
-        child: Icon(
-          Icons.playlist_add_check,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          _showOrder(order);
-        },
-      );
+          backgroundColor: orderColor,
+          child: Icon(
+            Icons.playlist_add_check,
+            color: Colors.white,
+          ),
+          onPressed: _showFinalOrderCallback);
     }
     return ordenButton;
   }
 
-  _showOrder(List<Plato> ordenFinal) {
+  void _showOrderFun() {
     setState(() {
-      // Change view.
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => OrderView(
-                    orden: ordenFinal,
-                  )));
+      _showFinalOrderCallback = null;
     });
+    _scaffoldKey.currentState
+        .showBottomSheet((context) {
+          /*return new Container(
+            child: OrderManager(
+              order: orderUpdated,
+            ),
+          );*/
+          return OrderView(orden: order);
+        })
+        .closed
+        .whenComplete(() {
+          if (mounted) {
+            setState(() {
+              _showFinalOrderCallback = _showOrderFun;
+            });
+          }
+        });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Disable action on the button.
+    _showFinalOrderCallback = _showOrderFun;
   }
 
   @override
@@ -103,6 +120,7 @@ class _MenusListState extends State<MenusListPage> {
     return MaterialApp(
       theme: menuTheme,
       home: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: true,
           // Add 'scan QR' button on top left.

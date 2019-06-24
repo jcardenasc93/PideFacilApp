@@ -20,6 +20,7 @@ class OrderManagerState extends State<OrderManager> {
   /// The user's order.
   List<Plato> orden;
   OrderManagerState({this.orden});
+  int _totalValorOrden = 0;
 
   /// The price wiht currency format.
   final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
@@ -34,7 +35,7 @@ class OrderManagerState extends State<OrderManager> {
       orden[index].precioTotalPlato =
           orden[index].precioPlato * orden[index].cantidad;
     });
-    //_addDishesToOrder();
+    _updateTotalOrden();
   }
 
   /// Increases dish quantity [orden(index).cantidad].
@@ -45,7 +46,14 @@ class OrderManagerState extends State<OrderManager> {
       orden[index].precioTotalPlato =
           orden[index].precioPlato * orden[index].cantidad;
     });
-    //_addDishesToOrder();
+    _updateTotalOrden();
+  }
+
+  void _updateTotalOrden() {
+    setState(() {
+      _totalValorOrden = 0;
+      orden.forEach((d) => _totalValorOrden += d.precioTotalPlato);
+    });
   }
 
   @override
@@ -53,14 +61,33 @@ class OrderManagerState extends State<OrderManager> {
     setState(() {
       orden.forEach((d) => d.precioTotalPlato = d.precioPlato * d.cantidad);
     });
+    _updateTotalOrden();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return ListView(
       children: <Widget>[
+        Card(
+          child: ListTile(
+            title: Text(
+              'TOTAL',
+              style: TextStyle(
+                  color: Color(0xFF58B368),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22.0),
+            ),
+            trailing: Text(
+              '${formatPrice.format(_totalValorOrden)}',
+              style: TextStyle(
+                color: Color(0xFF66666F),
+                fontSize: 22.0,
+              ),
+              textAlign: TextAlign.end,
+            ),
+          ),
+        ),
         // Create a scrollable ListView with the order list.
         ListView.builder(
             scrollDirection: Axis.vertical,
