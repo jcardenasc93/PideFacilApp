@@ -3,7 +3,7 @@ class Plato {
   String nombrePlato; //nombre_plato.
   int precioPlato; //precio.
   int precioTotalPlato = 0; // precio * cantidad.
-  String descripcionPlato; //descripcion.
+  String descripcionPlato = ''; //descripcion.
   int cantidad = 0;
 
   Plato(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../styles/app_style.dart';
 
 import '../order_manager.dart';
 import '../platos_model.dart';
@@ -27,7 +26,26 @@ class OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      backgroundColor: Color(0xFF58B368),
+      appBar: new PreferredSize(
+        preferredSize: Size.fromHeight(16.0),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Tu orden",
+                style: new TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ]),
+      ),
+      /*AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF58B368),
         //automaticallyImplyLeading: true,
@@ -55,7 +73,7 @@ class OrderViewState extends State<OrderView> {
               ),
             ]),
         centerTitle: true,
-      ),
+      ),*/
       // Create the order manager for updates.
       body: OrderManager(order: order),
     );

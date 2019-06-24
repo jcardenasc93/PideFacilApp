@@ -67,139 +67,148 @@ class OrderManagerState extends State<OrderManager> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        Card(
-          child: ListTile(
-            title: Text(
-              'TOTAL',
-              style: TextStyle(
-                  color: Color(0xFF58B368),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22.0),
-            ),
-            trailing: Text(
-              '${formatPrice.format(_totalValorOrden)}',
-              style: TextStyle(
-                color: Color(0xFF66666F),
-                fontSize: 22.0,
+    return Scaffold(
+        appBar: new PreferredSize(
+          preferredSize: Size.fromHeight(60.0),
+          child: Card(
+            elevation: 5.0,
+            child: ListTile(
+              title: Text(
+                'TOTAL',
+                style: TextStyle(
+                    color: Color(0xFF58B368),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0),
               ),
-              textAlign: TextAlign.end,
+              trailing: Text(
+                '${formatPrice.format(_totalValorOrden)}',
+                style: TextStyle(
+                  color: Color(0xFF66666F),
+                  fontSize: 16.0,
+                ),
+                textAlign: TextAlign.end,
+              ),
             ),
           ),
         ),
-        // Create a scrollable ListView with the order list.
-        ListView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemCount: orden.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: ListTile(
-                  // Display dish name.
-                  title: new Text(
-                    orden[index].nombrePlato,
-                    style: new TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  trailing: new SizedBox(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 5.0),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          // Display dish price.
-                          new Text(
-                            '${formatPrice.format(orden[index].precioTotalPlato)}',
-                            style: new TextStyle(
-                              color: Color(0xFF66666F),
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.end,
-                          ),
-                          // Display dish quantity control.
-                          new Container(
-                              margin: EdgeInsets.all(5.0),
-                              alignment: Alignment(0.0, 0.0),
-                              child: new Center(
-                                  child: new Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    // Add minus button.
-                                    decoration: BoxDecoration(
-                                      color: Colors.redAccent,
-                                      border: Border.all(
-                                        color: Colors.redAccent,
-                                        width: 2.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: new GestureDetector(
-                                      child: Icon(
-                                        Icons.remove,
-                                        color: Colors.white,
-                                        size: 18.0,
-                                      ),
+        backgroundColor: Colors.white,
+        body: ListView(
+          children: <Widget>[
+            // Create a scrollable ListView with the order list.
+            ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemCount: orden.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: ListTile(
+                      // Display dish name.
+                      title: new Text(
+                        orden[index].nombrePlato,
+                        style: new TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      trailing: new SizedBox(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              // Display dish price.
+                              new Text(
+                                '${formatPrice.format(orden[index].precioTotalPlato)}',
+                                style: new TextStyle(
+                                  color: Color(0xFF66666F),
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                              // Display dish quantity control.
+                              new Container(
+                                  margin: EdgeInsets.all(5.0),
+                                  alignment: Alignment(0.0, 0.0),
+                                  child: new Center(
+                                      child: new Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Container(
+                                        // Add minus button.
+                                        decoration: BoxDecoration(
+                                          color: Colors.redAccent,
+                                          border: Border.all(
+                                            color: Colors.redAccent,
+                                            width: 2.0,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: new GestureDetector(
+                                          child: Icon(
+                                            Icons.remove,
+                                            color: Colors.white,
+                                            size: 18.0,
+                                          ),
 
-                                      /// Reduce minus 1 [orden(index).cantidad] if quantity is greater to zero
-                                      onTap: () => _restCant(index),
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 35.0,
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 1.0, vertical: 1.0),
-                                      // Display dish quantity.
-                                      child: new Text(
-                                        orden[index].cantidad.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 12.0,
+                                          /// Reduce minus 1 [orden(index).cantidad] if quantity is greater to zero
+                                          onTap: () => _restCant(index),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Container(
-                                    // Add plus button.
-                                    decoration: BoxDecoration(
-                                      color: Colors.greenAccent,
-                                      border: Border.all(
-                                        color: Colors.greenAccent,
-                                        width: 2.0,
+                                      Container(
+                                        width: 35.0,
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 1.0, vertical: 1.0),
+                                          // Display dish quantity.
+                                          child: new Text(
+                                            orden[index].cantidad.toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12.0,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: new GestureDetector(
-                                      child: Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                        size: 18.0,
-                                      ),
+                                      Container(
+                                        // Add plus button.
+                                        decoration: BoxDecoration(
+                                          color: Colors.greenAccent,
+                                          border: Border.all(
+                                            color: Colors.greenAccent,
+                                            width: 2.0,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: new GestureDetector(
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                            size: 18.0,
+                                          ),
 
-                                      /// Increases dish quantity.
-                                      onTap: () => _addCant(index),
-                                    ),
-                                  )
-                                ],
-                              ))),
-                        ],
+                                          /// Increases dish quantity.
+                                          onTap: () => _addCant(index),
+                                        ),
+                                      )
+                                    ],
+                                  ))),
+                            ],
+                          ),
+                        ),
+                        width: 100.0,
                       ),
                     ),
-                    width: 100.0,
-                  ),
-                ),
-                margin: EdgeInsets.all(2.0),
-              );
-            }),
-      ],
-    );
+                    margin: EdgeInsets.all(2.0),
+                  );
+                }),
+          ],
+        ));
   }
 }
