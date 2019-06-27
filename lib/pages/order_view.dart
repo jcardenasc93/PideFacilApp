@@ -42,7 +42,7 @@ class OrderViewState extends State<OrderView> {
             // These are user options.
             actions: <Widget>[
               FlatButton(
-                child: Text('NO. VOLVER'),
+                child: Text('NO, VOLVER'),
                 color: Colors.red,
                 onPressed: () {
                   Navigator.of(context).pop();

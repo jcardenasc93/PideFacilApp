@@ -57,6 +57,56 @@ class OrderManagerState extends State<OrderManager> {
     });
   }
 
+  /// Displays a alert dialog to confirm the order deletion.
+  Future _confimacionEliminarOrden(BuildContext context) async {
+    return showDialog(
+        context: context,
+        // User must choose an option to close dialog.
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          /// Create the AlertDialog.
+          return AlertDialog(
+            title: new Text(
+              'Eliminar orden.',
+              style: TextStyle(
+                color: Color(0xFF666666),
+              ),
+            ),
+            content: new Text('¿Estás seguro que quieres eliminar tu orden?'),
+            // These are user options.
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'NO, VOLVER',
+                  style: TextStyle(color: Color(0xFF666666)),
+                ),
+                color: Colors.grey.shade100,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton.icon(
+                  color: Colors.red,
+                  icon: Icon(Icons.remove_circle),
+                  label: Text('ELIMINAR'),
+                  onPressed: () {
+                    _deleteOrder();
+                    Navigator.of(context).pop();
+                    //_ordenar();
+                  }),
+            ],
+          );
+        });
+  }
+
+  _deleteOrder() {
+    // TODO: Agregar animación al eliminar items.
+    setState(() {
+      orden.removeWhere((d) => d.nombrePlato != '');
+      _totalValorOrden = 0;
+    });
+  }
+
   /// Give the initial value to the final order from previews pages.
   @override
   void initState() {
@@ -211,7 +261,9 @@ class OrderManagerState extends State<OrderManager> {
             padding: EdgeInsets.all(5.0),
             child: IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () => {},
+              onPressed: () {
+                _confimacionEliminarOrden(context);
+              },
               tooltip: "Eliminar orden",
               color: Colors.redAccent,
               padding: EdgeInsets.all(2.0),
