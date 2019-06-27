@@ -9,7 +9,7 @@ class DishManager extends StatefulWidget {
   final List<Plato> listPlatos;
 
   /// Function to update the order.
-  Function(List<Plato>) updateOrder;
+  final Function(List<Plato>) updateOrder;
   // DishManager constructor.
   DishManager({this.listPlatos, this.updateOrder});
 

@@ -91,11 +91,6 @@ class _MenusListState extends State<MenusListPage> {
     });
     _scaffoldKey.currentState
         .showBottomSheet((context) {
-          /*return new Container(
-            child: OrderManager(
-              order: orderUpdated,
-            ),
-          );*/
           return OrderView(orden: order);
         })
         .closed

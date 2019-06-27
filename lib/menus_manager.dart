@@ -10,10 +10,10 @@ class MenusManager extends StatefulWidget {
   final List<Menu> listMenus;
 
   /// Inherited order.
-  List<Plato> orden;
+  final List<Plato> orden;
 
   /// Function to update order.
-  Function(List<Plato>) getOrder;
+  final Function(List<Plato>) getOrder;
   // MenusManager constructor.
   MenusManager({this.listMenus, this.orden, this.getOrder});
 

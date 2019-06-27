@@ -13,7 +13,7 @@ class DishesPage extends StatefulWidget {
   final Menu menu;
 
   /// The order.
-  List<Plato> orden;
+  final List<Plato> orden;
   // Constructor
   DishesPage({this.menuText, this.orden, this.menu});
 
@@ -67,9 +67,6 @@ class DishesPageState extends State<DishesPage> {
           Icons.playlist_add_check,
           color: Colors.white,
         ),
-        /*onPressed: () {
-          _showOrder(orderUpdated);
-        },*/
         onPressed: _showFinalOrderCallback,
       );
     }
@@ -83,21 +80,20 @@ class DishesPageState extends State<DishesPage> {
     _showFinalOrderCallback = _showOrderFun;
   }
 
+  /// Controls the callback of the bottom sheet
   void _showOrderFun() {
+    /// Give a init state to the callback.
     setState(() {
       _showFinalOrderCallback = null;
     });
+    // Create the OrderView in the showBottomSheet in the current context.
     _scaffoldKey.currentState
         .showBottomSheet((context) {
-          /*return new Container(
-            child: OrderManager(
-              order: orderUpdated,
-            ),
-          );*/
           return OrderView(orden: orderUpdated);
         })
         .closed
         .whenComplete(() {
+          // Once complete check if still mounted and update callback value.
           if (mounted) {
             setState(() {
               _showFinalOrderCallback = _showOrderFun;
