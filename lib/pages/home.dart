@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
-import '../qr_model.dart';
 import './menus_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,14 +10,18 @@ class HomePage extends StatefulWidget {
 
 /// First page of the app that access to the camera to scan QR code.
 class MainPage extends State<HomePage> {
+  /// Homepage welcome message.
   String homeMsj =
       'Bienvenido a Pide Fácil. Para comenzar presiona el botón y escanea el código QR de tus restaurantes favoritos.';
 
+  /// Scan QR code. First time request access to the camera of the device.
+  /// If scan a valid Qr code charge the restaurant's menu.
   Future _scanQR() async {
     try {
       String qrResult = await BarcodeScanner.scan();
       List<String> listS = qrResult.split('":');
-      String urlApi = listS[listS.length - 1].replaceAll('"', '').replaceAll('}', '');
+      String urlApi =
+          listS[listS.length - 1].replaceAll('"', '').replaceAll('}', '');
       _getMenu(urlApi);
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
@@ -67,13 +68,25 @@ class MainPage extends State<HomePage> {
         ),
       ),
       body: Center(
-          child: Container(
-        child: Text(
-          homeMsj,
-          style: new TextStyle(fontSize: 18.0, color: Color(0xFF666666)),
-        ),
-        width: 350.0,
-        height: 400.0,
+          child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(45.0),
+            child: Container(
+              child: Text(
+                homeMsj,
+                style: new TextStyle(fontSize: 18.0, color: Color(0xFF666666)),
+              ),
+              width: 350.0,
+              height: 200.0,
+            ),
+          ),
+          RaisedButton(
+            child: Text('Carga menus'),
+            onPressed: () => _getMenu(
+                'https://pidefacil-back.herokuapp.com/api/restaurante/3/'),
+          ),
+        ],
       )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF00E676),
