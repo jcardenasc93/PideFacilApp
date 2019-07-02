@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../order_manager.dart';
 import '../platos_model.dart';
+import './order_resume.dart';
 
 /// The view order for the user.
 class OrderView extends StatefulWidget {
@@ -52,9 +53,9 @@ class OrderViewState extends State<OrderView> {
                   child: Text('SI'),
                   color: Color(0xFF00E676),
                   onPressed: () {
-                    // TODO: Cambiar a la vista de resumen de orden.
-                    Navigator.of(context).pop();
                     _ordenar();
+                    // Hide dialog box.
+                    Navigator.of(context).pop();
                   })
             ],
           );
@@ -94,13 +95,20 @@ class OrderViewState extends State<OrderView> {
 
   /// Send the final order to start cook the dishes.
   _ordenar() {
-    print('-' * 20);
     // Only the dishes with quantity greater than zero are passed.
-    var ordenFinal = order.where((d) => d.cantidad > 0);
+    var ordenF = order.where((d) => d.cantidad > 0);
+    List<Plato> ordenFinal = [];
     // Check if the order is empty
-    if (ordenFinal.isNotEmpty)
-      ordenFinal.forEach((d) => print(d.nombrePlato));
-    else
+    if (ordenF.isNotEmpty) {
+      // Add each dish to the final order.
+      ordenF.forEach((d) => ordenFinal.add(d));
+      // Change view tu order resume.
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  OrderResume(orden: ordenFinal)));
+    } else
       _ordenVaciaMsj(context);
   }
 
