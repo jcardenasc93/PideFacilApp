@@ -53,9 +53,9 @@ class OrderViewState extends State<OrderView> {
                   child: Text('SI'),
                   color: Color(0xFF00E676),
                   onPressed: () {
-                    _ordenar();
                     // Hide dialog box.
                     Navigator.of(context).pop();
+                    _ordenar();
                   })
             ],
           );
@@ -63,7 +63,7 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Shows alert message when the user confirm an empty order.
-  _ordenVaciaMsj(BuildContext context) {
+  Future _ordenVaciaMsj(BuildContext context) async {
     /// Creates alert dialog.
     return showDialog(
         context: context,
@@ -102,14 +102,15 @@ class OrderViewState extends State<OrderView> {
     if (ordenF.isNotEmpty) {
       // Add each dish to the final order.
       ordenF.forEach((d) => ordenFinal.add(d));
-      // Change view tu order resume.
+      // Change view to order resume.
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) =>
                   OrderResume(orden: ordenFinal)));
-    } else
+    } else {
       _ordenVaciaMsj(context);
+    }
   }
 
   @override
