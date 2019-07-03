@@ -158,7 +158,7 @@ class OrderViewState extends State<OrderView> {
                 ),
               ),
               color: Colors.white,
-              highlightColor: Colors.white60,
+              highlightColor: Colors.white54,
               elevation: 1.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),

@@ -124,7 +124,8 @@ class _MenusListState extends State<MenusListPage> {
               const IconData(0xe900, fontFamily: 'Qrcode'),
               color: Color(0xFF666666),
             ),
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () =>
+                Navigator.popUntil(context, ModalRoute.withName('/')),
           ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,

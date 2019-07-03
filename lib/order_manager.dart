@@ -1,6 +1,7 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
 import './platos_model.dart';
+import './pages/menus_list.dart';
 
 /// Manage the order in the order view.
 class OrderManager extends StatefulWidget {
@@ -90,21 +91,31 @@ class OrderManagerState extends State<OrderManager> {
                   icon: Icon(Icons.remove_circle),
                   label: Text('ELIMINAR'),
                   onPressed: () {
-                    _deleteOrder();
                     Navigator.of(context).pop();
-                    //_ordenar();
+                    _deleteOrder();
                   }),
             ],
           );
         });
   }
 
+  /// Deletes all items in the actual order and return to [MenuListPage] page.
   _deleteOrder() {
     // TODO: Agregar animación al eliminar items.
+    // TODO: Pasar la url como parametro obtenido desde el scanner de QR.
+    // TODO: Arreglar el bug en las transiciones hacia el MenuListPage (esta duplicado).
     setState(() {
       orden.removeWhere((d) => d.nombrePlato != '');
       _totalValorOrden = 0;
     });
+    Navigator.pushAndRemoveUntil(
+      context,
+      new MaterialPageRoute(
+          builder: (BuildContext context) => MenusListPage(
+              urlApiGet:
+                  'https://pidefacil-back.herokuapp.com/api/restaurante/3/')),
+      ModalRoute.withName('/'),
+    );
   }
 
   /// Give the initial value to the final order from previews pages.
