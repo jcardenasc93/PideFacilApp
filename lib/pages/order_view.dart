@@ -29,6 +29,8 @@ class OrderViewState extends State<OrderView> {
   List<Plato> order;
   // OrderViewState constructor
   OrderViewState({this.order});
+  // Check the success of post request.
+  bool _postFlag = false;
 
   /// Displays a alert dialog to confirm the order.
   Future _confimacionOrden(BuildContext context) async {
@@ -100,33 +102,35 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Send the final order to start cook the dishes.
-  _ordenar() {    
+  _ordenar() {
     _createPostRequest();
     // Only the dishes with quantity greater than zero are passed.
     var ordenF = order.where((d) => d.cantidad > 0);
     List<Plato> ordenFinal = [];
     // Check if the order is empty
     if (ordenF.isNotEmpty) {
-      // Add each dish to the final order.
-      ordenF.forEach((d) => ordenFinal.add(d));
-      // Change view to order resume.
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  OrderResume(orden: ordenFinal)));
+      if (_postFlag) {
+        // Add each dish to the final order.
+        ordenF.forEach((d) => ordenFinal.add(d));
+        // Change view to order resume.
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    OrderResume(orden: ordenFinal)));
+      }
     } else {
       _ordenVaciaMsj(context);
     }
   }
 
   /// Create a [PostApi] object to create the json body.
-  _createPostRequest(){
+  _createPostRequest() {
     // Calc the order total price.
     var _precioTotal = 0;
     // Transform the order list to a json
     List jsonOrden = Plato.encodeToJson(order);
-    String testing;
+
     order.forEach((d) => _precioTotal += d.precioTotalPlato);
     // Create the [PostApi] object with the data.
     PostApi data = PostApi(
@@ -134,9 +138,20 @@ class OrderViewState extends State<OrderView> {
         idMesa: widget.qrobject.idMesa,
         precioTotal: _precioTotal,
         ordenListJson: jsonOrden);
-    testing = data.encodeBodyJson(data);
-    //testing = testing.toString();
-    print(testing);
+    _makePost(data);
+  }
+
+  /// Make the post request to the API.
+  _makePost(PostApi data) {
+    // var to check the result of the post
+    var postResult = data.postRequest(data);
+    print(postResult.toString());
+    if (postResult != null) {
+      // The post was success.
+      _postFlag = true;
+    } else
+      // The post was not success.
+      _postFlag = false;
   }
 
   @override
