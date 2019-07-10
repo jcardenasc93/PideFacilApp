@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import '../order_manager.dart';
 import '../platos_model.dart';
 import './order_resume.dart';
+import '../qr_model.dart';
 
 /// The view order for the user.
 class OrderView extends StatefulWidget {
   /// The user's order.
   final List<Plato> orden;
+
+  /// The QR object
+  final QRobject qrobject;
+
   // OrderView constructor.
-  OrderView({this.orden});
+  OrderView({this.orden, this.qrobject});
 
   @override
   State<StatefulWidget> createState() {
@@ -139,7 +144,7 @@ class OrderViewState extends State<OrderView> {
               ]),
         ),
         // Create the order manager for updates.
-        body: OrderManager(order: order),
+        body: OrderManager(order: order, qrobject: widget.qrobject),
         // Create the bottom button to order.
         bottomNavigationBar: new Container(
           color: Colors.white,

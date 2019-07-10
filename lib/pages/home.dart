@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
 import './menus_list.dart';
+import '../qr_model.dart';
 
 class HomePage extends StatefulWidget {
   MainPage createState() => MainPage();
@@ -19,10 +22,13 @@ class MainPage extends State<HomePage> {
   Future _scanQR() async {
     try {
       String qrResult = await BarcodeScanner.scan();
-      List<String> listS = qrResult.split('":');
-      String urlApi =
-          listS[listS.length - 1].replaceAll('"', '').replaceAll('}', '');
-      _getMenu(urlApi);
+      print(qrResult);
+      var qrobj = json.decode(qrResult);
+      QRobject qrobject = QRobject(
+          idMesa: qrobj['id_mesa'],
+          idRestaurante: qrobj['id_restaurante'],
+          urlAPIGet: qrobj['url_get']);
+      _getMenu(qrobject);
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
@@ -45,14 +51,14 @@ class MainPage extends State<HomePage> {
   }
 
   /// Request API get restaurant menu throught [urlApiGetIdRest] and display it.
-  void _getMenu(String urlApiGetIdRest) {
+  void _getMenu(QRobject qrobj) {
     setState(() {
       // Change view.
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => MenusListPage(
-                    urlApiGet: urlApiGetIdRest,
+                    qrResult: qrobj,
                   )));
     });
   }
@@ -84,7 +90,7 @@ class MainPage extends State<HomePage> {
           RaisedButton(
             child: Text('Carga menus'),
             onPressed: () => _getMenu(
-                'https://pidefacil-back.herokuapp.com/api/restaurante/3/'),
+                QRobject(urlAPIGet: 'https://pidefacil-back.herokuapp.com/api/restaurante/3/')),
           ),
         ],
       )),

@@ -9,19 +9,20 @@ import '../styles/menu_style.dart';
 import '../menus_manager.dart';
 import '../restaurante_model.dart';
 import './order_view.dart';
+import '../qr_model.dart';
 
 /// Page that list all the menus of a restaurant.
 class MenusListPage extends StatefulWidget {
-  /// The API get url.
-  final String urlApiGet;
+  /// The QR scan result
+  final QRobject qrResult;
   // MenusListPage constructor
-  MenusListPage({this.urlApiGet});
+  MenusListPage({this.qrResult});
 
   /// Returns an [Restaurante] object if the API request is successful
   Future<Restaurante> getRestaurante() async {
     /// The response of the API get request.
-    final response =
-        await http.get(urlApiGet, headers: {"Accept": "application/json"});
+    final response = await http
+        .get(qrResult.urlAPIGet, headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       return Restaurante.fromJson(json.decode(utf8.decode(response.bodyBytes)));
     } else {
@@ -183,6 +184,7 @@ class _MenusListState extends State<MenusListPage> {
                 listMenus: snapshot.data.menus,
                 getOrder: getFinalOrder,
                 orden: order,
+                qrobject: widget.qrResult,
               );
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");

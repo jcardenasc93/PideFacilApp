@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import './pages/dishes_list.dart';
 import './menu_model.dart';
 import './platos_model.dart';
+import './qr_model.dart';
 
 /// Manage the rendering of menus.
 class MenusManager extends StatefulWidget {
@@ -14,8 +15,11 @@ class MenusManager extends StatefulWidget {
 
   /// Function to update order.
   final Function(List<Plato>) getOrder;
+
+  /// The QR object
+  final QRobject qrobject;
   // MenusManager constructor.
-  MenusManager({this.listMenus, this.orden, this.getOrder});
+  MenusManager({this.listMenus, this.orden, this.getOrder, this.qrobject});
 
   @override
   State<StatefulWidget> createState() {
@@ -42,6 +46,7 @@ class _MenusManagerState extends State<MenusManager> {
                   menuText: texto,
                   menu: menu,
                   orden: widget.orden,
+                  qrobject: widget.qrobject,
                 )));
 
     /// Updates the order with last changes.

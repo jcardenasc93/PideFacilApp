@@ -2,13 +2,17 @@ import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
 import './platos_model.dart';
 import './pages/menus_list.dart';
+import './qr_model.dart';
 
 /// Manage the order in the order view.
 class OrderManager extends StatefulWidget {
   /// The user's order.
   final List<Plato> order;
 
-  OrderManager({this.order});
+  /// The QR object
+  final QRobject qrobject;
+
+  OrderManager({this.order, this.qrobject});
 
   @override
   State<StatefulWidget> createState() {
@@ -111,9 +115,8 @@ class OrderManagerState extends State<OrderManager> {
     Navigator.pushAndRemoveUntil(
       context,
       new MaterialPageRoute(
-          builder: (BuildContext context) => MenusListPage(
-              urlApiGet:
-                  'https://pidefacil-back.herokuapp.com/api/restaurante/3/')),
+          builder: (BuildContext context) =>
+              MenusListPage(qrResult: widget.qrobject)),
       ModalRoute.withName('/'),
     );
   }

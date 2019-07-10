@@ -3,6 +3,7 @@ import '../dishes_manager.dart';
 import '../menu_model.dart';
 import './order_view.dart';
 import '../platos_model.dart';
+import '../qr_model.dart';
 
 /// Page that list all dishes of a menu.
 class DishesPage extends StatefulWidget {
@@ -14,8 +15,11 @@ class DishesPage extends StatefulWidget {
 
   /// The order.
   final List<Plato> orden;
+
+  /// The QR object
+  final QRobject qrobject;
   // Constructor
-  DishesPage({this.menuText, this.orden, this.menu});
+  DishesPage({this.menuText, this.orden, this.menu, this.qrobject});
 
   @override
   State<StatefulWidget> createState() {
@@ -89,7 +93,7 @@ class DishesPageState extends State<DishesPage> {
     // Create the OrderView in the showBottomSheet in the current context.
     _scaffoldKey.currentState
         .showBottomSheet((context) {
-          return OrderView(orden: orderUpdated);
+          return OrderView(orden: orderUpdated, qrobject: widget.qrobject);
         })
         .closed
         .whenComplete(() {
