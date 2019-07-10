@@ -14,10 +14,21 @@ class Plato {
 
   factory Plato.fromJson(Map<String, dynamic> parsedJson) {
     return Plato(
-      idPlato: parsedJson['id'],
-      nombrePlato: parsedJson['nombre_plato'],
-      precioPlato: parsedJson['precio'],
-      descripcionPlato: parsedJson['descripcion']
-    );
+        idPlato: parsedJson['id'],
+        nombrePlato: parsedJson['nombre_plato'],
+        precioPlato: parsedJson['precio'],
+        descripcionPlato: parsedJson['descripcion']);
+  }
+
+  /// Generates the [map] objecto with desired json format.
+  Map<String, dynamic> toJson() {
+    return {"id_plato": idPlato, "cantidad": cantidad};
+  }
+
+  /// Pass a list of [Platos] to [toJson] function to serialize in json format.
+  static List encodeToJson(List<Plato> platos) {
+    List jsonList = List();
+    platos.map((item) => jsonList.add(item.toJson())).toList();
+    return jsonList;
   }
 }

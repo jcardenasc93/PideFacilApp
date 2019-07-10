@@ -4,6 +4,7 @@ import '../order_manager.dart';
 import '../platos_model.dart';
 import './order_resume.dart';
 import '../qr_model.dart';
+import '../post.dart';
 
 /// The view order for the user.
 class OrderView extends StatefulWidget {
@@ -99,7 +100,8 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Send the final order to start cook the dishes.
-  _ordenar() {
+  _ordenar() {    
+    _createPostRequest();
     // Only the dishes with quantity greater than zero are passed.
     var ordenF = order.where((d) => d.cantidad > 0);
     List<Plato> ordenFinal = [];
@@ -116,6 +118,25 @@ class OrderViewState extends State<OrderView> {
     } else {
       _ordenVaciaMsj(context);
     }
+  }
+
+  /// Create a [PostApi] object to create the json body.
+  _createPostRequest(){
+    // Calc the order total price.
+    var _precioTotal = 0;
+    // Transform the order list to a json
+    List jsonOrden = Plato.encodeToJson(order);
+    String testing;
+    order.forEach((d) => _precioTotal += d.precioTotalPlato);
+    // Create the [PostApi] object with the data.
+    PostApi data = PostApi(
+        idRestaurante: widget.qrobject.idRestaurante,
+        idMesa: widget.qrobject.idMesa,
+        precioTotal: _precioTotal,
+        ordenListJson: jsonOrden);
+    testing = data.encodeBodyJson(data);
+    //testing = testing.toString();
+    print(testing);
   }
 
   @override
