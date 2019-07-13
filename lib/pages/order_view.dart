@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../order_manager.dart';
-import '../platos_model.dart';
+import '../managers/order_manager.dart';
+import '../models/platos_model.dart';
 import './order_resume.dart';
-import '../qr_model.dart';
-import '../post.dart';
+import '../models/qr_model.dart';
+import '../models/post.dart';
 
 /// The view order for the user.
 class OrderView extends StatefulWidget {

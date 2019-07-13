@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../dishes_manager.dart';
-import '../menu_model.dart';
+import '../managers/dishes_manager.dart';
+import '../models/menu_model.dart';
 import './order_view.dart';
-import '../platos_model.dart';
-import '../qr_model.dart';
+import '../models/platos_model.dart';
+import '../models/qr_model.dart';
 
 /// Page that list all dishes of a menu.
 class DishesPage extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import './pages/dishes_list.dart';
-import './menu_model.dart';
-import './platos_model.dart';
-import './qr_model.dart';
+import '../pages/dishes_list.dart';
+import '../models/menu_model.dart';
+import '../models/platos_model.dart';
+import '../models/qr_model.dart';
 
 /// Manage the rendering of menus.
 class MenusManager extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
-import '../platos_model.dart';
+import '../models/platos_model.dart';
 
 class OrderResume extends StatelessWidget {
   /// The list of dishes in final order.

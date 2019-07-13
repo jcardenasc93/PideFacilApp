@@ -5,7 +5,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 
 import './menus_list.dart';
-import '../qr_model.dart';
+import '../models/qr_model.dart';
 
 class HomePage extends StatefulWidget {
   MainPage createState() => MainPage();

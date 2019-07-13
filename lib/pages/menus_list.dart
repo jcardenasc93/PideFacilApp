@@ -3,13 +3,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pide_facil/platos_model.dart';
 
+import '../models/platos_model.dart';
 import '../styles/menu_style.dart';
-import '../menus_manager.dart';
-import '../restaurante_model.dart';
+import '../managers/menus_manager.dart';
+import '../models/restaurante_model.dart';
 import './order_view.dart';
-import '../qr_model.dart';
+import '../models/qr_model.dart';
 
 /// Page that list all the menus of a restaurant.
 class MenusListPage extends StatefulWidget {

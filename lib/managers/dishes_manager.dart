@@ -1,7 +1,7 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
 
-import './platos_model.dart';
+import '../models/platos_model.dart';
 
 /// Manage the dishes rendering.
 class DishManager extends StatefulWidget {

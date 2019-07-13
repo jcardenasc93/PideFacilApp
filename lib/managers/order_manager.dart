@@ -1,8 +1,8 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
-import './platos_model.dart';
-import './pages/menus_list.dart';
-import './qr_model.dart';
+import '../models/platos_model.dart';
+import '../pages/menus_list.dart';
+import '../models/qr_model.dart';
 
 /// Manage the order in the order view.
 class OrderManager extends StatefulWidget {
@@ -106,7 +106,6 @@ class OrderManagerState extends State<OrderManager> {
   /// Deletes all items in the actual order and return to [MenuListPage] page.
   _deleteOrder() {
     // TODO: Agregar animación al eliminar items.
-    // TODO: Pasar la url como parametro obtenido desde el scanner de QR.
     // TODO: Arreglar el bug en las transiciones hacia el MenuListPage (esta duplicado).
     setState(() {
       orden.removeWhere((d) => d.nombrePlato != '');
