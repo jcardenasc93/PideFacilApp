@@ -208,7 +208,7 @@ class MainPage extends State<HomePage> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                     // Access to the assets directory and search for the img file.
-                    image: ExactAssetImage('assets/home_img.png'),
+                    image: ExactAssetImage('assets/eat.gif'),
                   )),
                   width: 350,
                   height: 350),
