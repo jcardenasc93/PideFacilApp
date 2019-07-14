@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 final ThemeData AppTheme = new ThemeData(
   brightness: Brightness.light,
-  primarySwatch: MaterialColor(0xFF58B368, AppColors.color),
-  primaryColor: MaterialColor(0xFF58B368, AppColors.color),
+  primarySwatch: MaterialColor(0xFF00E676, AppColors.color),
+  primaryColor: MaterialColor(0xFF00E676, AppColors.color),
   primaryColorBrightness: Brightness.light,
   accentColor: Colors.white,
   accentColorBrightness: Brightness.light,
+  textSelectionHandleColor: Color(0xFF00E676),
+  textSelectionColor: Colors.black12,
+  cursorColor: Color(0xFF00E676)
 );
 
 class AppColors {

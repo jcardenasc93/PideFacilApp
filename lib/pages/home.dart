@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import './menus_list.dart';
 import '../models/qr_model.dart';
@@ -13,9 +15,24 @@ class HomePage extends StatefulWidget {
 
 /// First page of the app that access to the camera to scan QR code.
 class MainPage extends State<HomePage> {
+  /// List that stores the text that chages in header.
+  List<String> _msj = ["Fácil", "Fácil", "Rápido", "Ahora", "Ya"];
+
+  /// index of the above list.
+  int _pos = 0;
+
+  /// [Timer] object that handles the time between text updates.
+  Timer _timermsj;
+
+  /// Header text.
+  String _header = '';
+
+  /// [TextField] handler that stores the input text.
+  final _manualCode = TextEditingController();
+
   /// Homepage welcome message.
-  String homeMsj =
-      'Bienvenido a Pide Fácil. Para comenzar presiona el botón y escanea el código QR de tus restaurantes favoritos.';
+  String _bodyMsj =
+      'Escanea el código QR o ingresa el código de tus restaurantes favoritos y empieza ordenar lo que más te gusta';
 
   /// Scan QR code. First time request access to the camera of the device.
   /// If scan a valid Qr code charge the restaurant's menu.
@@ -31,23 +48,72 @@ class MainPage extends State<HomePage> {
       _getMenu(qrobject);
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
-        setState(() {
-          homeMsj = "Camera permission was denied";
-        });
+        _cameraDeniedAlert();
       } else {
-        setState(() {
-          homeMsj = "Unknown Error $ex";
-        });
+        _errorAlert(ex.toString());
       }
     } on FormatException {
       setState(() {
-        homeMsj = homeMsj;
+        _bodyMsj = _bodyMsj;
       });
     } catch (ex) {
-      setState(() {
-        homeMsj = "Unknown Error $ex";
-      });
+      _errorAlert(ex.toString());
     }
+  }
+
+  /// Shows Alert dialog when camera permission was denied.
+  Future _cameraDeniedAlert() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: new Text(
+              'El acceso a la cámara fue negado. Habilita el acceso para continuar',
+              style: TextStyle(color: Color(0xFF666666), fontSize: 18.0),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Center(
+                  child: Text(
+                    'OK',
+                    style: TextStyle(color: Color(0xFF00E676), fontSize: 18.0),
+                  ),
+                ),
+                // Back when pressed.
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+  /// Shows alert dialog when error exists when accesing to the device camera.
+  Future _errorAlert(String error) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: new Text(
+              error,
+              style: TextStyle(color: Color(0xFF666666), fontSize: 18.0),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Center(
+                  child: Text(
+                    'VOLVER',
+                    style: TextStyle(color: Color(0xFF00E676), fontSize: 18.0),
+                  ),
+                ),
+                // Back when pressed.
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
   }
 
   /// Request API get restaurant menu throught [urlApiGetIdRest] and display it.
@@ -63,46 +129,139 @@ class MainPage extends State<HomePage> {
     });
   }
 
+  /// Init the timer count down to change text in header.
+  _startTimer() {
+    /// Asign a task to run when the period is complete
+    _timermsj = Timer.periodic(new Duration(seconds: 2), (Timer timer) {
+      // Updates the text value.
+      setState(() {
+        if (_pos < _msj.length)
+          _pos = _pos + 1;
+        else
+          _pos = 0;
+        _header = _msj[_pos];
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    _startTimer();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timermsj.cancel();
+    _timermsj = null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: Mejorar el look & feeling del msj de bienvenida.
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Pide Facil',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: Center(
-          child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(45.0),
-            child: Container(
-              child: Text(
-                homeMsj,
-                style: new TextStyle(fontSize: 18.0, color: Color(0xFF666666)),
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Center(
+              child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: 65.0),
+                child: Container(
+                  child: Text(
+                    'Pide ' + _header,
+                    style: new TextStyle(
+                        fontSize: 24.0,
+                        color: Color(0xFF666666),
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-              width: 350.0,
-              height: 200.0,
-            ),
-          ),
-          RaisedButton(
-            child: Text('Carga menus'),
-            onPressed: () => _getMenu(
-                QRobject(urlAPIGet: 'https://pidefacil-back.herokuapp.com/api/restaurante/3/')),
-          ),
-        ],
-      )),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF00E676),
-        onPressed: _scanQR,
-        child: new Icon(
-          const IconData(0xe900, fontFamily: 'Qrcode'),
-          color: Colors.white,
-        ),
-        tooltip: 'Scan QR',
-      ),
-    );
+              Padding(
+                padding: EdgeInsets.all(25.0),
+                child: Container(
+                  child: Text(
+                    _bodyMsj,
+                    style: new TextStyle(
+                      fontSize: 18.0,
+                      color: Color(0xFF666666),
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                  width: 325.0,
+                ),
+              ),
+              Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    // Access to the assets directory and search for the img file.
+                    image: ExactAssetImage('assets/home_img.png'),
+                  )),
+                  width: 400,
+                  height: 400),
+              Align(
+                // Uses the remaining space in the screen to position the widget on the bottom.
+                alignment: FractionalOffset.bottomCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      width: 228.0,
+                      height: 50.0,
+                      // TextField to handle input text form user.
+                      child: TextField(
+                        // Uppercase the input text.
+                        textCapitalization: TextCapitalization.characters,
+                        textAlign: TextAlign.center,
+                        // Add style.
+                        style: new TextStyle(
+                            fontSize: 18.0, color: new Color(0xFF666666)),
+                        // Assign value to the handler var.
+                        controller: _manualCode,
+                        // Disable autocrrect.
+                        autocorrect: false,
+                        decoration: InputDecoration(
+                          labelStyle: TextStyle(fontSize: 12.0),
+                          // Preset hint.
+                          labelText: 'Ingresa el código',
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 5.0, bottom: 45.0),
+                      // The QR button.
+                      child: FlatButton.icon(
+                        color: Color(0xFF00E676),
+                        onPressed: _scanQR,
+                        icon: new Icon(
+                          const IconData(0xE900, fontFamily: 'Qrcode'),
+                          color: Color(0xFFFFFFFF),
+                        ),
+                        label: Text(
+                          "ESCANEAR CODIGO QR",
+                          style: new TextStyle(
+                            fontSize: 16.0,
+                            color: Color(0xFFFFFFFF),
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side:
+                              BorderSide(color: Color(0xFF00E676), width: 2.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
+        ));
   }
 }
