@@ -32,7 +32,8 @@ class MainPage extends State<HomePage> {
 
   /// Homepage welcome message.
   String _bodyMsj =
-      'Escanea el código QR o ingresa el código de tus restaurantes favoritos y empieza ordenar lo que más te gusta';
+      'Escanea el código QR o ingresa ' + 'el código de tus restaurantes favoritos' +
+      ' y empieza ordenar lo que más te gusta. Pide fácil atenderá tu orden.';
 
   /// Scan QR code. First time request access to the camera of the device.
   /// If scan a valid Qr code charge the restaurant's menu.
@@ -88,6 +89,7 @@ class MainPage extends State<HomePage> {
           );
         });
   }
+
   /// Shows alert dialog when error exists when accesing to the device camera.
   Future _errorAlert(String error) {
     return showDialog(
@@ -130,7 +132,7 @@ class MainPage extends State<HomePage> {
   }
 
   /// Init the timer count down to change text in header.
-  _startTimer() {
+  void _startTimer() {
     /// Asign a task to run when the period is complete
     _timermsj = Timer.periodic(new Duration(seconds: 2), (Timer timer) {
       // Updates the text value.
@@ -159,7 +161,6 @@ class MainPage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Mejorar el look & feeling del msj de bienvenida.
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -167,15 +168,25 @@ class MainPage extends State<HomePage> {
               child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 65.0),
+                padding: EdgeInsets.only(top: 65.0, bottom: 20.0),
                 child: Container(
-                  child: Text(
-                    'Pide ' + _header,
-                    style: new TextStyle(
-                        fontSize: 24.0,
-                        color: Color(0xFF666666),
-                        fontWeight: FontWeight.bold),
+                  child: RichText(
                     textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: 'Pide ',
+                        style: TextStyle(
+                            fontSize: 30.0,
+                            color: Color(0xFF666666),
+                            fontWeight: FontWeight.bold),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: _header,
+                            style: TextStyle(
+                                fontSize: 30.0,
+                                color: Color(0xFF00E676),
+                                fontWeight: FontWeight.bold),
+                          )
+                        ]),
                   ),
                 ),
               ),
@@ -185,7 +196,7 @@ class MainPage extends State<HomePage> {
                   child: Text(
                     _bodyMsj,
                     style: new TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 20.0,
                       color: Color(0xFF666666),
                     ),
                     textAlign: TextAlign.justify,
@@ -199,8 +210,8 @@ class MainPage extends State<HomePage> {
                     // Access to the assets directory and search for the img file.
                     image: ExactAssetImage('assets/home_img.png'),
                   )),
-                  width: 400,
-                  height: 400),
+                  width: 350,
+                  height: 350),
               Align(
                 // Uses the remaining space in the screen to position the widget on the bottom.
                 alignment: FractionalOffset.bottomCenter,
@@ -210,7 +221,7 @@ class MainPage extends State<HomePage> {
                   children: <Widget>[
                     Container(
                       width: 228.0,
-                      height: 50.0,
+                      height: 47.0,
                       // TextField to handle input text form user.
                       child: TextField(
                         // Uppercase the input text.
