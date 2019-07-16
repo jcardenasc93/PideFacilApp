@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pide_facil/scale_ui.dart';
 
 import './menus_list.dart';
 import '../models/qr_model.dart';
@@ -31,8 +32,8 @@ class MainPage extends State<HomePage> {
   final _manualCode = TextEditingController();
 
   /// Homepage welcome message.
-  String _bodyMsj =
-      'Escanea el código QR o ingresa ' + 'el código de tus restaurantes favoritos' +
+  String _bodyMsj = 'Escanea el código QR o ingresa ' +
+      'el código de tus restaurantes favoritos' +
       ' y empieza ordenar lo que más te gusta. Pide fácil atenderá tu orden.';
 
   /// Scan QR code. First time request access to the camera of the device.
@@ -161,6 +162,7 @@ class MainPage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    ScaleUI().init(context);
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -175,14 +177,14 @@ class MainPage extends State<HomePage> {
                     text: TextSpan(
                         text: 'Pide ',
                         style: TextStyle(
-                            fontSize: 30.0,
+                            fontSize: ScaleUI.safeBlockHorizontal * 8.0,
                             color: Color(0xFF666666),
                             fontWeight: FontWeight.bold),
                         children: <TextSpan>[
                           TextSpan(
                             text: _header,
                             style: TextStyle(
-                                fontSize: 30.0,
+                                fontSize: ScaleUI.safeBlockHorizontal * 8.0,
                                 color: Color(0xFF00E676),
                                 fontWeight: FontWeight.bold),
                           )
@@ -196,22 +198,23 @@ class MainPage extends State<HomePage> {
                   child: Text(
                     _bodyMsj,
                     style: new TextStyle(
-                      fontSize: 20.0,
+                      fontSize: ScaleUI.safeBlockHorizontal * 4.0,
                       color: Color(0xFF666666),
                     ),
                     textAlign: TextAlign.justify,
                   ),
-                  width: 325.0,
+                  width: ScaleUI.blockSizeHorizontal * 75,
                 ),
               ),
               Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
                     // Access to the assets directory and search for the img file.
-                    image: ExactAssetImage('assets/eat.gif'),
+                    image: ExactAssetImage('assets/pie_ex.gif'),
+                    fit: BoxFit.cover
                   )),
-                  width: 350,
-                  height: 350),
+                  width: ScaleUI.blockSizeHorizontal * 60,
+                  height: ScaleUI.blockSizeVertical * 45),
               Align(
                 // Uses the remaining space in the screen to position the widget on the bottom.
                 alignment: FractionalOffset.bottomCenter,
@@ -220,8 +223,8 @@ class MainPage extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                      width: 228.0,
-                      height: 47.0,
+                      width: ScaleUI.blockSizeHorizontal * 55.0,
+                      height: ScaleUI.blockSizeVertical * 5.0,
                       // TextField to handle input text form user.
                       child: TextField(
                         // Uppercase the input text.
@@ -263,8 +266,9 @@ class MainPage extends State<HomePage> {
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
-                          side:
-                              BorderSide(color: Color(0xFF00E676), width: 2.0),
+                          side: BorderSide(
+                              color: Color(0xFF00E676),
+                              width: ScaleUI.blockSizeHorizontal * 2.0),
                         ),
                       ),
                     ),
