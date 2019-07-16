@@ -256,11 +256,12 @@ class MainPage extends State<HomePage> {
                         icon: new Icon(
                           const IconData(0xE900, fontFamily: 'Qrcode'),
                           color: Color(0xFFFFFFFF),
+                          size: ScaleUI.safeBlockHorizontal * 4.0,
                         ),
                         label: Text(
                           "ESCANEAR CODIGO QR",
                           style: new TextStyle(
-                            fontSize: 16.0,
+                            fontSize: ScaleUI.safeBlockHorizontal * 4.0,
                             color: Color(0xFFFFFFFF),
                           ),
                         ),
