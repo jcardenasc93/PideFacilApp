@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pide_facil/scale_ui.dart';
 
 import '../models/platos_model.dart';
 import '../styles/menu_style.dart';
@@ -113,6 +114,7 @@ class _MenusListState extends State<MenusListPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScaleUI().init(context);
     return MaterialApp(
       theme: menuTheme,
       home: Scaffold(
@@ -143,7 +145,10 @@ class _MenusListState extends State<MenusListPage> {
                       return Image.network(imageUrl);
                       //return Image.network(snapshot.data.urlImagRestaurante);
                     } else if (snapshot.hasError) {
-                      return Text("${snapshot.error}");
+                      return Icon(
+                        Icons.warning,
+                        color: Color(0xFF666666),
+                      );
                     }
                     // While get image returns nothing.
                     return new SizedBox();
@@ -165,7 +170,7 @@ class _MenusListState extends State<MenusListPage> {
                       textAlign: TextAlign.center,
                     );
                   } else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
+                    return Text('');
                   }
                   // While get restaurant name display nothing.
                   return new SizedBox();
@@ -187,7 +192,32 @@ class _MenusListState extends State<MenusListPage> {
                 qrobject: widget.qrResult,
               );
             } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
+              return new Center(
+                  child: Container(
+                height: ScaleUI.blockSizeVertical * 40.0,
+                width: ScaleUI.blockSizeHorizontal * 50.0,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      child: Icon(
+                        Icons.cloud_off,
+                        color: Color(0xFF666666),
+                        size: ScaleUI.safeBlockHorizontal * 20.0,
+                      ),
+                      padding: EdgeInsets.only(bottom: 10.0),
+                    ),
+                    Text(
+                      'Lo sentimos! No podemos procesar tu solicitud. ' +
+                          'Verifica tu conexión e inténtalo de nuevo',
+                      style: new TextStyle(
+                        color: Color(0xFF666666),
+                        fontSize: ScaleUI.safeBlockHorizontal * 5.0,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              ));
             }
             // While get the menus list displays a circular progress indicator.
             return new Center(

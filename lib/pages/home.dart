@@ -162,6 +162,12 @@ class MainPage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Portrait oriantation resstrict.
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    // Resizing object to different screen size.
     ScaleUI().init(context);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -170,21 +176,23 @@ class MainPage extends State<HomePage> {
               child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: 65.0, bottom: 20.0),
+                padding: EdgeInsets.only(
+                    top: ScaleUI.safeBlockVertical * 8.0,
+                    bottom: ScaleUI.safeBlockVertical * 6.0),
                 child: Container(
                   child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
                         text: 'Pide ',
                         style: TextStyle(
-                            fontSize: ScaleUI.safeBlockHorizontal * 8.0,
+                            fontSize: ScaleUI.safeBlockVertical * 4.0,
                             color: Color(0xFF666666),
                             fontWeight: FontWeight.bold),
                         children: <TextSpan>[
                           TextSpan(
                             text: _header,
                             style: TextStyle(
-                                fontSize: ScaleUI.safeBlockHorizontal * 8.0,
+                                fontSize: ScaleUI.safeBlockVertical * 4.0,
                                 color: Color(0xFF00E676),
                                 fontWeight: FontWeight.bold),
                           )
@@ -193,12 +201,12 @@ class MainPage extends State<HomePage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(25.0),
+                padding: EdgeInsets.all(ScaleUI.safeBlockVertical * 2.0),
                 child: Container(
                   child: Text(
                     _bodyMsj,
                     style: new TextStyle(
-                      fontSize: ScaleUI.safeBlockHorizontal * 4.0,
+                      fontSize: ScaleUI.safeBlockVertical * 2.5,
                       color: Color(0xFF666666),
                     ),
                     textAlign: TextAlign.justify,
@@ -209,12 +217,11 @@ class MainPage extends State<HomePage> {
               Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                    // Access to the assets directory and search for the img file.
-                    image: ExactAssetImage('assets/pie_ex.gif'),
-                    fit: BoxFit.cover
-                  )),
+                          // Access to the assets directory and search for the img file.
+                          image: ExactAssetImage('assets/pie_ex.gif'),
+                          fit: BoxFit.cover)),
                   width: ScaleUI.blockSizeHorizontal * 60,
-                  height: ScaleUI.blockSizeVertical * 45),
+                  height: ScaleUI.blockSizeVertical * 50),
               Align(
                 // Uses the remaining space in the screen to position the widget on the bottom.
                 alignment: FractionalOffset.bottomCenter,
@@ -223,7 +230,7 @@ class MainPage extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                      width: ScaleUI.blockSizeHorizontal * 55.0,
+                      width: ScaleUI.blockSizeHorizontal * 50.0,
                       height: ScaleUI.blockSizeVertical * 5.0,
                       // TextField to handle input text form user.
                       child: TextField(
@@ -242,37 +249,42 @@ class MainPage extends State<HomePage> {
                           // Preset hint.
                           labelText: 'Ingresa el código',
                           border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
+                            borderRadius: new BorderRadius.circular(8.0),
                           ),
                         ),
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 5.0, bottom: 45.0),
-                      // The QR button.
-                      child: FlatButton.icon(
-                        color: Color(0xFF00E676),
-                        onPressed: _scanQR,
-                        icon: new Icon(
-                          const IconData(0xE900, fontFamily: 'Qrcode'),
-                          color: Color(0xFFFFFFFF),
-                          size: ScaleUI.safeBlockHorizontal * 4.0,
-                        ),
-                        label: Text(
-                          "ESCANEAR CODIGO QR",
-                          style: new TextStyle(
-                            fontSize: ScaleUI.safeBlockHorizontal * 4.0,
-                            color: Color(0xFFFFFFFF),
+                        padding: EdgeInsets.only(
+                            top: ScaleUI.safeBlockVertical * 1.0,
+                            bottom: ScaleUI.safeBlockVertical * 1.0),
+                        // The QR button.
+                        child: Container(
+                          width: ScaleUI.blockSizeHorizontal * 50.0,
+                          height: ScaleUI.blockSizeVertical * 5.0,
+                          child: FlatButton.icon(
+                            color: Color(0xFF00E676),
+                            onPressed: _scanQR,
+                            icon: new Icon(
+                              const IconData(0xE900, fontFamily: 'Qrcode'),
+                              color: Color(0xFFFFFFFF),
+                              size: ScaleUI.safeBlockVertical * 2.0,
+                            ),
+                            label: Text(
+                              "ESCANEAR CODIGO QR",
+                              style: new TextStyle(
+                                fontSize: ScaleUI.safeBlockVertical * 2.0,
+                                color: Color(0xFFFFFFFF),
+                              ),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(
+                                  color: Color(0xFF00E676),
+                                  width: ScaleUI.blockSizeHorizontal * 2.0),
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: BorderSide(
-                              color: Color(0xFF00E676),
-                              width: ScaleUI.blockSizeHorizontal * 2.0),
-                        ),
-                      ),
-                    ),
+                        )),
                   ],
                 ),
               ),
