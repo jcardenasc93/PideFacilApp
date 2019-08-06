@@ -10,8 +10,15 @@ class DishManager extends StatefulWidget {
 
   /// Function to update the order.
   final Function(List<Plato>) updateOrder;
+
+  /// Function to reset order
+  final Function clearOrder;
+
+  /// Function to get order
+  final List<Plato> order;
+
   // DishManager constructor.
-  DishManager({this.listPlatos, this.updateOrder});
+  DishManager({this.listPlatos, this.updateOrder, this.clearOrder, this.order});
 
   @override
   State<StatefulWidget> createState() {
@@ -66,6 +73,22 @@ class _DishManagerState extends State<DishManager> {
       listOfPlatos[index].cantidad++;
     });
     _addDishesToOrder();
+  }
+
+  void _resetValues() {
+    setState(() {
+      listOfPlatos.forEach((f) => f.cantidad = 0);
+    });
+    _addDishesToOrder();
+    widget.clearOrder();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.order.isEmpty) {
+      listOfPlatos.forEach((f) => f.cantidad = 0);
+    }
   }
 
   @override
@@ -193,6 +216,21 @@ class _DishManagerState extends State<DishManager> {
                 margin: EdgeInsets.all(2.0),
               );
             }),
+        Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Center(
+              child: GestureDetector(
+                child: Text(
+                  'Nueva Orden',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xFF66666F),
+                      fontSize: 16.0,
+                      decoration: TextDecoration.underline),
+                ),
+                onTap: () => _resetValues(),
+              ),
+            ))
       ],
     );
   }

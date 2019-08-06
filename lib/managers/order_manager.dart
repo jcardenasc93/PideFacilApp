@@ -1,7 +1,6 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
 import '../models/platos_model.dart';
-import '../pages/menus_list.dart';
 import '../models/qr_model.dart';
 
 /// Manage the order in the order view.
@@ -12,7 +11,9 @@ class OrderManager extends StatefulWidget {
   /// The QR object
   final QRobject qrobject;
 
-  OrderManager({this.order, this.qrobject});
+  final Function resetOrder;
+
+  OrderManager({this.order, this.qrobject, this.resetOrder});
 
   @override
   State<StatefulWidget> createState() {
@@ -105,19 +106,13 @@ class OrderManagerState extends State<OrderManager> {
 
   /// Deletes all items in the actual order and return to [MenuListPage] page.
   _deleteOrder() {
-    // TODO: Agregar animación al eliminar items.
-    // TODO: Arreglar el bug en las transiciones hacia el MenuListPage (esta duplicado).
     setState(() {
+      orden.forEach((d) => d.cantidad = 0);
       orden.removeWhere((d) => d.nombrePlato != '');
       _totalValorOrden = 0;
     });
-    Navigator.pushAndRemoveUntil(
-      context,
-      new MaterialPageRoute(
-          builder: (BuildContext context) =>
-              MenusListPage(qrResult: widget.qrobject)),
-      ModalRoute.withName('/'),
-    );
+    widget.resetOrder();
+    Navigator.pop(context);
   }
 
   /// Give the initial value to the final order from previews pages.

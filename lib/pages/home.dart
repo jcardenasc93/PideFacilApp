@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:barcode_scan/barcode_scan.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pide_facil/scale_ui.dart';
-
-import './menus_list.dart';
-import '../models/qr_model.dart';
+import 'package:pide_facil/pages/cameraAccess.dart';
 
 class HomePage extends StatefulWidget {
   MainPage createState() => MainPage();
@@ -38,7 +35,12 @@ class MainPage extends State<HomePage> {
 
   /// Scan QR code. First time request access to the camera of the device.
   /// If scan a valid Qr code charge the restaurant's menu.
-  Future _scanQR() async {
+  void _scanQR() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => CameraAccess()));
+  }
+
+  /*Future _scanQR() async {
     try {
       String qrResult = await BarcodeScanner.scan();
       print(qrResult);
@@ -130,7 +132,7 @@ class MainPage extends State<HomePage> {
                     qrResult: qrobj,
                   )));
     });
-  }
+  }*/
 
   /// Init the timer count down to change text in header.
   void _startTimer() {
@@ -164,9 +166,9 @@ class MainPage extends State<HomePage> {
   Widget build(BuildContext context) {
     // Portrait oriantation resstrict.
     SystemChrome.setPreferredOrientations([
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     // Resizing object to different screen size.
     ScaleUI().init(context);
     return Scaffold(

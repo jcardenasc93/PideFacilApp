@@ -154,6 +154,12 @@ class OrderViewState extends State<OrderView> {
       _postFlag = false;
   }
 
+  void clearOrder() {
+    setState(() {
+      order = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,7 +186,11 @@ class OrderViewState extends State<OrderView> {
               ]),
         ),
         // Create the order manager for updates.
-        body: OrderManager(order: order, qrobject: widget.qrobject),
+        body: OrderManager(
+          order: order,
+          qrobject: widget.qrobject,
+          resetOrder: clearOrder,
+        ),
         // Create the bottom button to order.
         bottomNavigationBar: new Container(
           color: Colors.white,

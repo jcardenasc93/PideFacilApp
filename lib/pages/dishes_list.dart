@@ -44,6 +44,15 @@ class DishesPageState extends State<DishesPage> {
       newOrder.forEach((d) => orderUpdated.add(d));
       // Delete repeated items in the order.
       orderUpdated = orderUpdated.toSet().toList();
+      var orden = orderUpdated.where((d) => d.cantidad > 0);
+      orderUpdated = [];
+      orden.forEach((d) => orderUpdated.add(d));
+    });
+  }
+
+  clearOrder() {
+    setState(() {
+      orderUpdated = [];
     });
   }
 
@@ -97,6 +106,7 @@ class DishesPageState extends State<DishesPage> {
         })
         .closed
         .whenComplete(() {
+          
           // Once complete check if still mounted and update callback value.
           if (mounted) {
             setState(() {
@@ -150,6 +160,8 @@ class DishesPageState extends State<DishesPage> {
         //menuText: menuText,
         listPlatos: widget.menu.platoMenu,
         updateOrder: updateOrder,
+        clearOrder: clearOrder,
+        order: orderUpdated,
       ),
       floatingActionButton: _manageButton(),
     );
