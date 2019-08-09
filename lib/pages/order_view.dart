@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pide_facil/scale_ui.dart';
 
 import '../managers/order_manager.dart';
 import '../models/platos_model.dart';
@@ -116,8 +117,10 @@ class OrderViewState extends State<OrderView> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    OrderResume(orden: ordenFinal)));
+                builder: (BuildContext context) => OrderResume(
+                    idRestaurante: widget.qrobject.idRestaurante,
+                    idMesa: widget.qrobject.idMesa,
+                    orden: ordenFinal)));
       }
     } else {
       _ordenVaciaMsj(context);
@@ -162,26 +165,24 @@ class OrderViewState extends State<OrderView> {
 
   @override
   Widget build(BuildContext context) {
+    ScaleUI().init(context);
     return Scaffold(
-        backgroundColor: Color(0xFF58B368),
+        backgroundColor: Color(0xFF00E676),
+        //backgroundColor: Colors.white12,
 
         /// Custom appBar for change size.
         appBar: new PreferredSize(
-          preferredSize: Size.fromHeight(56.0),
+          preferredSize: Size.fromHeight(ScaleUI.blockSizeVertical * 5.0),
           // AppBar title.
-          child: Row(
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  "Tu orden",
-                  style: new TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
+                Icon(
+                  Icons.drag_handle,
+                  //color: Color(0xFF00E676),
+                  color: Colors.white,
                 ),
               ]),
         ),

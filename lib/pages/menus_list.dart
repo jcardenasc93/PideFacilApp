@@ -115,126 +115,129 @@ class _MenusListState extends State<MenusListPage> {
   @override
   Widget build(BuildContext context) {
     ScaleUI().init(context);
-    return MaterialApp(
-      theme: menuTheme,
-      home: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-          // Add 'scan QR' button on top left.
-          leading: IconButton(
-            icon: new Icon(
-              const IconData(0xe900, fontFamily: 'Qrcode'),
-              color: Color(0xFF666666),
-            ),
-            onPressed: () =>
-                Navigator.popUntil(context, ModalRoute.withName('/')),
-          ),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(2.0),
-                // Display restaurant Image on top center.
-                child: FutureBuilder<Restaurante>(
-                  future: restaurante,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Image.network(imageUrl);
-                      //return Image.network(snapshot.data.urlImagRestaurante);
-                    } else if (snapshot.hasError) {
-                      return Icon(
-                        Icons.warning,
-                        color: Color(0xFF666666),
-                      );
-                    }
-                    // While get image returns nothing.
-                    return new SizedBox();
-                  },
+    // WillPopScope disables back action on Android devices.
+    return new WillPopScope(
+        onWillPop: () async => false,
+        child: MaterialApp(
+          theme: menuTheme,
+          home: Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+              // Add 'scan QR' button on top left.
+              leading: IconButton(
+                icon: new Icon(
+                  const IconData(0xe900, fontFamily: 'Qrcode'),
+                  color: Color(0xFF666666),
                 ),
+                onPressed: () =>
+                    Navigator.popUntil(context, ModalRoute.withName('/')),
               ),
-              // Optional restaurant text to be displayed on top center.
-              FutureBuilder<Restaurante>(
-                future: restaurante,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(
-                      //snapshot.data.nombreRestaurante,
-                      '',
-                      style: new TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF666666)),
-                      textAlign: TextAlign.center,
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('');
-                  }
-                  // While get restaurant name display nothing.
-                  return new SizedBox();
-                },
-              ),
-            ],
-          ),
-          centerTitle: true,
-        ),
-        // Display the menus list of the restaurant.
-        body: FutureBuilder<Restaurante>(
-          future: restaurante,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return MenusManager(
-                listMenus: snapshot.data.menus,
-                getOrder: getFinalOrder,
-                orden: order,
-                qrobject: widget.qrResult,
-              );
-            } else if (snapshot.hasError) {
-              return new Center(
-                  child: Container(
-                height: ScaleUI.blockSizeVertical * 40.0,
-                width: ScaleUI.blockSizeHorizontal * 50.0,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      child: Icon(
-                        Icons.cloud_off,
-                        color: Color(0xFF666666),
-                        size: ScaleUI.safeBlockHorizontal * 20.0,
-                      ),
-                      padding: EdgeInsets.only(bottom: 10.0),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(2.0),
+                    // Display restaurant Image on top center.
+                    child: FutureBuilder<Restaurante>(
+                      future: restaurante,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Image.network(imageUrl);
+                          //return Image.network(snapshot.data.urlImagRestaurante);
+                        } else if (snapshot.hasError) {
+                          return Icon(
+                            Icons.warning,
+                            color: Color(0xFF666666),
+                          );
+                        }
+                        // While get image returns nothing.
+                        return new SizedBox();
+                      },
                     ),
-                    Text(
-                      'Lo sentimos! No podemos procesar tu solicitud. ' +
-                          'Verifica tu conexión e inténtalo de nuevo',
-                      style: new TextStyle(
-                        color: Color(0xFF666666),
-                        fontSize: ScaleUI.safeBlockHorizontal * 5.0,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
-              ));
-            }
-            // While get the menus list displays a circular progress indicator.
-            return new Center(
-              child: SizedBox(
-                child: new CircularProgressIndicator(
-                  valueColor:
-                      new AlwaysStoppedAnimation<Color>(Color(0xFF666666)),
-                  strokeWidth: 3.0,
-                ),
-                height: 50.0,
-                width: 50.0,
+                  ),
+                  // Optional restaurant text to be displayed on top center.
+                  FutureBuilder<Restaurante>(
+                    future: restaurante,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          //snapshot.data.nombreRestaurante,
+                          '',
+                          style: new TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF666666)),
+                          textAlign: TextAlign.center,
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('');
+                      }
+                      // While get restaurant name display nothing.
+                      return new SizedBox();
+                    },
+                  ),
+                ],
               ),
-            );
-          },
-        ),
-        floatingActionButton: _manageButton(),
-      ),
-    );
+              centerTitle: true,
+            ),
+            // Display the menus list of the restaurant.
+            body: FutureBuilder<Restaurante>(
+              future: restaurante,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return MenusManager(
+                    listMenus: snapshot.data.menus,
+                    getOrder: getFinalOrder,
+                    orden: order,
+                    qrobject: widget.qrResult,
+                  );
+                } else if (snapshot.hasError) {
+                  return new Center(
+                      child: Container(
+                    height: ScaleUI.blockSizeVertical * 40.0,
+                    width: ScaleUI.blockSizeHorizontal * 50.0,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          child: Icon(
+                            Icons.cloud_off,
+                            color: Color(0xFF666666),
+                            size: ScaleUI.safeBlockHorizontal * 20.0,
+                          ),
+                          padding: EdgeInsets.only(bottom: 10.0),
+                        ),
+                        Text(
+                          'Lo sentimos! No podemos procesar tu solicitud. ' +
+                              'Verifica tu conexión e inténtalo de nuevo',
+                          style: new TextStyle(
+                            color: Color(0xFF666666),
+                            fontSize: ScaleUI.safeBlockHorizontal * 5.0,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ));
+                }
+                // While get the menus list displays a circular progress indicator.
+                return new Center(
+                  child: SizedBox(
+                    child: new CircularProgressIndicator(
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Color(0xFF666666)),
+                      strokeWidth: 3.0,
+                    ),
+                    height: 50.0,
+                    width: 50.0,
+                  ),
+                );
+              },
+            ),
+            floatingActionButton: _manageButton(),
+          ),
+        ));
   }
 }

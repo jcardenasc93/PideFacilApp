@@ -50,6 +50,7 @@ class DishesPageState extends State<DishesPage> {
     });
   }
 
+  /// Clear the actual order.
   clearOrder() {
     setState(() {
       orderUpdated = [];
@@ -106,7 +107,6 @@ class DishesPageState extends State<DishesPage> {
         })
         .closed
         .whenComplete(() {
-          
           // Once complete check if still mounted and update callback value.
           if (mounted) {
             setState(() {
@@ -118,52 +118,55 @@ class DishesPageState extends State<DishesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        // Add back button.
-        leading: IconButton(
-          icon: new Icon(
-            Icons.arrow_back,
-            color: Color(0xFF666666),
+    // WillPopScope disables back action on Android devices.
+    return new WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+            automaticallyImplyLeading: true,
+            // Add back button.
+            leading: IconButton(
+              icon: new Icon(
+                Icons.arrow_back,
+                color: Color(0xFF666666),
+              ),
+              onPressed: () {
+                _backToMenus(context);
+              },
+            ),
+            // Display menu name on top center.
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  widget.menuText,
+                  style: new TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF666666)),
+                  textAlign: TextAlign.center,
+                ),
+                new Divider(
+                  color: Colors.grey,
+                  height: 1.5,
+                  indent: 5.5,
+                ),
+              ],
+            ),
+            centerTitle: true,
           ),
-          onPressed: () {
-            _backToMenus(context);
-          },
-        ),
-        // Display menu name on top center.
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              widget.menuText,
-              style: new TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF666666)),
-              textAlign: TextAlign.center,
-            ),
-            new Divider(
-              color: Colors.grey,
-              height: 1.5,
-              indent: 5.5,
-            ),
-          ],
-        ),
-        centerTitle: true,
-      ),
-      // Render dishes in body.
-      body: DishManager(
-        //menuText: menuText,
-        listPlatos: widget.menu.platoMenu,
-        updateOrder: updateOrder,
-        clearOrder: clearOrder,
-        order: orderUpdated,
-      ),
-      floatingActionButton: _manageButton(),
-    );
+          // Render dishes in body.
+          body: DishManager(
+            //menuText: menuText,
+            listPlatos: widget.menu.platoMenu,
+            updateOrder: updateOrder,
+            clearOrder: clearOrder,
+            order: orderUpdated,
+          ),
+          floatingActionButton: _manageButton(),
+        ));
   }
 }

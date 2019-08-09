@@ -75,6 +75,7 @@ class _DishManagerState extends State<DishManager> {
     _addDishesToOrder();
   }
 
+  /// Clear the order.
   void _resetValues() {
     setState(() {
       listOfPlatos.forEach((f) => f.cantidad = 0);
@@ -85,6 +86,7 @@ class _DishManagerState extends State<DishManager> {
 
   @override
   void initState() {
+    /// Check if the actual order is empty to set quantities to zero.
     super.initState();
     if (widget.order.isEmpty) {
       listOfPlatos.forEach((f) => f.cantidad = 0);

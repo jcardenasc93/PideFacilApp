@@ -1,5 +1,6 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
+import 'package:pide_facil/scale_ui.dart';
 import '../models/platos_model.dart';
 import '../models/qr_model.dart';
 
@@ -11,6 +12,7 @@ class OrderManager extends StatefulWidget {
   /// The QR object
   final QRobject qrobject;
 
+  /// Function that clear the actual order.
   final Function resetOrder;
 
   OrderManager({this.order, this.qrobject, this.resetOrder});
@@ -111,6 +113,8 @@ class OrderManagerState extends State<OrderManager> {
       orden.removeWhere((d) => d.nombrePlato != '');
       _totalValorOrden = 0;
     });
+
+    /// Reset order to a clean one.
     widget.resetOrder();
     Navigator.pop(context);
   }
@@ -127,30 +131,46 @@ class OrderManagerState extends State<OrderManager> {
 
   @override
   Widget build(BuildContext context) {
+    ScaleUI().init(context);
     return Scaffold(
       appBar: new PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: Card(
-          elevation: 5.0,
-          child: ListTile(
-            title: Text(
-              'TOTAL',
-              style: TextStyle(
-                  color: Color(0xFF58B368),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0),
-            ),
-            trailing: Text(
-              '${formatPrice.format(_totalValorOrden)}',
-              style: TextStyle(
-                color: Color(0xFF66666F),
-                fontSize: 16.0,
+          preferredSize: Size.fromHeight(ScaleUI.blockSizeVertical * 13.0),
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(top: ScaleUI.safeBlockVertical * 0.7),
+                child: Text(
+                  "Tu orden",
+                  style: new TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF00E676),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              textAlign: TextAlign.end,
-            ),
-          ),
-        ),
-      ),
+              Card(
+                elevation: 2.0,
+                child: ListTile(
+                  title: Text(
+                    'Total',
+                    style: TextStyle(
+                        color: Color(0xFF66666F),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0),
+                  ),
+                  trailing: Text(
+                    '${formatPrice.format(_totalValorOrden)}',
+                    style: TextStyle(
+                      color: Color(0xFF66666F),
+                      fontSize: 16.0,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ),
+            ],
+          )),
       backgroundColor: Colors.white,
       body: ListView(
         children: <Widget>[

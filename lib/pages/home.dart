@@ -40,100 +40,6 @@ class MainPage extends State<HomePage> {
         MaterialPageRoute(builder: (BuildContext context) => CameraAccess()));
   }
 
-  /*Future _scanQR() async {
-    try {
-      String qrResult = await BarcodeScanner.scan();
-      print(qrResult);
-      var qrobj = json.decode(qrResult);
-      QRobject qrobject = QRobject(
-          idMesa: qrobj['id_mesa'],
-          idRestaurante: qrobj['id_restaurante'],
-          urlAPIGet: qrobj['url_get']);
-      _getMenu(qrobject);
-    } on PlatformException catch (ex) {
-      if (ex.code == BarcodeScanner.CameraAccessDenied) {
-        _cameraDeniedAlert();
-      } else {
-        _errorAlert(ex.toString());
-      }
-    } on FormatException {
-      setState(() {
-        _bodyMsj = _bodyMsj;
-      });
-    } catch (ex) {
-      _errorAlert(ex.toString());
-    }
-  }
-
-  /// Shows Alert dialog when camera permission was denied.
-  Future _cameraDeniedAlert() {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: new Text(
-              'El acceso a la cámara fue negado. Habilita el acceso para continuar',
-              style: TextStyle(color: Color(0xFF666666), fontSize: 18.0),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Center(
-                  child: Text(
-                    'OK',
-                    style: TextStyle(color: Color(0xFF00E676), fontSize: 18.0),
-                  ),
-                ),
-                // Back when pressed.
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
-  }
-
-  /// Shows alert dialog when error exists when accesing to the device camera.
-  Future _errorAlert(String error) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: new Text(
-              error,
-              style: TextStyle(color: Color(0xFF666666), fontSize: 18.0),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Center(
-                  child: Text(
-                    'VOLVER',
-                    style: TextStyle(color: Color(0xFF00E676), fontSize: 18.0),
-                  ),
-                ),
-                // Back when pressed.
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
-  }
-
-  /// Request API get restaurant menu throught [urlApiGetIdRest] and display it.
-  void _getMenu(QRobject qrobj) {
-    setState(() {
-      // Change view.
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => MenusListPage(
-                    qrResult: qrobj,
-                  )));
-    });
-  }*/
-
   /// Init the timer count down to change text in header.
   void _startTimer() {
     /// Asign a task to run when the period is complete
@@ -232,7 +138,7 @@ class MainPage extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                      width: ScaleUI.blockSizeHorizontal * 50.0,
+                      width: ScaleUI.blockSizeHorizontal * 50.5,
                       height: ScaleUI.blockSizeVertical * 5.0,
                       // TextField to handle input text form user.
                       child: TextField(
@@ -262,7 +168,7 @@ class MainPage extends State<HomePage> {
                             bottom: ScaleUI.safeBlockVertical * 1.0),
                         // The QR button.
                         child: Container(
-                          width: ScaleUI.blockSizeHorizontal * 50.0,
+                          width: ScaleUI.blockSizeHorizontal * 50.5,
                           height: ScaleUI.blockSizeVertical * 5.0,
                           child: FlatButton.icon(
                             color: Color(0xFF00E676),

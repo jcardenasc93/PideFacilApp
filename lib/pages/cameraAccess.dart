@@ -36,8 +36,10 @@ class CameraAccessState extends State<CameraAccess> {
         _errorAlert(ex.toString());
       }
     } on FormatException {
-      Navigator.popUntil(context, ModalRoute.withName('home'));
+      Navigator.of(context).pop();
+      //Navigator.popUntil(context, ModalRoute.withName('home'));
     } catch (ex) {
+      Navigator.of(context).pop();
       _errorAlert(ex.toString());
     }
   }
@@ -90,7 +92,7 @@ class CameraAccessState extends State<CameraAccess> {
                 ),
                 // Back when pressed.
                 onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('home'));
+                  Navigator.of(context).pop();
                 },
               )
             ],
