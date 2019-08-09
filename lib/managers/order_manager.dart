@@ -15,7 +15,9 @@ class OrderManager extends StatefulWidget {
   /// Function that clear the actual order.
   final Function resetOrder;
 
-  OrderManager({this.order, this.qrobject, this.resetOrder});
+  final Function syncTotal;
+
+  OrderManager({this.order, this.qrobject, this.resetOrder, this.syncTotal});
 
   @override
   State<StatefulWidget> createState() {
@@ -44,6 +46,7 @@ class OrderManagerState extends State<OrderManager> {
           orden[index].precioPlato * orden[index].cantidad;
     });
     _updateTotalOrden();
+    widget.syncTotal(_totalValorOrden);
   }
 
   /// Increases dish quantity [orden(index).cantidad].
@@ -55,6 +58,7 @@ class OrderManagerState extends State<OrderManager> {
           orden[index].precioPlato * orden[index].cantidad;
     });
     _updateTotalOrden();
+    widget.syncTotal(_totalValorOrden);
   }
 
   /// Update the order total value when dishes quantity change.
@@ -63,6 +67,8 @@ class OrderManagerState extends State<OrderManager> {
       _totalValorOrden = 0;
       orden.forEach((d) => _totalValorOrden += d.precioTotalPlato);
     });
+
+    //widget.syncTotal();
   }
 
   /// Displays a alert dialog to confirm the order deletion.

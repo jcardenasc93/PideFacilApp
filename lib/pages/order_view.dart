@@ -32,6 +32,7 @@ class OrderViewState extends State<OrderView> {
   OrderViewState({this.order});
   // Check the success of post request.
   bool _postFlag = false;
+  int totalValue;
 
   /// Displays a alert dialog to confirm the order.
   Future _confimacionOrden(BuildContext context) async {
@@ -120,7 +121,8 @@ class OrderViewState extends State<OrderView> {
                 builder: (BuildContext context) => OrderResume(
                     idRestaurante: widget.qrobject.idRestaurante,
                     idMesa: widget.qrobject.idMesa,
-                    orden: ordenFinal)));
+                    orden: ordenFinal,
+                    valorTotal: totalValue,)));
       }
     } else {
       _ordenVaciaMsj(context);
@@ -163,6 +165,12 @@ class OrderViewState extends State<OrderView> {
     });
   }
 
+  void updateTotal(int value){
+    setState(() {
+      totalValue = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ScaleUI().init(context);
@@ -191,6 +199,7 @@ class OrderViewState extends State<OrderView> {
           order: order,
           qrobject: widget.qrobject,
           resetOrder: clearOrder,
+          syncTotal: updateTotal,
         ),
         // Create the bottom button to order.
         bottomNavigationBar: new Container(

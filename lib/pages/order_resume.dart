@@ -7,21 +7,18 @@ class OrderResume extends StatelessWidget {
   final List<Plato> orden;
 
   /// The restaurante id taked from QR code.
-  /// TODO: Pasar el id como parametro
   final int idRestaurante;
 
   /// The mesa id taked from QR code.
-  /// TODO: Pasar el id como parametro
   final int idMesa;
 
   /// The total value of the order.
-  /// TODO: Pasar el valor total de la orden como parametro.
-  final int valorTotal = 0;
+  final int valorTotal;
 
   /// The price wiht currency format.
   final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
 
-  OrderResume({this.idRestaurante, this.idMesa, this.orden});
+  OrderResume({this.idRestaurante, this.idMesa, this.orden, this.valorTotal});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +31,7 @@ class OrderResume extends StatelessWidget {
         // Disable back button on appbar
         body: WillPopScope(
           onWillPop: () async {
-            Future.value(false);
+            return Future.value(false);
           },
           child: ListView(
             children: <Widget>[
@@ -102,6 +99,14 @@ class OrderResume extends StatelessWidget {
                       margin: EdgeInsets.all(2.0),
                     );
                   }),
+              Text(
+                '${formatPrice.format(valorTotal)}',
+                style: TextStyle(
+                  color: Color(0xFF66666F),
+                  fontSize: 16.0,
+                ),
+                textAlign: TextAlign.end,
+              ),
             ],
           ),
         ));
