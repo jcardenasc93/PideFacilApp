@@ -32,7 +32,6 @@ class OrderViewState extends State<OrderView> {
   OrderViewState({this.order});
   // Check the success of post request.
   bool _postFlag = false;
-  int totalValue;
 
   /// Displays a alert dialog to confirm the order.
   Future _confimacionOrden(BuildContext context) async {
@@ -114,15 +113,19 @@ class OrderViewState extends State<OrderView> {
       if (_postFlag) {
         // Add each dish to the final order.
         ordenF.forEach((d) => ordenFinal.add(d));
+        // Calcs total value
+        int _totalValorOrden = 0;
+        ordenF.forEach((d) => _totalValorOrden += d.precioTotalPlato);
         // Change view to order resume.
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (BuildContext context) => OrderResume(
-                    idRestaurante: widget.qrobject.idRestaurante,
-                    idMesa: widget.qrobject.idMesa,
-                    orden: ordenFinal,
-                    valorTotal: totalValue,)));
+                      idRestaurante: widget.qrobject.idRestaurante,
+                      idMesa: widget.qrobject.idMesa,
+                      orden: ordenFinal,
+                      valorTotal: _totalValorOrden,
+                    )));
       }
     } else {
       _ordenVaciaMsj(context);
@@ -165,12 +168,6 @@ class OrderViewState extends State<OrderView> {
     });
   }
 
-  void updateTotal(int value){
-    setState(() {
-      totalValue = value;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     ScaleUI().init(context);
@@ -189,7 +186,6 @@ class OrderViewState extends State<OrderView> {
               children: <Widget>[
                 Icon(
                   Icons.drag_handle,
-                  //color: Color(0xFF00E676),
                   color: Colors.white,
                 ),
               ]),
@@ -199,7 +195,6 @@ class OrderViewState extends State<OrderView> {
           order: order,
           qrobject: widget.qrobject,
           resetOrder: clearOrder,
-          syncTotal: updateTotal,
         ),
         // Create the bottom button to order.
         bottomNavigationBar: new Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
+import 'package:pide_facil/scale_ui.dart';
 import '../models/platos_model.dart';
 
 class OrderResume extends StatelessWidget {
@@ -22,93 +23,129 @@ class OrderResume extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScaleUI().init(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Tu Orden'),
-          leading: Container(),
-          centerTitle: true,
-        ),
         // Disable back button on appbar
         body: WillPopScope(
-          onWillPop: () async {
-            return Future.value(false);
-          },
-          child: ListView(
-            children: <Widget>[
-              // Create a scrollable ListView with the order list.
-              ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  itemCount: orden.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      child: ListTile(
-                        // Display dish name.
-                        title: new Text(
-                          orden[index].nombrePlato,
-                          style: new TextStyle(
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        trailing: new SizedBox(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 5.0),
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                // Display dish price.
-                                new Text(
-                                  '${formatPrice.format(orden[index].precioTotalPlato)}',
-                                  style: new TextStyle(
-                                    color: Color(0xFF66666F),
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.end,
-                                ),
-                                // Display dish quantity.
-                                new Container(
-                                  margin: EdgeInsets.all(5.0),
-                                  alignment: Alignment(0.0, 0.0),
-                                  child: new Center(
-                                    child: Container(
-                                      width: 35.0,
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 1.0, vertical: 1.0),
-                                        // Display dish quantity.
-                                        child: new Text(
-                                          orden[index].cantidad.toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          width: 100.0,
-                        ),
-                      ),
-                      margin: EdgeInsets.all(2.0),
-                    );
-                  }),
-              Text(
-                '${formatPrice.format(valorTotal)}',
-                style: TextStyle(
-                  color: Color(0xFF66666F),
-                  fontSize: 16.0,
-                ),
-                textAlign: TextAlign.end,
+      onWillPop: () async {
+        return Future.value(false);
+      },
+      child: ListView(
+        children: <Widget>[
+          // Create a scrollable ListView with the order list.
+          Padding(
+            padding: EdgeInsets.all(ScaleUI.safeBlockVertical * 4.0),
+            // Total order remarkable.
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    'TOTAL: ${formatPrice.format(valorTotal)}',
+                    style: TextStyle(
+                      color: Color(0xFF66666F),
+                      fontSize: ScaleUI.safeBlockVertical * 6.0,
+                    ),
+                  ),
+                  Text(
+                    'Tu orden ha sido confirmada',
+                    style: TextStyle(
+                        fontSize: ScaleUI.safeBlockVertical * 2.5,
+                        color: Color(0xFF66666F)),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ));
+          // Custom divider.
+          Padding(
+            padding: EdgeInsets.only(bottom: ScaleUI.safeBlockVertical * 2.0),
+            child: Container(
+              width: ScaleUI.screenWidth,
+              height: ScaleUI.blockSizeVertical * 3.5,
+              color: Color(0xFF00E676),
+              child: Text(
+                'Orden No.1234',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: ScaleUI.blockSizeVertical * 3,
+                ),
+              ),
+            ),
+          ),
+          ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
+              itemCount: orden.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  // Display dish name.
+                  title: new Text(
+                    orden[index].nombrePlato,
+                    style: new TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  trailing:
+                      // Display dish price.
+                      new Text(
+                    'x${orden[index].cantidad}  ${formatPrice.format(orden[index].precioTotalPlato)}',
+                    style: new TextStyle(
+                      color: Color(0xFF66666F),
+                      fontSize: 14.0,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                );
+              }),
+          // Acknowledgment text
+          Text(
+            'Gracias por usar nuestro servicio',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xFF66666F),
+              fontSize: ScaleUI.blockSizeVertical * 3,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+          // Rate mechanism.
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.star_border,
+                size: ScaleUI.blockSizeHorizontal * 8,
+                color: Color(0xFF00E676)
+              ),
+              Icon(
+                Icons.star_border,
+                size: ScaleUI.blockSizeHorizontal * 8,
+                color: Color(0xFF00E676)
+              ),
+              Icon(
+                Icons.star_border,
+                size: ScaleUI.blockSizeHorizontal * 8,
+                color: Color(0xFF00E676)
+              ),
+              Icon(
+                Icons.star_border,
+                size: ScaleUI.blockSizeHorizontal * 8,
+                color: Color(0xFF00E676)
+              ),
+              Icon(
+                Icons.star_border,
+                size: ScaleUI.blockSizeHorizontal * 8,
+                color: Color(0xFF00E676)
+              )
+            ],
+          )
+        ],
+      ),
+    ));
   }
 }
