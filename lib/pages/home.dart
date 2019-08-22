@@ -36,6 +36,8 @@ class MainPage extends State<HomePage> {
   /// Scan QR code. First time request access to the camera of the device.
   /// If scan a valid Qr code charge the restaurant's menu.
   void _scanQR() {
+    _timermsj.cancel();
+    _timermsj = null;
     Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => CameraAccess()));
   }

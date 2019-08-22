@@ -20,7 +20,7 @@ class Plato {
         descripcionPlato: parsedJson['descripcion']);
   }
 
-  /// Generates the [map] objecto with desired json format.
+  /// Generates the [map] object with desired json format.
   Map<String, dynamic> toJson() {
     return {"id_plato": idPlato, "cantidad": cantidad};
   }
