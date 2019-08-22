@@ -16,10 +16,13 @@ class OrderResume extends StatelessWidget {
   /// The total value of the order.
   final int valorTotal;
 
+  /// The Order ID.
+  final int orderID;
+
   /// The price wiht currency format.
   final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
 
-  OrderResume({this.idRestaurante, this.idMesa, this.orden, this.valorTotal});
+  OrderResume({this.idRestaurante, this.idMesa, this.orden, this.valorTotal, this.orderID});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,7 @@ class OrderResume extends StatelessWidget {
               height: ScaleUI.blockSizeVertical * 3.5,
               color: Color(0xFF00E676),
               child: Text(
-                'Orden No.1234',
+                'Orden No.$orderID',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,

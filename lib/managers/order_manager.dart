@@ -134,7 +134,7 @@ class OrderManagerState extends State<OrderManager> {
     ScaleUI().init(context);
     return Scaffold(
       appBar: new PreferredSize(
-          preferredSize: Size.fromHeight(ScaleUI.blockSizeVertical * 13.0),
+          preferredSize: Size.fromHeight(ScaleUI.blockSizeVertical * 12.3),
           child: Column(
             children: <Widget>[
               Padding(
@@ -142,7 +142,7 @@ class OrderManagerState extends State<OrderManager> {
                 child: Text(
                   "Tu orden",
                   style: new TextStyle(
-                    fontSize: 20.0,
+                    fontSize: ScaleUI.safeBlockHorizontal * 4.3,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF00E676),
                   ),
@@ -150,20 +150,20 @@ class OrderManagerState extends State<OrderManager> {
                 ),
               ),
               Card(
-                elevation: 2.0,
+                elevation: ScaleUI.safeBlockVertical * 0.5,
                 child: ListTile(
                   title: Text(
                     'Total',
                     style: TextStyle(
                         color: Color(0xFF66666F),
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0),
+                        fontSize: ScaleUI.safeBlockHorizontal * 4.5),
                   ),
                   trailing: Text(
                     '${formatPrice.format(_totalValorOrden)}',
                     style: TextStyle(
                       color: Color(0xFF66666F),
-                      fontSize: 16.0,
+                      fontSize: ScaleUI.safeBlockHorizontal * 4.0,
                     ),
                     textAlign: TextAlign.end,
                   ),
@@ -187,7 +187,7 @@ class OrderManagerState extends State<OrderManager> {
                     title: new Text(
                       orden[index].nombrePlato,
                       style: new TextStyle(
-                        fontSize: 16.0,
+                        fontSize: ScaleUI.safeBlockHorizontal * 3.5,
                       ),
                     ),
                     trailing: new SizedBox(
@@ -202,7 +202,7 @@ class OrderManagerState extends State<OrderManager> {
                               '${formatPrice.format(orden[index].precioTotalPlato)}',
                               style: new TextStyle(
                                 color: Color(0xFF66666F),
-                                fontSize: 12.0,
+                                fontSize: ScaleUI.safeBlockHorizontal * 3.0,
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.end,
@@ -248,7 +248,7 @@ class OrderManagerState extends State<OrderManager> {
                                           orden[index].cantidad.toString(),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: 12.0,
+                                            fontSize: ScaleUI.safeBlockHorizontal * 3.0,
                                           ),
                                         ),
                                       ),

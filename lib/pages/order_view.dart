@@ -30,8 +30,6 @@ class OrderViewState extends State<OrderView> {
   List<Plato> order;
   // OrderViewState constructor
   OrderViewState({this.order});
-  // Check the success of post request.
-  bool _postFlag = false;
 
   /// Displays a alert dialog to confirm the order.
   Future _confimacionOrden(BuildContext context) async {
@@ -102,15 +100,49 @@ class OrderViewState extends State<OrderView> {
         });
   }
 
+  /// Shows alert message when the system cannot post the order.
+  Future _errorPost(BuildContext context) async {
+    /// Creates alert dialog.
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(
+              'Error de envío',
+              style: TextStyle(
+                color: Color(0xFF666666),
+              ),
+            ),
+            content: new Text(
+                'Lo sentimos. No pudimos enviar tu orden, intentalo nuevamente'),
+            actions: <Widget>[
+              FlatButton(
+                child: Center(
+                  child: Text('OK'),
+                ),
+                color: Color(0xFF00E676),
+                // Back when pressed.
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
   /// Send the final order to start cook the dishes.
-  _ordenar() {
-    _createPostRequest();
+  void _ordenar() async {
     // Only the dishes with quantity greater than zero are passed.
     var ordenF = order.where((d) => d.cantidad > 0);
     List<Plato> ordenFinal = [];
     // Check if the order is empty
     if (ordenF.isNotEmpty) {
-      if (_postFlag) {
+      // Create json data to post the order
+      PostApi post = _createPostRequest();
+      // Make the POST request to the API
+      int orderID = await _makePost(post);
+      if (orderID != null) {
         // Add each dish to the final order.
         ordenF.forEach((d) => ordenFinal.add(d));
         // Calcs total value
@@ -125,7 +157,10 @@ class OrderViewState extends State<OrderView> {
                       idMesa: widget.qrobject.idMesa,
                       orden: ordenFinal,
                       valorTotal: _totalValorOrden,
+                      orderID: orderID,
                     )));
+      } else {
+        _errorPost(context);
       }
     } else {
       _ordenVaciaMsj(context);
@@ -133,7 +168,7 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Create a [PostApi] object to create the json body.
-  _createPostRequest() {
+  PostApi _createPostRequest() {
     // Calc the order total price.
     var _precioTotal = 0;
     // Transform the order list to a json
@@ -146,20 +181,14 @@ class OrderViewState extends State<OrderView> {
         idMesa: widget.qrobject.idMesa,
         precioTotal: _precioTotal,
         ordenListJson: jsonOrden);
-    _makePost(data);
+    return data;
   }
 
   /// Make the post request to the API.
-  _makePost(PostApi data) {
+  Future<int> _makePost(PostApi data) {
     // var to check the result of the post
     var postResult = data.postRequest(data);
-    print(postResult.toString());
-    if (postResult != null) {
-      // The post was success.
-      _postFlag = true;
-    } else
-      // The post was not success.
-      _postFlag = false;
+    return postResult;
   }
 
   void clearOrder() {
@@ -209,7 +238,7 @@ class OrderViewState extends State<OrderView> {
                 'Ordenar',
                 style: TextStyle(
                   color: Color(0xFF00E676),
-                  fontSize: 20.0,
+                  fontSize: ScaleUI.safeBlockHorizontal * 5,
                   fontWeight: FontWeight.bold,
                 ),
               ),

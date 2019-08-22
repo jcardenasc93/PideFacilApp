@@ -37,7 +37,7 @@ class PostApi {
   }
 
   /// Make the post request to the API to load the [PostApi] object in DB.
-  Future<dynamic> postRequest(PostApi body) async {
+  Future<int> postRequest(PostApi body) async {
     final response = await http.post(Uri.encodeFull(urlPost),
         body: encodeBodyJson(body),
         headers: {
@@ -47,7 +47,19 @@ class PostApi {
     if (response.statusCode < 200 || response.statusCode > 400 || json == null)
       throw Exception("Cannot post data to API");
 
-    final resp = json.decode(response.body);
-    return resp;
+    // Return de orderID when POST is success.
+    int orderID = ResponsePost.fromJson(json.decode(response.body)).orderNumber;
+    return orderID;
+  }
+}
+
+class ResponsePost {
+  /// The order ID
+  final int orderNumber;
+
+  ResponsePost({this.orderNumber});
+  // Decode json response and extracts the id_orden value.
+  factory ResponsePost.fromJson(Map<String, dynamic> parsedJson) {
+    return ResponsePost(orderNumber: parsedJson['id_orden']);
   }
 }

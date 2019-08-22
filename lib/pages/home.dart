@@ -155,7 +155,7 @@ class MainPage extends State<HomePage> {
                         // Disable autocrrect.
                         autocorrect: false,
                         decoration: InputDecoration(
-                          labelStyle: TextStyle(fontSize: 12.0),
+                          labelStyle: TextStyle(fontSize: ScaleUI.safeBlockHorizontal * 3),
                           // Preset hint.
                           labelText: 'Ingresa el código',
                           border: new OutlineInputBorder(
@@ -178,12 +178,12 @@ class MainPage extends State<HomePage> {
                             icon: new Icon(
                               const IconData(0xE900, fontFamily: 'Qrcode'),
                               color: Color(0xFFFFFFFF),
-                              size: ScaleUI.safeBlockVertical * 2.0,
+                              size: ScaleUI.safeBlockHorizontal * 3,
                             ),
                             label: Text(
                               "ESCANEAR CODIGO QR",
                               style: new TextStyle(
-                                fontSize: ScaleUI.safeBlockVertical * 2.0,
+                                fontSize: ScaleUI.safeBlockHorizontal * 3,
                                 color: Color(0xFFFFFFFF),
                               ),
                             ),
