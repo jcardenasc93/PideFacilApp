@@ -36,37 +36,32 @@ class MainPage extends State<HomePage> {
   /// Scan QR code. First time request access to the camera of the device.
   /// If scan a valid Qr code charge the restaurant's menu.
   void _scanQR() {
-    _timermsj.cancel();
-    _timermsj = null;
     Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => CameraAccess()));
   }
 
   /// Init the timer count down to change text in header.
-  void _startTimer() {
-    /// Asign a task to run when the period is complete
-    _timermsj = Timer.periodic(new Duration(seconds: 2), (Timer timer) {
-      // Updates the text value.
-      setState(() {
-        if (_pos < _msj.length)
-          _pos = _pos + 1;
-        else
-          _pos = 0;
-        _header = _msj[_pos];
-      });
+  void _changeText(Timer timer) {
+    // Updates the text value.
+    setState(() {
+      if (_pos < _msj.length)
+        _pos = _pos + 1;
+      else
+        _pos = 0;
+      _header = _msj[_pos];
     });
   }
 
   @override
   void initState() {
-    _startTimer();
+    /// Asign a task to run when the period is complete
+    _timermsj = Timer.periodic(new Duration(seconds: 2), _changeText);
     super.initState();
   }
 
   @override
   void dispose() {
     _timermsj.cancel();
-    _timermsj = null;
     super.dispose();
   }
 
@@ -155,7 +150,8 @@ class MainPage extends State<HomePage> {
                         // Disable autocrrect.
                         autocorrect: false,
                         decoration: InputDecoration(
-                          labelStyle: TextStyle(fontSize: ScaleUI.safeBlockHorizontal * 3),
+                          labelStyle: TextStyle(
+                              fontSize: ScaleUI.safeBlockHorizontal * 3),
                           // Preset hint.
                           labelText: 'Ingresa el código',
                           border: new OutlineInputBorder(
