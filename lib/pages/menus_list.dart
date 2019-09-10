@@ -105,6 +105,16 @@ class _MenusListState extends State<MenusListPage> {
         });
   }
 
+  /// Refresh page when an can't get restaurant from the API service
+  void _refreshPage() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => MenusListPage(
+                  qrResult: widget.qrResult,
+                )));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -198,7 +208,7 @@ class _MenusListState extends State<MenusListPage> {
                   return new Center(
                       child: Container(
                     height: ScaleUI.blockSizeVertical * 40.0,
-                    width: ScaleUI.blockSizeHorizontal * 50.0,
+                    width: ScaleUI.blockSizeHorizontal * 70.0,
                     child: Column(
                       children: <Widget>[
                         Padding(
@@ -214,9 +224,22 @@ class _MenusListState extends State<MenusListPage> {
                               'Verifica tu conexión e inténtalo de nuevo',
                           style: new TextStyle(
                             color: Color(0xFF666666),
-                            fontSize: ScaleUI.safeBlockHorizontal * 5.0,
+                            fontSize: ScaleUI.safeBlockHorizontal * 4.0,
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.justify,
+                        ),
+                        Padding(
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.refresh,
+                            ),
+                            color: Color(0xFF666666),
+                            iconSize: ScaleUI.safeBlockHorizontal * 10.0,
+                            onPressed: () {
+                              _refreshPage();
+                            },
+                          ),
+                          padding: EdgeInsets.only(top: 10.0),
                         )
                       ],
                     ),

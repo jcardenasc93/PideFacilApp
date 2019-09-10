@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pide_facil/scale_ui.dart';
 
@@ -114,7 +116,7 @@ class OrderViewState extends State<OrderView> {
               ),
             ),
             content: new Text(
-                'Lo sentimos. No pudimos enviar tu orden, intentalo nuevamente'),
+                'Lo sentimos. No pudimos enviar tu orden, verifica tu conexión a internet e inténtalo nuevamente'),
             actions: <Widget>[
               FlatButton(
                 child: Center(
@@ -124,6 +126,7 @@ class OrderViewState extends State<OrderView> {
                 // Back when pressed.
                 onPressed: () {
                   Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                 },
               )
             ],
@@ -131,39 +134,114 @@ class OrderViewState extends State<OrderView> {
         });
   }
 
+  /// Shows alert message when the system post the order successfully.
+  Future _postSuccess(BuildContext context) async {
+    /// Creates alert dialog.
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(
+              'Error de envío',
+              style: TextStyle(
+                color: Color(0xFF666666),
+              ),
+            ),
+            content: new Text('Tu orden fue enviada correctamente'),
+            actions: <Widget>[
+              FlatButton(
+                child: Center(
+                  child: Text('OK'),
+                ),
+                color: Color(0xFF00E676),
+                // Back when pressed.
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  /// Shows alert message while system post the order
+  static _postingOrder(BuildContext context) {
+    /// Creates alert dialog.
+    try {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Flex(
+                direction: Axis.horizontal,
+                children: <Widget>[
+                  new CircularProgressIndicator(
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(Color(0xFF666666)),
+                    strokeWidth: 3.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 15),
+                  ),
+                  Flexible(
+                      flex: 8,
+                      child: Text(
+                        'Estamos enviando tu orden',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      )),
+                ],
+              ),
+            );
+          });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   /// Send the final order to start cook the dishes.
   void _ordenar() async {
-    // Only the dishes with quantity greater than zero are passed.
-    var ordenF = order.where((d) => d.cantidad > 0);
-    List<Plato> ordenFinal = [];
-    // Check if the order is empty
-    if (ordenF.isNotEmpty) {
-      // Create json data to post the order
-      PostApi post = _createPostRequest();
-      // Make the POST request to the API
-      int orderID = await _makePost(post);
-      if (orderID != null) {
-        // Add each dish to the final order.
-        ordenF.forEach((d) => ordenFinal.add(d));
-        // Calcs total value
-        int _totalValorOrden = 0;
-        ordenF.forEach((d) => _totalValorOrden += d.precioTotalPlato);
-        // Change view to order resume.
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => OrderResume(
-                      idRestaurante: widget.qrobject.idRestaurante,
-                      idMesa: widget.qrobject.idMesa,
-                      orden: ordenFinal,
-                      valorTotal: _totalValorOrden,
-                      orderID: orderID,
-                    )));
-      } else {
-        _errorPost(context);
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        // Only the dishes with quantity greater than zero are passed.
+        var ordenF = order.where((d) => d.cantidad > 0);
+        List<Plato> ordenFinal = [];
+        // Check if the order is empty
+        if (ordenF.isNotEmpty) {
+          _postingOrder(context);
+          // Create json data to post the order
+          PostApi post = _createPostRequest();
+          // Make the POST request to the API
+          int orderID = await _makePost(post);
+          if (orderID != 0) {
+            // Add each dish to the final order.
+            ordenF.forEach((d) => ordenFinal.add(d));
+            // Calcs total value
+            int _totalValorOrden = 0;
+            ordenF.forEach((d) => _totalValorOrden += d.precioTotalPlato);
+            // Change view to order resume.
+            _postSuccess(context);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => OrderResume(
+                          idRestaurante: widget.qrobject.idRestaurante,
+                          idMesa: widget.qrobject.idMesa,
+                          orden: ordenFinal,
+                          valorTotal: _totalValorOrden,
+                          orderID: orderID,
+                        )));
+          } else {
+            _errorPost(context);
+          }
+        } else {
+          _ordenVaciaMsj(context);
+        }
       }
-    } else {
-      _ordenVaciaMsj(context);
+    } on SocketException catch (_) {
+      _errorPost(context);
     }
   }
 
