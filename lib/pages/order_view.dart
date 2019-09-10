@@ -134,8 +134,8 @@ class OrderViewState extends State<OrderView> {
         });
   }
 
-  /// Shows alert message when the system post the order successfully.
-  Future _postSuccess(BuildContext context) async {
+  /// Shows alert message when the system cannot post the order.
+  Future _networkFail(BuildContext context) async {
     /// Creates alert dialog.
     return showDialog(
         context: context,
@@ -145,6 +145,37 @@ class OrderViewState extends State<OrderView> {
               'Error de envío',
               style: TextStyle(
                 color: Color(0xFF666666),
+              ),
+            ),
+            content: new Text(
+                'Lo sentimos. No pudimos enviar tu orden, verifica tu conexión a internet e inténtalo nuevamente'),
+            actions: <Widget>[
+              FlatButton(
+                child: Center(
+                  child: Text('OK'),
+                ),
+                color: Color(0xFF00E676),
+                // Back when pressed.
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  /// Shows alert message when the system post the order successfully.
+  Future _postSuccess(BuildContext context) async {
+    /// Creates alert dialog.
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(
+              'Success',
+              style: TextStyle(
+                color: Color(0xFF00E676),
               ),
             ),
             content: new Text('Tu orden fue enviada correctamente'),
@@ -178,7 +209,7 @@ class OrderViewState extends State<OrderView> {
                 children: <Widget>[
                   new CircularProgressIndicator(
                     valueColor:
-                        new AlwaysStoppedAnimation<Color>(Color(0xFF666666)),
+                        new AlwaysStoppedAnimation<Color>(Color(0xFF00E676)),
                     strokeWidth: 3.0,
                   ),
                   Padding(
@@ -241,7 +272,7 @@ class OrderViewState extends State<OrderView> {
         }
       }
     } on SocketException catch (_) {
-      _errorPost(context);
+      _networkFail(context);
     }
   }
 
