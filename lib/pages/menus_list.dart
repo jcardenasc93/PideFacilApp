@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:pide_facil/scale_ui.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/platos_model.dart';
 import '../styles/menu_style.dart';
@@ -124,7 +124,16 @@ class _MenusListState extends State<MenusListPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScaleUI().init(context);
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+
+    //* Initialise ScreenUtil instance
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
+
     // WillPopScope disables back action on Android devices.
     return new WillPopScope(
         onWillPop: () async => false,
@@ -207,24 +216,25 @@ class _MenusListState extends State<MenusListPage> {
                 } else if (snapshot.hasError) {
                   return new Center(
                       child: Container(
-                    height: ScaleUI.blockSizeVertical * 40.0,
-                    width: ScaleUI.blockSizeHorizontal * 70.0,
+                    height: ScreenUtil.instance.setHeight(250.0),
+                    width: ScreenUtil.instance.setHeight(330.0),
                     child: Column(
                       children: <Widget>[
                         Padding(
                           child: Icon(
                             Icons.cloud_off,
                             color: Color(0xFF666666),
-                            size: ScaleUI.safeBlockHorizontal * 20.0,
+                            size: ScreenUtil.instance.setSp(40.0),
                           ),
-                          padding: EdgeInsets.only(bottom: 10.0),
+                          padding: EdgeInsets.only(
+                              bottom: ScreenUtil.instance.setWidth(15.0)),
                         ),
                         Text(
                           'Lo sentimos! No podemos procesar tu solicitud. ' +
                               'Verifica tu conexión e inténtalo de nuevo',
                           style: new TextStyle(
                             color: Color(0xFF666666),
-                            fontSize: ScaleUI.safeBlockHorizontal * 4.0,
+                            fontSize: ScreenUtil.instance.setSp(16.0),
                           ),
                           textAlign: TextAlign.justify,
                         ),
@@ -234,12 +244,13 @@ class _MenusListState extends State<MenusListPage> {
                               Icons.refresh,
                             ),
                             color: Color(0xFF666666),
-                            iconSize: ScaleUI.safeBlockHorizontal * 10.0,
+                            iconSize: ScreenUtil.instance.setSp(35.0),
                             onPressed: () {
                               _refreshPage();
                             },
                           ),
-                          padding: EdgeInsets.only(top: 10.0),
+                          padding: EdgeInsets.only(
+                              top: ScreenUtil.instance.setWidth(10.0)),
                         )
                       ],
                     ),
@@ -253,8 +264,8 @@ class _MenusListState extends State<MenusListPage> {
                           new AlwaysStoppedAnimation<Color>(Color(0xFF666666)),
                       strokeWidth: 3.0,
                     ),
-                    height: 50.0,
-                    width: 50.0,
+                    height: ScreenUtil.instance.setWidth(40.0),
+                    width: ScreenUtil.instance.setWidth(40.0),
                   ),
                 );
               },

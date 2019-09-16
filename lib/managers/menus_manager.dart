@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../pages/dishes_list.dart';
 import '../models/menu_model.dart';
 import '../models/platos_model.dart';
@@ -57,12 +57,20 @@ class _MenusManagerState extends State<MenusManager> {
 
   @override
   Widget build(BuildContext context) {
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+
+    //* Initialise ScreenUtil instance
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
     return ListView(
       children: <Widget>[
         new Divider(
           color: Colors.grey,
           height: 1.5,
-          indent: 5.5,
         ),
         // Create a scrollable ListView of the menus.
         ListView.builder(
@@ -78,7 +86,7 @@ class _MenusManagerState extends State<MenusManager> {
                   onTap: () => _tappedMenu(listOfMenus[index].nombreMenu,
                       listOfMenus[index], context),
                 ),
-                margin: EdgeInsets.all(2.0),
+                margin: EdgeInsets.all(ScreenUtil.instance.setWidth(2.0)),
               );
             }),
       ],

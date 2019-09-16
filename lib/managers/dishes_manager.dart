@@ -1,6 +1,6 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../models/platos_model.dart';
 
 /// Manage the dishes rendering.
@@ -95,6 +95,15 @@ class _DishManagerState extends State<DishManager> {
 
   @override
   Widget build(BuildContext context) {
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+
+    //* Initialise ScreenUtil instance
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
     return ListView(
       children: <Widget>[
         // Create a scrollable ListView with the dishes list.
@@ -110,20 +119,20 @@ class _DishManagerState extends State<DishManager> {
                   title: new Text(
                     listOfPlatos[index].nombrePlato,
                     style: new TextStyle(
-                      fontSize: 16.0,
+                      fontSize: ScreenUtil.instance.setSp(14.0),
                     ),
                   ),
                   // Display dish description.
                   subtitle: new Text(
                     listOfPlatos[index].descripcionPlato,
                     style: TextStyle(
-                      fontSize: 12.0,
+                      fontSize: ScreenUtil.instance.setSp(11.0),
                       color: Color(0xFF66666F),
                     ),
                   ),
                   trailing: new SizedBox(
                     child: Padding(
-                      padding: EdgeInsets.only(left: 5.0),
+                      padding: EdgeInsets.only(left: ScreenUtil.instance.setWidth(8.0)),
                       child: new Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
@@ -133,14 +142,14 @@ class _DishManagerState extends State<DishManager> {
                             '${formatPrice.format(listOfPlatos[index].precioPlato)}',
                             style: new TextStyle(
                               color: Color(0xFF66666F),
-                              fontSize: 12.0,
+                              fontSize: ScreenUtil.instance.setSp(12.0),
                               fontWeight: FontWeight.bold,
                             ),
                             textAlign: TextAlign.end,
                           ),
                           // Display dish quantity control.
                           new Container(
-                              margin: EdgeInsets.all(5.0),
+                              margin: EdgeInsets.all(ScreenUtil.instance.setWidth(5.0)),
                               alignment: Alignment(0.0, 0.0),
                               child: new Center(
                                   child: new Row(
@@ -162,7 +171,7 @@ class _DishManagerState extends State<DishManager> {
                                       child: Icon(
                                         Icons.remove,
                                         color: Colors.white,
-                                        size: 18.0,
+                                        size: ScreenUtil.instance.setSp(16.0),
                                       ),
 
                                       /// Reduce minus 1 [listOfPlatos(index).cantidad] if quantity is greater to zero
@@ -170,7 +179,7 @@ class _DishManagerState extends State<DishManager> {
                                     ),
                                   ),
                                   Container(
-                                    width: 35.0,
+                                    width: ScreenUtil.instance.setWidth(35.0),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 1.0, vertical: 1.0),
@@ -179,7 +188,7 @@ class _DishManagerState extends State<DishManager> {
                                         listOfPlatos[index].cantidad.toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontSize: 12.0,
+                                          fontSize: ScreenUtil.instance.setSp(12.0),
                                         ),
                                       ),
                                     ),
@@ -198,7 +207,7 @@ class _DishManagerState extends State<DishManager> {
                                       child: Icon(
                                         Icons.add,
                                         color: Colors.white,
-                                        size: 18.0,
+                                        size: ScreenUtil.instance.setSp(16.0),
                                       ),
 
                                       /// Increases dish quantity.
@@ -210,16 +219,16 @@ class _DishManagerState extends State<DishManager> {
                         ],
                       ),
                     ),
-                    width: 100.0,
+                    width: ScreenUtil.instance.setWidth(100.0),
                   ),
                   // Enable three line to dish description.
                   isThreeLine: true,
                 ),
-                margin: EdgeInsets.all(2.0),
+                margin: EdgeInsets.all(ScreenUtil.instance.setWidth(3.0)),
               );
             }),
         Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(ScreenUtil.instance.setWidth(5.0)),
             child: Center(
               child: GestureDetector(
                 child: Text(
@@ -227,7 +236,7 @@ class _DishManagerState extends State<DishManager> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Color(0xFF66666F),
-                      fontSize: 16.0,
+                      fontSize: ScreenUtil.instance.setSp(14.0),
                       decoration: TextDecoration.underline),
                 ),
                 onTap: () => _resetValues(),

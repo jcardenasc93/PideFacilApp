@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../managers/dishes_manager.dart';
 import '../models/menu_model.dart';
 import './order_view.dart';
@@ -119,6 +120,15 @@ class DishesPageState extends State<DishesPage> {
   @override
   Widget build(BuildContext context) {
     // WillPopScope disables back action on Android devices.
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+
+    //* Initialise ScreenUtil instance
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
     return new WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
@@ -144,7 +154,7 @@ class DishesPageState extends State<DishesPage> {
                 Text(
                   widget.menuText,
                   style: new TextStyle(
-                      fontSize: 20.0,
+                      fontSize: ScreenUtil.instance.setSp(18.0),
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF666666)),
                   textAlign: TextAlign.center,

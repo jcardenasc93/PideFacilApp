@@ -1,8 +1,9 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
-import 'package:pide_facil/scale_ui.dart';
+
 import '../models/platos_model.dart';
 import '../models/qr_model.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Manage the order in the order view.
 class OrderManager extends StatefulWidget {
@@ -131,18 +132,27 @@ class OrderManagerState extends State<OrderManager> {
 
   @override
   Widget build(BuildContext context) {
-    ScaleUI().init(context);
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+
+    //* Initialise ScreenUtil instance
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
     return Scaffold(
       appBar: new PreferredSize(
-          preferredSize: Size.fromHeight(ScaleUI.blockSizeVertical * 12.3),
+          preferredSize: Size.fromHeight(ScreenUtil.instance.setWidth(85.0)),
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(top: ScaleUI.safeBlockVertical * 0.7),
+                padding:
+                    EdgeInsets.only(top: ScreenUtil.instance.setWidth(3.0)),
                 child: Text(
                   "Tu orden",
                   style: new TextStyle(
-                    fontSize: ScaleUI.safeBlockHorizontal * 4.3,
+                    fontSize: ScreenUtil.instance.setSp(18.0),
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF00E676),
                   ),
@@ -150,20 +160,20 @@ class OrderManagerState extends State<OrderManager> {
                 ),
               ),
               Card(
-                elevation: ScaleUI.safeBlockVertical * 0.5,
+                elevation: ScreenUtil.instance.setWidth(3.5),
                 child: ListTile(
                   title: Text(
                     'Total',
                     style: TextStyle(
                         color: Color(0xFF66666F),
                         fontWeight: FontWeight.bold,
-                        fontSize: ScaleUI.safeBlockHorizontal * 4.5),
+                        fontSize: ScreenUtil.instance.setSp(16.0)),
                   ),
                   trailing: Text(
                     '${formatPrice.format(_totalValorOrden)}',
                     style: TextStyle(
                       color: Color(0xFF66666F),
-                      fontSize: ScaleUI.safeBlockHorizontal * 4.0,
+                      fontSize: ScreenUtil.instance.setSp(16.0),
                     ),
                     textAlign: TextAlign.end,
                   ),
@@ -187,12 +197,13 @@ class OrderManagerState extends State<OrderManager> {
                     title: new Text(
                       orden[index].nombrePlato,
                       style: new TextStyle(
-                        fontSize: ScaleUI.safeBlockHorizontal * 3.5,
+                        fontSize: ScreenUtil.instance.setSp(14.0),
                       ),
                     ),
                     trailing: new SizedBox(
                       child: Padding(
-                        padding: EdgeInsets.only(left: 5.0),
+                        padding: EdgeInsets.only(
+                            left: ScreenUtil.instance.setWidth(5.0)),
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
@@ -202,14 +213,15 @@ class OrderManagerState extends State<OrderManager> {
                               '${formatPrice.format(orden[index].precioTotalPlato)}',
                               style: new TextStyle(
                                 color: Color(0xFF66666F),
-                                fontSize: ScaleUI.safeBlockHorizontal * 3.0,
+                                fontSize: ScreenUtil.instance.setSp(12.0),
                                 fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.end,
                             ),
                             // Display dish quantity control.
                             new Container(
-                                margin: EdgeInsets.all(5.0),
+                                margin: EdgeInsets.all(
+                                    ScreenUtil.instance.setWidth(5.0)),
                                 alignment: Alignment(0.0, 0.0),
                                 child: new Center(
                                     child: new Row(
@@ -231,7 +243,7 @@ class OrderManagerState extends State<OrderManager> {
                                         child: Icon(
                                           Icons.remove,
                                           color: Colors.white,
-                                          size: 18.0,
+                                          size: ScreenUtil.instance.setSp(16.0),
                                         ),
 
                                         /// Reduce minus 1 [orden(index).cantidad] if quantity is greater to zero
@@ -239,7 +251,7 @@ class OrderManagerState extends State<OrderManager> {
                                       ),
                                     ),
                                     Container(
-                                      width: 35.0,
+                                      width: ScreenUtil.instance.setWidth(35.0),
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 1.0, vertical: 1.0),
@@ -248,7 +260,8 @@ class OrderManagerState extends State<OrderManager> {
                                           orden[index].cantidad.toString(),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: ScaleUI.safeBlockHorizontal * 3.0,
+                                            fontSize:
+                                                ScreenUtil.instance.setSp(12.0),
                                           ),
                                         ),
                                       ),
@@ -267,7 +280,7 @@ class OrderManagerState extends State<OrderManager> {
                                         child: Icon(
                                           Icons.add,
                                           color: Colors.white,
-                                          size: 18.0,
+                                          size: ScreenUtil.instance.setSp(16.0),
                                         ),
 
                                         /// Increases dish quantity.
@@ -279,7 +292,7 @@ class OrderManagerState extends State<OrderManager> {
                           ],
                         ),
                       ),
-                      width: 100.0,
+                      width: ScreenUtil.instance.setWidth(100.0),
                     ),
                   ),
                   margin: EdgeInsets.all(2.0),
@@ -295,7 +308,7 @@ class OrderManagerState extends State<OrderManager> {
               tooltip: "Eliminar orden",
               color: Colors.redAccent,
               padding: EdgeInsets.all(2.0),
-              iconSize: 32.0,
+              iconSize: ScreenUtil.instance.setSp(28.0),
             ),
           )
         ],

@@ -1,7 +1,6 @@
 import 'dart:io';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
-import 'package:pide_facil/scale_ui.dart';
 
 import '../managers/order_manager.dart';
 import '../models/platos_model.dart';
@@ -308,14 +307,23 @@ class OrderViewState extends State<OrderView> {
 
   @override
   Widget build(BuildContext context) {
-    ScaleUI().init(context);
+    // WillPopScope disables back action on Android devices.
+    double defaultScreenWidth = 400.0;
+    double defaultScreenHeight = 810.0;
+
+    //* Initialise ScreenUtil instance
+    ScreenUtil.instance = ScreenUtil(
+      width: defaultScreenWidth,
+      height: defaultScreenHeight,
+      allowFontScaling: true,
+    )..init(context);
     return Scaffold(
         backgroundColor: Color(0xFF00E676),
         //backgroundColor: Colors.white12,
 
         /// Custom appBar for change size.
         appBar: new PreferredSize(
-          preferredSize: Size.fromHeight(ScaleUI.blockSizeVertical * 5.0),
+          preferredSize: Size.fromHeight(ScreenUtil.instance.setHeight(40.0)),
           // AppBar title.
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -325,6 +333,7 @@ class OrderViewState extends State<OrderView> {
                 Icon(
                   Icons.drag_handle,
                   color: Colors.white,
+                  size: ScreenUtil.instance.setSp(20.0),
                 ),
               ]),
         ),
@@ -338,7 +347,7 @@ class OrderViewState extends State<OrderView> {
         bottomNavigationBar: new Container(
           color: Colors.white,
           child: Padding(
-            padding: EdgeInsets.all(5.0),
+            padding: EdgeInsets.all(ScreenUtil.instance.setWidth(8.0)),
             child: RaisedButton(
               onPressed: () {
                 _confimacionOrden(context);
@@ -347,7 +356,7 @@ class OrderViewState extends State<OrderView> {
                 'Ordenar',
                 style: TextStyle(
                   color: Color(0xFF00E676),
-                  fontSize: ScaleUI.safeBlockHorizontal * 5,
+                  fontSize: ScreenUtil.instance.setSp(20.0),
                   fontWeight: FontWeight.bold,
                 ),
               ),
