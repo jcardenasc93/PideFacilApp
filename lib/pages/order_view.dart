@@ -219,7 +219,9 @@ class OrderViewState extends State<OrderView> {
                       child: Text(
                         'Estamos enviando tu orden',
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF66666F)),
                       )),
                 ],
               ),

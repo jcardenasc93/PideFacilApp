@@ -143,7 +143,7 @@ class MainPage extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Container(
-                      width: ScreenUtil.instance.setHeight(220.0),
+                      width: ScreenUtil.instance.setHeight(230.0),
                       height: ScreenUtil.instance.setHeight(40.0),
                       // TextField to handle input text form user.
                       child: TextField(
@@ -175,7 +175,7 @@ class MainPage extends State<HomePage> {
                             bottom: ScreenUtil.instance.setWidth(10.0)),
                         // The QR button.
                         child: Container(
-                          width: ScreenUtil.instance.setHeight(220.0),
+                          width: ScreenUtil.instance.setHeight(230.0),
                           height: ScreenUtil.instance.setHeight(40.0),
                           child: FlatButton.icon(
                             color: Color(0xFF00E676),

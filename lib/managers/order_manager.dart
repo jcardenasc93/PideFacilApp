@@ -143,7 +143,7 @@ class OrderManagerState extends State<OrderManager> {
     )..init(context);
     return Scaffold(
       appBar: new PreferredSize(
-          preferredSize: Size.fromHeight(ScreenUtil.instance.setWidth(85.0)),
+          preferredSize: Size.fromHeight(ScreenUtil.instance.setWidth(95.0)),
           child: Column(
             children: <Widget>[
               Padding(
@@ -243,7 +243,7 @@ class OrderManagerState extends State<OrderManager> {
                                         child: Icon(
                                           Icons.remove,
                                           color: Colors.white,
-                                          size: ScreenUtil.instance.setSp(16.0),
+                                          size: ScreenUtil.instance.setSp(18.0),
                                         ),
 
                                         /// Reduce minus 1 [orden(index).cantidad] if quantity is greater to zero
@@ -280,7 +280,7 @@ class OrderManagerState extends State<OrderManager> {
                                         child: Icon(
                                           Icons.add,
                                           color: Colors.white,
-                                          size: ScreenUtil.instance.setSp(16.0),
+                                          size: ScreenUtil.instance.setSp(18.0),
                                         ),
 
                                         /// Increases dish quantity.

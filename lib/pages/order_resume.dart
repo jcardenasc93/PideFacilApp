@@ -120,14 +120,17 @@ class OrderResume extends StatelessWidget {
                   ),
                 );
               }),
-          // Acknowledgment text
-          Text(
-            'Gracias por usar nuestro servicio',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Color(0xFF66666F),
-                fontSize: ScreenUtil.instance.setSp(18.0),
-                fontWeight: FontWeight.bold),
+          Padding(
+            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(25.0)),
+            // Acknowledgment text
+            child: Text(
+              'Gracias por usar nuestro servicio',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Color(0xFF66666F),
+                  fontSize: ScreenUtil.instance.setSp(18.0),
+                  fontWeight: FontWeight.bold),
+            ),
           ),
           // Rate mechanism.
           Row(
@@ -136,19 +139,19 @@ class OrderResume extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(28.0),
+                  size: ScreenUtil.instance.setSp(30.0),
                   color: Color(0xFF00E676)),
               Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(28.0),
+                  size: ScreenUtil.instance.setSp(30.0),
                   color: Color(0xFF00E676)),
               Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(28.0),
+                  size: ScreenUtil.instance.setSp(30.0),
                   color: Color(0xFF00E676)),
               Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(28.0),
+                  size: ScreenUtil.instance.setSp(30.0),
                   color: Color(0xFF00E676)),
               Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(28.0),
+                  size: ScreenUtil.instance.setSp(30.0),
                   color: Color(0xFF00E676))
             ],
           )

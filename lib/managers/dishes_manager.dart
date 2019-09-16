@@ -119,14 +119,15 @@ class _DishManagerState extends State<DishManager> {
                   title: new Text(
                     listOfPlatos[index].nombrePlato,
                     style: new TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(14.0),
+                      fontSize: ScreenUtil.instance.setSp(16.0),
                     ),
                   ),
                   // Display dish description.
                   subtitle: new Text(
                     listOfPlatos[index].descripcionPlato,
+                    textAlign: TextAlign.justify,
                     style: TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(11.0),
+                      fontSize: ScreenUtil.instance.setSp(14.0),
                       color: Color(0xFF66666F),
                     ),
                   ),
@@ -171,7 +172,7 @@ class _DishManagerState extends State<DishManager> {
                                       child: Icon(
                                         Icons.remove,
                                         color: Colors.white,
-                                        size: ScreenUtil.instance.setSp(16.0),
+                                        size: ScreenUtil.instance.setSp(18.0),
                                       ),
 
                                       /// Reduce minus 1 [listOfPlatos(index).cantidad] if quantity is greater to zero
@@ -207,7 +208,7 @@ class _DishManagerState extends State<DishManager> {
                                       child: Icon(
                                         Icons.add,
                                         color: Colors.white,
-                                        size: ScreenUtil.instance.setSp(16.0),
+                                        size: ScreenUtil.instance.setSp(18.0),
                                       ),
 
                                       /// Increases dish quantity.
