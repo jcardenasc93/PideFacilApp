@@ -119,7 +119,7 @@ class _DishManagerState extends State<DishManager> {
                   title: new Text(
                     listOfPlatos[index].nombrePlato,
                     style: new TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(16.0),
+                      fontSize: ScreenUtil.instance.setSp(15.0),
                     ),
                   ),
                   // Display dish description.
@@ -127,7 +127,7 @@ class _DishManagerState extends State<DishManager> {
                     listOfPlatos[index].descripcionPlato,
                     textAlign: TextAlign.justify,
                     style: TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(14.0),
+                      fontSize: ScreenUtil.instance.setSp(13.0),
                       color: Color(0xFF66666F),
                     ),
                   ),

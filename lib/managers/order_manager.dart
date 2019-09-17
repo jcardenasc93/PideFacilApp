@@ -197,7 +197,7 @@ class OrderManagerState extends State<OrderManager> {
                     title: new Text(
                       orden[index].nombrePlato,
                       style: new TextStyle(
-                        fontSize: ScreenUtil.instance.setSp(14.0),
+                        fontSize: ScreenUtil.instance.setSp(15.0),
                       ),
                     ),
                     trailing: new SizedBox(
