@@ -119,7 +119,6 @@ class DishesPageState extends State<DishesPage> {
 
   @override
   Widget build(BuildContext context) {
-    // WillPopScope disables back action on Android devices.
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
 
@@ -129,6 +128,7 @@ class DishesPageState extends State<DishesPage> {
       height: defaultScreenHeight,
       allowFontScaling: true,
     )..init(context);
+    // WillPopScope disables back action on Android devices.
     return new WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(

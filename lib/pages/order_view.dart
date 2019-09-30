@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,8 @@ class OrderViewState extends State<OrderView> {
   List<Plato> order;
   // OrderViewState constructor
   OrderViewState({this.order});
+  // Create a unique global key for the form
+  final _dataformKey = GlobalKey<FormState>();
 
   /// Displays a alert dialog to confirm the order.
   Future _confimacionOrden(BuildContext context) async {
@@ -63,7 +66,125 @@ class OrderViewState extends State<OrderView> {
                   onPressed: () {
                     // Hide dialog box.
                     Navigator.of(context).pop();
-                    _ordenar();
+                    _datosPedido(context);
+                  })
+            ],
+          );
+        });
+  }
+
+  Future _datosPedido(BuildContext context) async {
+    TextEditingController _nameFieldController = TextEditingController();
+    TextEditingController _addressFieldController = TextEditingController();
+    TextEditingController _phoneFieldController = TextEditingController();
+    TextEditingController _commentsFieldController = TextEditingController();
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text(
+              'Ingresa tus datos para el envío',
+              style: TextStyle(
+                color: Color(0xFF666666),
+              ),
+            ),
+            content: Form(
+                key: _dataformKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.0),
+                        child: TextFormField(
+                          // Add no empty validation
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Este campo es obligatorio';
+                            }
+                            return null;
+                          },
+                          controller: _nameFieldController,
+                          decoration:
+                              InputDecoration(hintText: 'Ingresa tu nombre'),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.0),
+                        child: TextFormField(
+                          // Add no empty validation
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Este campo es obligatorio';
+                            }
+                            return null;
+                          },
+                          controller: _addressFieldController,
+                          decoration: InputDecoration(
+                              hintText: 'Ingresa la dirección de envío'),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.0),
+                        child: TextFormField(
+                          // Add no empty validation
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Este campo es obligatorio';
+                            }
+                            return null;
+                          },
+                          controller: _phoneFieldController,
+                          decoration: InputDecoration(
+                              hintText: 'Ingresa el número de celular'),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 4.0),
+                        child: TextFormField(                         
+                          // Max number of lines
+                          maxLines: 15,
+                          controller: _commentsFieldController,
+                          decoration: new InputDecoration(                            
+                            hintText: 'Agrega tus comentarios para la orden',
+                            // Muestra borde del campo de texto
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF666666), width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF666666), width: 1.0),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF666666), width: 1.0),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('VOLVER'),
+                color: Colors.red,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton(
+                  child: Text('CONFIRMAR'),
+                  color: Color(0xFF00E676),
+                  onPressed: () {
+                    if (_dataformKey.currentState.validate()) {
+                      // Hide dialog box.
+                      Navigator.of(context).pop();
+                      _ordenar();
+                    }
                   })
             ],
           );
