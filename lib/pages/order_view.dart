@@ -8,6 +8,7 @@ import '../models/platos_model.dart';
 import './order_resume.dart';
 import '../models/qr_model.dart';
 import '../models/post.dart';
+import '../models/comments.dart';
 
 /// The view order for the user.
 class OrderView extends StatefulWidget {
@@ -74,10 +75,10 @@ class OrderViewState extends State<OrderView> {
   }
 
   Future _datosPedido(BuildContext context) async {
-    TextEditingController _nameFieldController = TextEditingController();
-    TextEditingController _addressFieldController = TextEditingController();
-    TextEditingController _phoneFieldController = TextEditingController();
-    TextEditingController _commentsFieldController = TextEditingController();
+    final TextEditingController _nameFieldController = TextEditingController();
+    final TextEditingController _addressFieldController = TextEditingController();
+    final TextEditingController _phoneFieldController = TextEditingController();
+    final TextEditingController _commentsFieldController = TextEditingController();
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -183,7 +184,7 @@ class OrderViewState extends State<OrderView> {
                     if (_dataformKey.currentState.validate()) {
                       // Hide dialog box.
                       Navigator.of(context).pop();
-                      _ordenar();
+                      _ordenar(_nameFieldController.text, _addressFieldController.text, _phoneFieldController.text, _commentsFieldController.text);
                     }
                   })
             ],
@@ -354,7 +355,7 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Send the final order to start cook the dishes.
-  void _ordenar() async {
+  void _ordenar(String clientName, String address, String clientPhone, String comments) async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -365,7 +366,7 @@ class OrderViewState extends State<OrderView> {
         if (ordenF.isNotEmpty) {
           _postingOrder(context);
           // Create json data to post the order
-          PostApi post = _createPostRequest();
+          PostApi post = _createPostRequest(clientName, address, clientPhone, comments);
           // Make the POST request to the API
           int orderID = await _makePost(post);
           if (orderID != 0) {
@@ -399,11 +400,14 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Create a [PostApi] object to create the json body.
-  PostApi _createPostRequest() {
+  PostApi _createPostRequest(String clientName, String address, String clientPhone, String comments) {
     // Calc the order total price.
     var _precioTotal = 0;
+    // Create Comment object
+    Comment clientComments = Comment(nombreCliente: clientName, address: address, phone: clientPhone, obserbations: comments);    
     // Transform the order list to a json
     List jsonOrden = Plato.encodeToJson(order);
+    // Transform Comment to a json    
 
     order.forEach((d) => _precioTotal += d.precioTotalPlato);
     // Create the [PostApi] object with the data.
@@ -411,7 +415,8 @@ class OrderViewState extends State<OrderView> {
         idRestaurante: widget.qrobject.idRestaurante,
         idMesa: widget.qrobject.idMesa,
         precioTotal: _precioTotal,
-        ordenListJson: jsonOrden);
+        ordenListJson: jsonOrden,
+        comment: clientComments);
     return data;
   }
 

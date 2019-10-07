@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import './comments.dart';
 
 class PostApi {
   /// The restaurant id readed from QR.
@@ -11,9 +12,11 @@ class PostApi {
   final int precioTotal;
   /// The serialized list of [Platos]
   final List ordenListJson;
+  /// General comments to the order
+  final Comment comment;
 
   PostApi(
-      {this.idRestaurante, this.idMesa, this.precioTotal, this.ordenListJson});
+      {this.idRestaurante, this.idMesa, this.precioTotal, this.ordenListJson, this.comment});
 
   /// Serialize this [PostApi] object.
   Map<String, dynamic> toJson() => _bodyToJson(this);
@@ -33,6 +36,7 @@ class PostApi {
       "id_mesa": body.idMesa,
       "precio_total": body.precioTotal,
       "orden_id": ordenListJson,
+      "comentarios_orden": 'cliente: ${comment.nombreCliente}/*/direccion: ${comment.address}/*/tel: ${comment.phone}/*/comentarios: ${comment.obserbations}',
     };
   }
 
