@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../managers/order_manager.dart';
 import '../models/platos_model.dart';
@@ -9,6 +11,7 @@ import './order_resume.dart';
 import '../models/qr_model.dart';
 import '../models/post.dart';
 import '../models/comments.dart';
+import '../models/ubicacion.dart';
 
 /// The view order for the user.
 class OrderView extends StatefulWidget {
@@ -35,6 +38,7 @@ class OrderViewState extends State<OrderView> {
   OrderViewState({this.order});
   // Create a unique global key for the form
   final _dataformKey = GlobalKey<FormState>();
+  // Dropdown var
 
   /// Displays a alert dialog to confirm the order.
   Future _confimacionOrden(BuildContext context) async {
@@ -74,11 +78,36 @@ class OrderViewState extends State<OrderView> {
         });
   }
 
+  Future<List<Ubicacion>> getLocations() async {
+    /// Locations API GET response
+    final response = await http.get(
+        'http://pidefacil-back.herokuapp.com/ubicacion/',
+        headers: {"Accept": "application/json"});
+    final jsonresp = json.decode(response.body);
+    if (response.statusCode == 200) {
+      List<Ubicacion> locations = [];
+      jsonresp.forEach((l) => locations.add(Ubicacion.fromJson(l)));
+      return locations;
+    } else {
+      throw Exception('Failed to get locations info');
+    }
+  }
+
   Future _datosPedido(BuildContext context) async {
+    // Future<List<Ubicacion>> locations = getLocations();
+    // print('********************');
+    // List<String> ubicaciones = [];
+    // locations.then((places) => {
+    //   places.forEach((p) => print(p.place))
+    // });
+    String dropDownVal;
     final TextEditingController _nameFieldController = TextEditingController();
-    final TextEditingController _addressFieldController = TextEditingController();
+    final TextEditingController _addressFieldController =
+        TextEditingController();
     final TextEditingController _phoneFieldController = TextEditingController();
-    final TextEditingController _commentsFieldController = TextEditingController();
+    final TextEditingController _commentsFieldController =
+        TextEditingController();
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -112,6 +141,34 @@ class OrderViewState extends State<OrderView> {
                         ),
                       ),
                       Padding(
+                          padding: EdgeInsets.symmetric(vertical: 2.0),
+                          child: new DropdownButtonFormField<String>(
+                            hint: Text('Punto de referencia'),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                dropDownVal = newValue;
+                              });
+                            },
+                            value: dropDownVal,
+                            items: <String>[
+                              'U. de los Andes',
+                              'U. del Rosario',
+                              'U. Javeriana',
+                              'U. Central'
+                            ]
+                                .map((value) => DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    ))
+                                .toList(),
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Selecciona un punto de referencia';
+                              }
+                              return null;
+                            },
+                          )),
+                      Padding(
                         padding: EdgeInsets.symmetric(vertical: 2.0),
                         child: TextFormField(
                           // Add no empty validation
@@ -144,11 +201,11 @@ class OrderViewState extends State<OrderView> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 4.0),
-                        child: TextFormField(                         
+                        child: TextFormField(
                           // Max number of lines
                           maxLines: 15,
                           controller: _commentsFieldController,
-                          decoration: new InputDecoration(                            
+                          decoration: new InputDecoration(
                             hintText: 'Agrega tus comentarios para la orden',
                             // Muestra borde del campo de texto
                             enabledBorder: OutlineInputBorder(
@@ -184,13 +241,20 @@ class OrderViewState extends State<OrderView> {
                     if (_dataformKey.currentState.validate()) {
                       // Hide dialog box.
                       Navigator.of(context).pop();
-                      _ordenar(_nameFieldController.text, _addressFieldController.text, _phoneFieldController.text, _commentsFieldController.text);
+                      _ordenar(
+                          _nameFieldController.text,
+                          _addressFieldController.text,
+                          _phoneFieldController.text,
+                          _commentsFieldController.text,
+                          dropDownVal);
                     }
                   })
             ],
           );
         });
   }
+
+  
 
   /// Shows alert message when the user confirm an empty order.
   Future _ordenVaciaMsj(BuildContext context) async {
@@ -355,7 +419,8 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Send the final order to start cook the dishes.
-  void _ordenar(String clientName, String address, String clientPhone, String comments) async {
+  void _ordenar(String clientName, String address, String clientPhone,
+      String comments, String location) async {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -366,7 +431,8 @@ class OrderViewState extends State<OrderView> {
         if (ordenF.isNotEmpty) {
           _postingOrder(context);
           // Create json data to post the order
-          PostApi post = _createPostRequest(clientName, address, clientPhone, comments);
+          PostApi post =
+              _createPostRequest(clientName, address, clientPhone, comments, location);
           // Make the POST request to the API
           int orderID = await _makePost(post);
           if (orderID != 0) {
@@ -400,14 +466,20 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Create a [PostApi] object to create the json body.
-  PostApi _createPostRequest(String clientName, String address, String clientPhone, String comments) {
+  PostApi _createPostRequest(
+      String clientName, String address, String clientPhone, String comments, String location) {
     // Calc the order total price.
     var _precioTotal = 0;
     // Create Comment object
-    Comment clientComments = Comment(nombreCliente: clientName, address: address, phone: clientPhone, obserbations: comments);    
+    Comment clientComments = Comment(
+        nombreCliente: clientName,
+        address: address,
+        phone: clientPhone,
+        obserbations: comments,
+        location: location);
     // Transform the order list to a json
     List jsonOrden = Plato.encodeToJson(order);
-    // Transform Comment to a json    
+    // Transform Comment to a json
 
     order.forEach((d) => _precioTotal += d.precioTotalPlato);
     // Create the [PostApi] object with the data.
