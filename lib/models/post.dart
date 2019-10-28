@@ -45,7 +45,7 @@ class PostApi {
       "precio_total": body.precioTotal,
       "orden_id": ordenListJson,
       "comentarios_orden":
-          'cliente: ${comment.nombreCliente}/*/direccion: ${comment.address}/*/tel: ${comment.phone}/*/comentarios: ${comment.obserbations}/*/${comment.location}',
+          '${comment.nombreCliente}/*/${comment.address}/*/${comment.phone}/*/${comment.obserbations}/*/${comment.location}',
     };
   }
 
