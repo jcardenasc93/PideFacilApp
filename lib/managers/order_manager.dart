@@ -147,20 +147,23 @@ class OrderManagerState extends State<OrderManager> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding:
-                    EdgeInsets.only(top: ScreenUtil.instance.setWidth(3.0)),
-                child: Text(
-                  "Tu orden",
-                  style: new TextStyle(
-                    fontSize: ScreenUtil.instance.setSp(18.0),
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF00E676),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+                  padding:
+                      EdgeInsets.only(top: ScreenUtil.instance.setWidth(3.0)),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.white,
+                    child: Text(
+                      "Tu orden",
+                      style: new TextStyle(
+                        fontSize: ScreenUtil.instance.setSp(18.0),
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF00E676),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
               Card(
-                elevation: ScreenUtil.instance.setWidth(3.5),
+                elevation: ScreenUtil.instance.setWidth(3.0),
                 child: ListTile(
                   title: Text(
                     'Total',
@@ -181,7 +184,6 @@ class OrderManagerState extends State<OrderManager> {
               ),
             ],
           )),
-      backgroundColor: Colors.white,
       body: ListView(
         children: <Widget>[
           // Create a scrollable ListView with the order list.

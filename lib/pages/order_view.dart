@@ -99,8 +99,6 @@ class OrderViewState extends State<OrderView> {
     }
   }
 
-
-
   /// Shows alert message when the user confirm an empty order.
   Future _ordenVaciaMsj(BuildContext context) async {
     /// Creates alert dialog.
@@ -364,7 +362,6 @@ class OrderViewState extends State<OrderView> {
     )..init(context);
     return Scaffold(
         backgroundColor: Color(0xFF00E676),
-        //backgroundColor: Colors.white12,
 
         /// Custom appBar for change size.
         appBar: new PreferredSize(

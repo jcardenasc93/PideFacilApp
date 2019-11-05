@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../models/platos_model.dart';
 import '../managers/checkout_manager.dart';
 
-
 class CheckoutView extends StatefulWidget {
   /// The user's order.
   final List<Plato> orden;
@@ -22,7 +21,6 @@ class CheckoutViewState extends State<CheckoutView> {
   List<Plato> orden;
   // OrderViewState constructor
   CheckoutViewState({this.orden});
-  
 
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -45,37 +43,39 @@ class CheckoutViewState extends State<CheckoutView> {
     return new WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-            key: _scaffoldKey,            
-            appBar: AppBar(
-                automaticallyImplyLeading: true,
-                backgroundColor: Colors.white,
-                centerTitle: true,
-                // Add back button.
-                leading: IconButton(
-                  icon: new Icon(
-                    Icons.arrow_back,
-                    color: Color(0xFF666666),
-                  ),
-                  onPressed: () {
-                    _backToOrder(context);
-                  },
+          key: _scaffoldKey,
+          appBar: AppBar(
+              automaticallyImplyLeading: true,
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              // Add back button.
+              leading: IconButton(
+                icon: new Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFF666666),
                 ),
-                // Display menu name on top center.
-                title: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Checkout',
-                        style: new TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(18.0),
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF666666)),
-                        textAlign: TextAlign.center,
-                      ),
-                    ])),
-                    body: CheckoutManager(orden: orden,),
-                    ));
+                onPressed: () {
+                  _backToOrder(context);
+                },
+              ),
+              // Display menu name on top center.
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Checkout',
+                      style: new TextStyle(
+                          fontSize: ScreenUtil.instance.setSp(18.0),
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF666666)),
+                      textAlign: TextAlign.center,
+                    ),
+                  ])),
+          body: CheckoutManager(
+            orden: orden,
+          ),
+        ));
   }
 }
