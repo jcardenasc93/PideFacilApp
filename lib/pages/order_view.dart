@@ -12,6 +12,7 @@ import '../models/qr_model.dart';
 import '../models/post.dart';
 import '../models/comments.dart';
 import '../models/ubicacion.dart';
+import './checkout.dart';
 
 /// The view order for the user.
 class OrderView extends StatefulWidget {
@@ -71,7 +72,12 @@ class OrderViewState extends State<OrderView> {
                   onPressed: () {
                     // Hide dialog box.
                     Navigator.of(context).pop();
-                    _datosPedido(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => CheckoutView(
+                                  orden: order,
+                                )));
                   })
             ],
           );
@@ -93,168 +99,7 @@ class OrderViewState extends State<OrderView> {
     }
   }
 
-  Future _datosPedido(BuildContext context) async {
-    // Future<List<Ubicacion>> locations = getLocations();
-    // print('********************');
-    // List<String> ubicaciones = [];
-    // locations.then((places) => {
-    //   places.forEach((p) => print(p.place))
-    // });
-    String dropDownVal;
-    final TextEditingController _nameFieldController = TextEditingController();
-    final TextEditingController _addressFieldController =
-        TextEditingController();
-    final TextEditingController _phoneFieldController = TextEditingController();
-    final TextEditingController _commentsFieldController =
-        TextEditingController();
 
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text(
-              'Ingresa tus datos para el envío',
-              style: TextStyle(
-                color: Color(0xFF666666),
-              ),
-            ),
-            content: Form(
-                key: _dataformKey,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2.0),
-                        child: TextFormField(
-                          // Add no empty validation
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Este campo es obligatorio';
-                            }
-                            return null;
-                          },
-                          controller: _nameFieldController,
-                          decoration:
-                              InputDecoration(hintText: 'Ingresa tu nombre'),
-                        ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.symmetric(vertical: 2.0),
-                          child: new DropdownButtonFormField<String>(
-                            hint: Text('Punto de referencia'),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                dropDownVal = newValue;
-                              });
-                            },
-                            value: dropDownVal,
-                            items: <String>[
-                              'U. de los Andes',
-                              'U. del Rosario',
-                              'U. Javeriana',
-                              'U. Central'
-                            ]
-                                .map((value) => DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    ))
-                                .toList(),
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Selecciona un punto de referencia';
-                              }
-                              return null;
-                            },
-                          )),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2.0),
-                        child: TextFormField(
-                          // Add no empty validation
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Este campo es obligatorio';
-                            }
-                            return null;
-                          },
-                          controller: _addressFieldController,
-                          decoration: InputDecoration(
-                              hintText: 'Ingresa la dirección de envío'),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2.0),
-                        child: TextFormField(
-                          // Add no empty validation
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Este campo es obligatorio';
-                            }
-                            return null;
-                          },
-                          controller: _phoneFieldController,
-                          decoration: InputDecoration(
-                              hintText: 'Ingresa el número de celular'),
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 4.0),
-                        child: TextFormField(
-                          // Max number of lines
-                          maxLines: 15,
-                          controller: _commentsFieldController,
-                          decoration: new InputDecoration(
-                            hintText: 'Agrega tus comentarios para la orden',
-                            // Muestra borde del campo de texto
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFF666666), width: 1.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFF666666), width: 1.0),
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xFF666666), width: 1.0),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                )),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('VOLVER'),
-                color: Colors.red,
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              FlatButton(
-                  child: Text('CONFIRMAR'),
-                  color: Color(0xFF00E676),
-                  onPressed: () {
-                    if (_dataformKey.currentState.validate()) {
-                      // Hide dialog box.
-                      Navigator.of(context).pop();
-                      _ordenar(
-                          _nameFieldController.text,
-                          _addressFieldController.text,
-                          _phoneFieldController.text,
-                          _commentsFieldController.text,
-                          dropDownVal);
-                    }
-                  })
-            ],
-          );
-        });
-  }
-
-  
 
   /// Shows alert message when the user confirm an empty order.
   Future _ordenVaciaMsj(BuildContext context) async {
@@ -431,8 +276,8 @@ class OrderViewState extends State<OrderView> {
         if (ordenF.isNotEmpty) {
           _postingOrder(context);
           // Create json data to post the order
-          PostApi post =
-              _createPostRequest(clientName, address, clientPhone, comments, location);
+          PostApi post = _createPostRequest(
+              clientName, address, clientPhone, comments, location);
           // Make the POST request to the API
           int orderID = await _makePost(post);
           if (orderID != 0) {
@@ -466,8 +311,8 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Create a [PostApi] object to create the json body.
-  PostApi _createPostRequest(
-      String clientName, String address, String clientPhone, String comments, String location) {
+  PostApi _createPostRequest(String clientName, String address,
+      String clientPhone, String comments, String location) {
     // Calc the order total price.
     var _precioTotal = 0;
     // Create Comment object

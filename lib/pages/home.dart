@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pide_facil/models/qr_model.dart';
 import 'package:pide_facil/pages/cameraAccess.dart';
+import './menus_list.dart';
 
 class HomePage extends StatefulWidget {
   MainPage createState() => MainPage();
@@ -12,20 +14,8 @@ class HomePage extends StatefulWidget {
 
 /// First page of the app that access to the camera to scan QR code.
 class MainPage extends State<HomePage> {
-  /// List that stores the text that chages in header.
-  List<String> _msj = ["Fácil", "Fácil", "Rápido", "Ahora", "Ya"];
-
-  /// index of the above list.
-  int _pos = 0;
-
-  /// [Timer] object that handles the time between text updates.
-  Timer _timermsj;
-
   /// Header text.
   String _header = '';
-
-  /// [TextField] handler that stores the input text.
-  final _manualCode = TextEditingController();
 
   /// Homepage welcome message.
   String _bodyMsj = 'Escanea el código QR o ingresa ' +
@@ -35,33 +25,22 @@ class MainPage extends State<HomePage> {
   /// Scan QR code. First time request access to the camera of the device.
   /// If scan a valid Qr code charge the restaurant's menu.
   void _scanQR() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => CameraAccess()));
-  }
+    QRobject qrobj = QRobject(
+        idMesa: 2,
+        idRestaurante: 3,
+        urlAPIGet: 'https://pidefacil-back.herokuapp.com/api/restaurante/3/');
 
-  /// Init the timer count down to change text in header.
-  void _changeText(Timer timer) {
-    // Updates the text value.
-    setState(() {
-      if (_pos < _msj.length)
-        _pos = _pos + 1;
-      else
-        _pos = 0;
-      _header = _msj[_pos];
-    });
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => MenusListPage(
+                  qrResult: qrobj,
+                )));
   }
 
   @override
   void initState() {
-    /// Asign a task to run when the period is complete
-    _timermsj = Timer.periodic(new Duration(seconds: 2), _changeText);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _timermsj.cancel();
-    super.dispose();
   }
 
   @override
@@ -95,7 +74,7 @@ class MainPage extends State<HomePage> {
                   child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
-                        text: 'Pide ',
+                        text: 'Be',
                         style: TextStyle(
                             fontSize: ScreenUtil.instance.setSp(28.0),
                             //fontSize: ScaleUI.safeBlockVertical * 4.0,
@@ -103,7 +82,7 @@ class MainPage extends State<HomePage> {
                             fontWeight: FontWeight.bold),
                         children: <TextSpan>[
                           TextSpan(
-                            text: _header,
+                            text: 'U',
                             style: TextStyle(
                                 fontSize: ScreenUtil.instance.setSp(28.0),
                                 color: Color(0xFF00E676),
@@ -142,51 +121,24 @@ class MainPage extends State<HomePage> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Container(
-                      width: ScreenUtil.instance.setHeight(230.0),
-                      height: ScreenUtil.instance.setHeight(40.0),
-                      // TextField to handle input text form user.
-                      child: TextField(
-                        // Uppercase the input text.
-                        textCapitalization: TextCapitalization.characters,
-                        textAlign: TextAlign.center,
-                        // Add style.
-                        style: new TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(13.0),
-                            color: new Color(0xFF666666)),
-                        // Assign value to the handler var.
-                        controller: _manualCode,
-                        // Disable autocrrect.
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                              fontSize: ScreenUtil.instance.setSp(13.0)),
-                          // Preset hint.
-                          labelText: 'Ingresa el código',
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(8.0),
-                          ),
-                        ),
-                      ),
-                    ),
                     Padding(
                         padding: EdgeInsets.only(
                             top: ScreenUtil.instance.setWidth(5.0),
                             bottom: ScreenUtil.instance.setWidth(10.0)),
                         // The QR button.
                         child: Container(
-                          width: ScreenUtil.instance.setHeight(230.0),
+                          width: ScreenUtil.instance.setHeight(180.0),
                           height: ScreenUtil.instance.setHeight(40.0),
                           child: FlatButton.icon(
                             color: Color(0xFF00E676),
                             onPressed: _scanQR,
                             icon: new Icon(
-                              const IconData(0xE900, fontFamily: 'Qrcode'),
+                              Icons.list,
                               color: Color(0xFFFFFFFF),
                               size: ScreenUtil.instance.setSp(13.0),
                             ),
                             label: Text(
-                              "ESCANEAR CODIGO QR",
+                              "Ver Menú",
                               style: new TextStyle(
                                 fontSize: ScreenUtil.instance.setSp(13.0),
                                 color: Color(0xFFFFFFFF),
