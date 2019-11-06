@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -28,14 +29,26 @@ class CheckoutManager extends StatefulWidget {
 class CheckoutManagerState extends State<CheckoutManager> {
   final List<Plato> orden;
   CheckoutManagerState({this.orden});
+
+  // User position
+  Position _currentPosition;
+  // Geolocator object
+  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  // Map controller
+  GoogleMapController mapController;
+
   // Create a unique global key for the form
   final _dataformKey = GlobalKey<FormState>();
+  final TextEditingController _nameFieldController = TextEditingController();
+  final TextEditingController _addressFieldController = TextEditingController();
+  final TextEditingController _phoneFieldController = TextEditingController();
+  final TextEditingController _commentsFieldController =
+      TextEditingController();
 
   CameraPosition _initMapPosition = CameraPosition(
-    target: const LatLng(4.601404, -74.066061),
-    zoom: 18.0,
+    target: LatLng(4.601404, -74.066061),
+    zoom: 17.0,
   );
-  Completer<GoogleMapController> _controller = Completer();
 
   Future _datosPedido(BuildContext context) async {
     // Future<List<Ubicacion>> locations = getLocations();
@@ -198,13 +211,34 @@ class CheckoutManagerState extends State<CheckoutManager> {
         });
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
+  /// get user location method
+  Future _getCurrentLocation() async {
+    Position position;
+    try {
+      position = await geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+    } catch (e) {
+      position = null;
+    }
+
+    setState(() {
+      _currentPosition = position;
+      // Update initial Map position
+      _initMapPosition = CameraPosition(
+        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+        zoom: 17.0,
+      );
+    });
+    // Moves the camera to the initial position.
+    mapController?.moveCamera(CameraUpdate.newCameraPosition(_initMapPosition));
   }
 
-  //void _getUserLocation() async {
-  //  var location = new Location()
-  //}
+  @override
+  void initState() {
+    super.initState();
+    // Updates initial position on init page
+    _getCurrentLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,43 +256,134 @@ class CheckoutManagerState extends State<CheckoutManager> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(15.0)),
+          padding: EdgeInsets.only(
+              top: ScreenUtil.instance.setWidth(15.0),
+              left: ScreenUtil.instance.setWidth(15.0),
+              right: ScreenUtil.instance.setWidth(15.0),
+              bottom: ScreenUtil.instance.setWidth(5.0)),
           child: Text(
             'Lugar de envío',
             textAlign: TextAlign.left,
             style: new TextStyle(
-                color: Color(0xFF66666F),
-                fontSize: ScreenUtil.instance.setSp(18.0),
-                fontWeight: FontWeight.bold),
+              color: Color(0xFF66666F),
+              fontSize: ScreenUtil.instance.setSp(15.0),
+            ),
           ),
         ),
+        Padding(
+            padding: EdgeInsets.only(
+                bottom: ScreenUtil.instance.setWidth(5.0),
+                left: ScreenUtil.instance.setWidth(15.0),
+                right: ScreenUtil.instance.setWidth(15.0)),
+            child: Divider(
+              color: Color(0xFF66666F),
+            )),
         Padding(
             padding: EdgeInsets.only(
                 bottom: ScreenUtil.instance.setWidth(15.0),
                 left: ScreenUtil.instance.setWidth(15.0),
                 right: ScreenUtil.instance.setWidth(15.0)),
-            // Total order remarkable.
             child: Container(
                 width: ScreenUtil.instance.setWidth(600.0),
-                height: ScreenUtil.instance.setHeight(300.0),
+                height: ScreenUtil.instance.setHeight(200.0),
                 child: Stack(
                   children: <Widget>[
+                    // Create GoogleMap Widget
                     GoogleMap(
                       mapType: MapType.normal,
                       myLocationEnabled: true,
                       myLocationButtonEnabled: true,
-                      onMapCreated: _onMapCreated,
+                      onMapCreated: (GoogleMapController controller) {
+                        mapController = controller;
+                      },
                       initialCameraPosition: _initMapPosition,
+                      circles: null,
                     ),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            left: ScreenUtil.instance.setWidth(330.0)),
-                        child: IconButton(                          
-                          onPressed: null,
-                          icon: Icon(Icons.my_location),
-                          iconSize: ScreenUtil.instance.setSp(28.0),
-                        )),
                   ],
+                ))),
+        Padding(
+            padding: EdgeInsets.only(
+                left: ScreenUtil.instance.setWidth(15.0),
+                right: ScreenUtil.instance.setWidth(15.0)),
+            child: Form(
+                key: _dataformKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.0),
+                        child: TextFormField(
+                          // Add no empty validation
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Este campo es obligatorio';
+                            }
+                            return null;
+                          },
+                          controller: _nameFieldController,
+                          decoration:
+                              InputDecoration(hintText: 'Ingresa tu nombre'),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.0),
+                        child: TextFormField(
+                          // Add no empty validation
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Este campo es obligatorio';
+                            }
+                            return null;
+                          },
+                          controller: _addressFieldController,
+                          decoration: InputDecoration(
+                              hintText: 'Ingresa la dirección de envío'),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 2.0),
+                        child: TextFormField(
+                          // Add no empty validation
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Este campo es obligatorio';
+                            }
+                            return null;
+                          },
+                          controller: _phoneFieldController,
+                          decoration: InputDecoration(
+                              hintText: 'Ingresa tu número de celular'),
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 4.0),
+                        child: TextFormField(
+                          // Max number of lines
+                          maxLines: 5,
+                          controller: _commentsFieldController,
+                          decoration: new InputDecoration(
+                            hintText: 'Agrega tus comentarios',
+                            // Muestra borde del campo de texto
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF666666), width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF666666), width: 1.0),
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color(0xFF666666), width: 1.0),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ))),
       ],
     ));
