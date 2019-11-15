@@ -254,8 +254,6 @@ class OrderViewState extends State<OrderView> {
         });
   }
 
-  
-
   /// Shows alert message when the user confirm an empty order.
   Future _ordenVaciaMsj(BuildContext context) async {
     /// Creates alert dialog.
@@ -431,8 +429,8 @@ class OrderViewState extends State<OrderView> {
         if (ordenF.isNotEmpty) {
           _postingOrder(context);
           // Create json data to post the order
-          PostApi post =
-              _createPostRequest(clientName, address, clientPhone, comments, location);
+          PostApi post = _createPostRequest(
+              clientName, address, clientPhone, comments, location);
           // Make the POST request to the API
           int orderID = await _makePost(post);
           if (orderID != 0) {
@@ -466,8 +464,8 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Create a [PostApi] object to create the json body.
-  PostApi _createPostRequest(
-      String clientName, String address, String clientPhone, String comments, String location) {
+  PostApi _createPostRequest(String clientName, String address,
+      String clientPhone, String comments, String location) {
     // Calc the order total price.
     var _precioTotal = 0;
     // Create Comment object
@@ -519,8 +517,7 @@ class OrderViewState extends State<OrderView> {
     )..init(context);
     return Scaffold(
         backgroundColor: Color(0xFF00E676),
-        //backgroundColor: Colors.white12,
-
+        resizeToAvoidBottomPadding: false,
         /// Custom appBar for change size.
         appBar: new PreferredSize(
           preferredSize: Size.fromHeight(ScreenUtil.instance.setHeight(40.0)),
