@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pide Facil',
+      title: 'BeU',
       theme: main_style.AppTheme,
       home: HomePage(),
     );

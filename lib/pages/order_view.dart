@@ -482,8 +482,8 @@ class OrderViewState extends State<OrderView> {
     order.forEach((d) => _precioTotal += d.precioTotalPlato);
     // Create the [PostApi] object with the data.
     PostApi data = PostApi(
-        idRestaurante: widget.qrobject.idRestaurante,
-        idMesa: widget.qrobject.idMesa,
+        idRestaurante: 4,
+        idMesa: 1,
         precioTotal: _precioTotal,
         ordenListJson: jsonOrden,
         comment: clientComments);
