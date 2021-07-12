@@ -38,7 +38,7 @@ class PostApi {
 
   /// Make the post request to the API to load the [PostApi] object in DB.
   Future<int> postRequest(PostApi body) async {
-    final response = await http.post(Uri.encodeFull(urlPost),
+    final response = await http.post(Uri.parse(Uri.encodeFull(urlPost)),
         body: encodeBodyJson(body),
         headers: {
           'Accept': 'application/json',

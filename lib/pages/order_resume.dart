@@ -132,6 +132,18 @@ class OrderResume extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(25.0)),
+            // Acknowledgment text
+            child: Text(
+              'Deseas calificar nuestro servicio?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Color(0xFF66666F),
+                  fontSize: ScreenUtil.instance.setSp(18.0),
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
           // Rate mechanism.
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
