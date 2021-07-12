@@ -51,14 +51,20 @@ class OrderViewState extends State<OrderView> {
             // These are user options.
             actions: <Widget>[
               FlatButton(
-                child: Text('NO, VOLVER'),
+                child: Text('NO, VOLVER',
+                    style: TextStyle(
+                      color: Color(0xFFFFFFFF),
+              )),
                 color: Colors.red,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               FlatButton(
-                  child: Text('SI'),
+                  child: Text('SI',
+                      style: TextStyle(
+                      color: Color(0xFFFFFFFF),
+                    )),
                   color: Color(0xFF00E676),
                   onPressed: () {
                     // Hide dialog box.

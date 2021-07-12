@@ -119,7 +119,7 @@ class MainPage extends State<HomePage> {
                   child: Text(
                     _bodyMsj,
                     style: new TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(16.0),
+                      fontSize: ScreenUtil.instance.setSp(18.0),
                       color: Color(0xFF666666),
                     ),
                     textAlign: TextAlign.justify,
