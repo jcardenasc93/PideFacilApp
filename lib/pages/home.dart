@@ -28,8 +28,8 @@ class MainPage extends State<HomePage> {
   final _manualCode = TextEditingController();
 
   /// Homepage welcome message.
-  String _bodyMsj = 'Escanea el código QR o ingresa ' +
-      'el código de tus restaurantes favoritos' +
+  String _bodyMsj = 'Escanea el código QR ' +
+      'en tus restaurantes favoritos' +
       ' y empieza ordenar lo que más te gusta. Pide fácil atenderá tu orden.';
 
   /// Scan QR code. First time request access to the camera of the device.
@@ -89,7 +89,7 @@ class MainPage extends State<HomePage> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(
-                    top: ScreenUtil.instance.setWidth(45.0),
+                    top: ScreenUtil.instance.setWidth(65.0),
                     bottom: ScreenUtil.instance.setWidth(45.0)),
                 child: Container(
                   child: RichText(
@@ -114,12 +114,12 @@ class MainPage extends State<HomePage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(ScreenUtil.instance.setWidth(20.0)),
+                padding: EdgeInsets.all(ScreenUtil.instance.setWidth(40.0)),
                 child: Container(
                   child: Text(
                     _bodyMsj,
                     style: new TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(18.0),
+                      fontSize: ScreenUtil.instance.setSp(16.0),
                       color: Color(0xFF666666),
                     ),
                     textAlign: TextAlign.justify,
@@ -142,36 +142,36 @@ class MainPage extends State<HomePage> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Container(
-                      width: ScreenUtil.instance.setHeight(230.0),
-                      height: ScreenUtil.instance.setHeight(40.0),
-                      // TextField to handle input text form user.
-                      child: TextField(
-                        // Uppercase the input text.
-                        textCapitalization: TextCapitalization.characters,
-                        textAlign: TextAlign.center,
-                        // Add style.
-                        style: new TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(13.0),
-                            color: new Color(0xFF666666)),
-                        // Assign value to the handler var.
-                        controller: _manualCode,
-                        // Disable autocrrect.
-                        autocorrect: false,
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                              fontSize: ScreenUtil.instance.setSp(13.0)),
-                          // Preset hint.
-                          labelText: 'Ingresa el código',
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(8.0),
-                          ),
-                        ),
-                      ),
-                    ),
+                    //Container(
+                      //width: ScreenUtil.instance.setHeight(230.0),
+                      //height: ScreenUtil.instance.setHeight(40.0),
+                      //// TextField to handle input text form user.
+                      //child: TextField(
+                        //// Uppercase the input text.
+                        //textCapitalization: TextCapitalization.characters,
+                        //textAlign: TextAlign.center,
+                        //// Add style.
+                        //style: new TextStyle(
+                            //fontSize: ScreenUtil.instance.setSp(13.0),
+                            //color: new Color(0xFF666666)),
+                        //// Assign value to the handler var.
+                        //controller: _manualCode,
+                        //// Disable autocrrect.
+                        //autocorrect: false,
+                        //decoration: InputDecoration(
+                          //labelStyle: TextStyle(
+                              //fontSize: ScreenUtil.instance.setSp(13.0)),
+                          //// Preset hint.
+                          //labelText: 'Ingresa el código',
+                          //border: new OutlineInputBorder(
+                            //borderRadius: new BorderRadius.circular(8.0),
+                          //),
+                        //),
+                      //),
+                    //),
                     Padding(
                         padding: EdgeInsets.only(
-                            top: ScreenUtil.instance.setWidth(5.0),
+                            top: ScreenUtil.instance.setWidth(30.0),
                             bottom: ScreenUtil.instance.setWidth(10.0)),
                         // The QR button.
                         child: Container(
