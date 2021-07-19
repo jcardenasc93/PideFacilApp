@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../config/config.dart';
 
 class PostApi {
   /// The restaurant id readed from QR.
@@ -18,7 +19,7 @@ class PostApi {
   /// Serialize this [PostApi] object.
   Map<String, dynamic> toJson() => _bodyToJson(this);
 
-  String urlPost = 'https://pidefacil-back.herokuapp.com/api/orden-de-compra/';
+  String urlPost = '${Environment().config.apiHost}/api/orden-de-compra/';
 
   /// Encode the [toJson] string in json format
   String encodeBodyJson(PostApi body) {

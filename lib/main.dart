@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './styles/app_style.dart' as main_style;
+import './config/config.dart';
 import './pages/home.dart';
 
-void main() => runApp(MyApp());
+Future main() async {
+  await dotenv.load(fileName: '.env');
+  Environment().initConfig();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // Main Widget.
