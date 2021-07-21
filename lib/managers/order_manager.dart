@@ -67,6 +67,59 @@ class OrderManagerState extends State<OrderManager> {
   }
 
   /// Displays a alert dialog to confirm the order deletion.
+  Future _agregarObservacion(BuildContext context, int index) async {
+    return showDialog(
+        context: context,
+        // User must choose an option to close dialog.
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          /// Create the AlertDialog.
+          return AlertDialog(
+            title: new Text(
+              'Agrega observaciones a tu pedido',
+              style: TextStyle(
+                color: Color(0xFF666666),
+              ),
+            ),
+            content: new TextField(
+                decoration: InputDecoration(
+                  hintText: 'Escribe tus observaciones aquí',
+                  enabledBorder: new OutlineInputBorder(
+                      borderSide: BorderSide(color: new Color(0xFF00E676)),
+                      borderRadius: new BorderRadius.circular(8.0)),
+                  focusedBorder: new OutlineInputBorder(
+                      borderSide: BorderSide(color: new Color(0xFF00E676)),
+                      borderRadius: new BorderRadius.circular(8.0)),
+                ),
+                cursorColor: new Color(0xFF00E676),
+                maxLines: 5,
+                maxLength: 100),
+            // These are user options.
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'NO, VOLVER',
+                  style: TextStyle(color: Color(0xFF666666)),
+                ),
+                color: Colors.grey.shade100,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton.icon(
+                  color: new Color(0xFF00E676),
+                  icon: Icon(Icons.check_circle_rounded, color: Colors.white),
+                  label: Text('OK', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _deleteOrder();
+                  }),
+            ],
+          );
+        });
+  }
+
+  /// Displays a alert dialog to confirm the order deletion.
   Future _confimacionEliminarOrden(BuildContext context) async {
     return showDialog(
         context: context,
@@ -223,8 +276,8 @@ class OrderManagerState extends State<OrderManager> {
                                 size: ScreenUtil.instance.setSp(24.0),
                               ),
 
-                              /// Reduce minus 1 [orden(index).cantidad] if quantity is greater to zero
-                              onTap: () => _restCant(index),
+                              /// Add comment to the selected dish
+                              onTap: () => _agregarObservacion(context, index),
                             ),
                           ),
                         )
