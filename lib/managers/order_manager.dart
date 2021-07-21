@@ -194,11 +194,41 @@ class OrderManagerState extends State<OrderManager> {
                 return Card(
                   child: ListTile(
                     // Display dish name.
-                    title: new Text(
-                      orden[index].nombrePlato,
-                      style: new TextStyle(
-                        fontSize: ScreenUtil.instance.setSp(15.0),
-                      ),
+                    title: new Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            orden[index].nombrePlato,
+                            style: new TextStyle(
+                              fontSize: ScreenUtil.instance.setSp(15.0),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: ScreenUtil.instance.setWidth(13.5)),
+                          child: Container(
+                            // Add minus button.
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: new GestureDetector(
+                              child: Icon(
+                                Icons.message_rounded,
+                                color: Colors.grey,
+                                size: ScreenUtil.instance.setSp(24.0),
+                              ),
+
+                              /// Reduce minus 1 [orden(index).cantidad] if quantity is greater to zero
+                              onTap: () => _restCant(index),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     trailing: new SizedBox(
                       child: Padding(
