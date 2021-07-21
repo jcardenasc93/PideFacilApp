@@ -66,8 +66,15 @@ class OrderManagerState extends State<OrderManager> {
     });
   }
 
+  void _addComments(int index, String comments) {
+    setState((){
+      orden[index].observaciones = comments.trim();
+    });
+  }
+
   /// Displays a alert dialog to confirm the order deletion.
   Future _agregarObservacion(BuildContext context, int index) async {
+    final _commentsController = TextEditingController();
     return showDialog(
         context: context,
         // User must choose an option to close dialog.
@@ -82,6 +89,7 @@ class OrderManagerState extends State<OrderManager> {
               ),
             ),
             content: new TextField(
+                controller: _commentsController,
                 decoration: InputDecoration(
                   hintText: 'Escribe tus observaciones aquí',
                   enabledBorder: new OutlineInputBorder(
@@ -112,7 +120,7 @@ class OrderManagerState extends State<OrderManager> {
                   label: Text('OK', style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _deleteOrder();
+                    _addComments(index, _commentsController.text);
                   }),
             ],
           );

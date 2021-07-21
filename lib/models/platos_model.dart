@@ -5,6 +5,7 @@ class Plato {
   int precioTotalPlato = 0; // precio * cantidad.
   String descripcionPlato = ''; //descripcion.
   int cantidad = 0;
+  String observaciones;
 
   Plato(
       {this.idPlato,
@@ -27,7 +28,7 @@ class Plato {
 
   /// Pass a list of [Platos] to [toJson] function to serialize in json format.
   static List encodeToJson(List<Plato> platos) {
-    List jsonList = List();
+    List jsonList = [];
     platos.map((item) => jsonList.add(item.toJson())).toList();
     return jsonList;
   }
