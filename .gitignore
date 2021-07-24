@@ -101,4 +101,4 @@ coverage/
 .env
 
 # Vimspector
-.vimspector
+.vimspector.json
