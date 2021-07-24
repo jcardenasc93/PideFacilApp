@@ -5,7 +5,7 @@ class Plato {
   int precioTotalPlato = 0; // precio * cantidad.
   String descripcionPlato = ''; //descripcion.
   int cantidad = 0;
-  String observaciones;
+  String comment;
 
   Plato(
       {this.idPlato,
@@ -23,7 +23,7 @@ class Plato {
 
   /// Generates the [map] object with desired json format.
   Map<String, dynamic> toJson() {
-    return {"id_plato": idPlato, "cantidad": cantidad};
+    return {"id_plato": idPlato, "cantidad": cantidad, "comment": comment};
   }
 
   /// Pass a list of [Platos] to [toJson] function to serialize in json format.

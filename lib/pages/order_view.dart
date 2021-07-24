@@ -327,8 +327,8 @@ class OrderViewState extends State<OrderView> {
     )..init(context);
     return Scaffold(
         backgroundColor: Color(0xFF00E676),
-        //backgroundColor: Colors.white12,
-
+        //backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
         /// Custom appBar for change size.
         appBar: new PreferredSize(
           preferredSize: Size.fromHeight(ScreenUtil.instance.setHeight(40.0)),

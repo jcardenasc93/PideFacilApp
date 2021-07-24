@@ -68,7 +68,7 @@ class OrderManagerState extends State<OrderManager> {
 
   void _addComments(int index, String comments) {
     setState((){
-      orden[index].observaciones = comments.trim();
+      orden[index].comment = comments.trim();
     });
   }
 
