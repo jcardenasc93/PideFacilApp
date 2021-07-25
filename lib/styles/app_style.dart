@@ -67,11 +67,19 @@ class AppTextStyle {
       TextStyle(fontSize: 16.0, color: AppColorPalette["default"]);
   TextStyle _cardTrailingTiny =
       TextStyle(fontSize: 13.0, color: AppColorPalette["default"]);
+  TextStyle _cardTrailingTinyUnderlined = TextStyle(
+      fontSize: 13.0,
+      decoration: TextDecoration.underline,
+      color: AppColorPalette["default"]);
   TextStyle _cardTrailingTinyStrong = TextStyle(
       fontSize: 13.0,
       fontWeight: FontWeight.w700,
       color: AppColorPalette["default"]);
-  TextStyle _textButton = TextStyle(fontSize: 16.0, color: Colors.white);
+  TextStyle _textButton = TextStyle(fontSize: 15.0, color: Colors.white);
+  TextStyle _alertTitle = TextStyle(
+      fontSize: 20.0,
+      fontWeight: FontWeight.w500,
+      color: AppColorPalette["default"]);
 
   /// Define getters
   TextStyle get homeTitle {
@@ -113,11 +121,20 @@ class AppTextStyle {
   TextStyle get cardTrailingTiny {
     return _cardTrailingTiny;
   }
+
   TextStyle get cardTrailingTinyStrong {
     return _cardTrailingTinyStrong;
   }
 
+  TextStyle get cardTrailingTinyUnderlined {
+    return _cardTrailingTinyUnderlined;
+  }
+
   TextStyle get textButton {
     return _textButton;
+  }
+
+  TextStyle get alertTitle {
+    return _alertTitle;
   }
 }

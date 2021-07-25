@@ -85,24 +85,22 @@ class OrderManagerState extends State<OrderManager> {
         builder: (BuildContext context) {
           /// Create the AlertDialog.
           return AlertDialog(
-            title: new Text(
-              'Agrega observaciones a tu pedido',
-              style: TextStyle(
-                color: Color(0xFF666666),
-              ),
-            ),
+            title: new Text('Agrega observaciones a tu pedido',
+                style: appTextStyle.alertTitle),
             content: new TextField(
                 controller: _commentsController,
                 decoration: InputDecoration(
                   hintText: 'Escribe tus observaciones aquí',
                   enabledBorder: new OutlineInputBorder(
-                      borderSide: BorderSide(color: new Color(0xFF00E676)),
+                      borderSide:
+                          BorderSide(color: AppColorPalette["primaryGreen"]),
                       borderRadius: new BorderRadius.circular(8.0)),
                   focusedBorder: new OutlineInputBorder(
-                      borderSide: BorderSide(color: new Color(0xFF00E676)),
+                      borderSide:
+                          BorderSide(color: AppColorPalette["primaryGreen"]),
                       borderRadius: new BorderRadius.circular(8.0)),
                 ),
-                cursorColor: new Color(0xFF00E676),
+                cursorColor: AppColorPalette["primaryGreen"], 
                 maxLines: 5,
                 maxLength: 100),
             // These are user options.
@@ -110,17 +108,17 @@ class OrderManagerState extends State<OrderManager> {
               FlatButton(
                 child: Text(
                   'NO, VOLVER',
-                  style: TextStyle(color: Color(0xFF666666)),
+                  style: appTextStyle.textButton,
                 ),
-                color: Colors.grey.shade100,
+                color: Colors.grey.shade400,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               FlatButton.icon(
-                  color: new Color(0xFF00E676),
+                  color: AppColorPalette["primaryGreen"],
                   icon: Icon(Icons.check_circle_rounded, color: Colors.white),
-                  label: Text('OK', style: TextStyle(color: Colors.white)),
+                  label: Text('OK', style: appTextStyle.textButton),
                   onPressed: () {
                     Navigator.of(context).pop();
                     _addComments(index, _commentsController.text);
@@ -139,29 +137,21 @@ class OrderManagerState extends State<OrderManager> {
         builder: (BuildContext context) {
           /// Create the AlertDialog.
           return AlertDialog(
-            title: new Text(
-              'Eliminar orden.',
-              style: TextStyle(
-                color: Color(0xFF666666),
-              ),
-            ),
+            title: new Text('Eliminar orden', style: appTextStyle.alertTitle),
             content: new Text('¿Estás seguro que quieres eliminar tu orden?'),
             // These are user options.
             actions: <Widget>[
               FlatButton(
-                child: Text(
-                  'NO, VOLVER',
-                  style: TextStyle(color: Color(0xFF666666)),
-                ),
-                color: Colors.grey.shade100,
+                child: Text('NO, VOLVER', style: appTextStyle.textButton),
+                color: Colors.grey.shade400,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               FlatButton.icon(
                   color: Colors.red,
-                  icon: Icon(Icons.remove_circle),
-                  label: Text('ELIMINAR'),
+                  icon: Icon(Icons.remove_circle, color: Colors.white),
+                  label: Text('ELIMINAR', style: appTextStyle.textButton),
                   onPressed: () {
                     Navigator.of(context).pop();
                     _deleteOrder();
@@ -218,7 +208,7 @@ class OrderManagerState extends State<OrderManager> {
                   style: new TextStyle(
                     fontSize: ScreenUtil.instance.setSp(18.0),
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF00E676),
+                    color: AppColorPalette["primaryGreen"]
                   ),
                   textAlign: TextAlign.center,
                 ),

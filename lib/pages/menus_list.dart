@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/platos_model.dart';
 import '../styles/menu_style.dart';
+import '../styles/app_style.dart';
 import '../managers/menus_manager.dart';
 import '../models/restaurante_model.dart';
 import './order_view.dart';
@@ -62,7 +63,7 @@ class _MenusListState extends State<MenusListPage> {
   FloatingActionButton _manageButton() {
     FloatingActionButton ordenButton;
     Color emptyColor = new Color(0xFFEAECEF);
-    Color orderColor = new Color(0xFF00E676);
+    Color orderColor = AppColorPalette["primaryGreen"];
     // Search for dishes with quantity major to zero.
     var orden = order.where((d) => d.cantidad > 0);
     // If orden is empty disable button.
@@ -145,10 +146,8 @@ class _MenusListState extends State<MenusListPage> {
               automaticallyImplyLeading: true,
               // Add 'scan QR' button on top left.
               leading: IconButton(
-                icon: new Icon(
-                  const IconData(0xe900, fontFamily: 'Qrcode'),
-                  color: Color(0xFF666666),
-                ),
+                icon: new Icon(const IconData(0xe900, fontFamily: 'Qrcode'),
+                    color: AppColorPalette["defaultAccent"]),
                 onPressed: () =>
                     Navigator.popUntil(context, ModalRoute.withName('/')),
               ),
@@ -169,7 +168,7 @@ class _MenusListState extends State<MenusListPage> {
                         } else if (snapshot.hasError) {
                           return Icon(
                             Icons.warning,
-                            color: Color(0xFF666666),
+                            color: AppColorPalette["defaultAccent"],
                           );
                         }
                         // While get image returns nothing.
@@ -188,7 +187,7 @@ class _MenusListState extends State<MenusListPage> {
                           style: new TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF666666)),
+                              color: AppColorPalette["defaultAccent"]),
                           textAlign: TextAlign.center,
                         );
                       } else if (snapshot.hasError) {
@@ -223,7 +222,7 @@ class _MenusListState extends State<MenusListPage> {
                         Padding(
                           child: Icon(
                             Icons.cloud_off,
-                            color: Color(0xFF666666),
+                            color: AppColorPalette["defaultAccent"],
                             size: ScreenUtil.instance.setSp(40.0),
                           ),
                           padding: EdgeInsets.only(
@@ -233,7 +232,7 @@ class _MenusListState extends State<MenusListPage> {
                           'Lo sentimos! No podemos procesar tu solicitud. ' +
                               'Verifica tu conexión e inténtalo de nuevo',
                           style: new TextStyle(
-                            color: Color(0xFF666666),
+                            color: AppColorPalette["defaultAccent"],
                             fontSize: ScreenUtil.instance.setSp(16.0),
                           ),
                           textAlign: TextAlign.justify,
@@ -243,7 +242,7 @@ class _MenusListState extends State<MenusListPage> {
                             icon: Icon(
                               Icons.refresh,
                             ),
-                            color: Color(0xFF666666),
+                            color: AppColorPalette["defaultAccent"],
                             iconSize: ScreenUtil.instance.setSp(35.0),
                             onPressed: () {
                               _refreshPage();
@@ -260,8 +259,8 @@ class _MenusListState extends State<MenusListPage> {
                 return new Center(
                   child: SizedBox(
                     child: new CircularProgressIndicator(
-                      valueColor:
-                          new AlwaysStoppedAnimation<Color>(Color(0xFF666666)),
+                      valueColor: new AlwaysStoppedAnimation<Color>(
+                          AppColorPalette["defaultAccent"]),
                       strokeWidth: 3.0,
                     ),
                     height: ScreenUtil.instance.setWidth(40.0),

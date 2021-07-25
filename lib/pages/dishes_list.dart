@@ -5,6 +5,7 @@ import '../models/menu_model.dart';
 import './order_view.dart';
 import '../models/platos_model.dart';
 import '../models/qr_model.dart';
+import '../styles/app_style.dart';
 
 /// Page that list all dishes of a menu.
 class DishesPage extends StatefulWidget {
@@ -62,7 +63,7 @@ class DishesPageState extends State<DishesPage> {
   FloatingActionButton _manageButton() {
     FloatingActionButton ordenButton;
     Color emptyColor = new Color(0xFFEAECEF);
-    Color orderColor = new Color(0xFF00E676);
+    Color orderColor = AppColorPalette["primaryGreen"];
     // Search for dishes with quantity major to zero.
     var orden = orderUpdated.where((d) => d.cantidad > 0);
     // If orden is empty disable button.
@@ -139,7 +140,7 @@ class DishesPageState extends State<DishesPage> {
             leading: IconButton(
               icon: new Icon(
                 Icons.arrow_back,
-                color: Color(0xFF666666),
+                color: AppColorPalette["defaultAccent"],
               ),
               onPressed: () {
                 _backToMenus(context);
@@ -156,7 +157,7 @@ class DishesPageState extends State<DishesPage> {
                   style: new TextStyle(
                       fontSize: ScreenUtil.instance.setSp(18.0),
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF666666)),
+                      color: AppColorPalette["defaultAccent"]),
                   textAlign: TextAlign.center,
                 ),
                 new Divider(

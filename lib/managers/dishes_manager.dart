@@ -223,14 +223,9 @@ class _DishManagerState extends State<DishManager> {
             padding: EdgeInsets.all(ScreenUtil.instance.setWidth(5.0)),
             child: Center(
               child: GestureDetector(
-                child: Text(
-                  'Nueva Orden',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Color(0xFF66666F),
-                      fontSize: ScreenUtil.instance.setSp(14.0),
-                      decoration: TextDecoration.underline),
-                ),
+                child: Text('Nueva Orden',
+                    textAlign: TextAlign.center,
+                    style: appTextStyle.cardTrailingTinyUnderlined),
                 onTap: () => _resetValues(),
               ),
             ))

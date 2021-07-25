@@ -7,6 +7,7 @@ import '../models/platos_model.dart';
 import './order_resume.dart';
 import '../models/qr_model.dart';
 import '../models/post.dart';
+import '../styles/app_style.dart';
 
 /// The view order for the user.
 class OrderView extends StatefulWidget {
@@ -32,6 +33,8 @@ class OrderViewState extends State<OrderView> {
   // OrderViewState constructor
   OrderViewState({this.order});
 
+  var appTextStyle = AppTextStyle();
+
   /// Displays a alert dialog to confirm the order.
   Future _confimacionOrden(BuildContext context) async {
     return showDialog(
@@ -41,31 +44,23 @@ class OrderViewState extends State<OrderView> {
         builder: (BuildContext context) {
           /// Create the AlertDialog.
           return AlertDialog(
-            title: new Text(
-              'Confirma tu orden',
-              style: TextStyle(
-                color: Color(0xFF666666),
-              ),
-            ),
-            content: new Text('¿Tu orden esta completa?'),
+            title:
+                new Text('Confirma tu orden', style: appTextStyle.alertTitle),
+            content:
+                new Text('¿Tu orden esta completa?', style: appTextStyle.body),
             // These are user options.
             actions: <Widget>[
               FlatButton(
-                child: Text('NO, VOLVER',
-                    style: TextStyle(
-                      color: Color(0xFFFFFFFF),
-              )),
-                color: Colors.red,
+                child: Text('NO, VOLVER', style: appTextStyle.textButton),
+                color: Colors.grey.shade400,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
-              FlatButton(
-                  child: Text('SI',
-                      style: TextStyle(
-                      color: Color(0xFFFFFFFF),
-                    )),
-                  color: Color(0xFF00E676),
+              FlatButton.icon(
+                  label: Text('OK', style: appTextStyle.textButton),
+                  icon: Icon(Icons.check_circle_rounded, color: Colors.white),
+                  color: AppColorPalette["primaryGreen"],
                   onPressed: () {
                     // Hide dialog box.
                     Navigator.of(context).pop();
@@ -83,20 +78,17 @@ class OrderViewState extends State<OrderView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(
-              'Tu orden esta vacía',
-              style: TextStyle(
-                color: Color(0xFF666666),
-              ),
-            ),
+            title:
+                new Text('Tu orden esta vacía', style: appTextStyle.alertTitle),
             content: new Text(
-                'Lo sentimos. No podemos procesar tu pedido porque tu orden no tiene platos. Por favor verifica tu orden.'),
+                'Lo sentimos! No podemos procesar tu pedido porque tu orden no tiene platos. Por favor verifica tu orden.',
+                style: appTextStyle.body),
             actions: <Widget>[
               FlatButton(
                 child: Center(
-                  child: Text('OK'),
+                  child: Text('OK', style: appTextStyle.textButton),
                 ),
-                color: Color(0xFF00E676),
+                color: AppColorPalette["primaryGreen"],
                 // Back when pressed.
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -114,20 +106,16 @@ class OrderViewState extends State<OrderView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(
-              'Error de envío',
-              style: TextStyle(
-                color: Color(0xFF666666),
-              ),
-            ),
+            title: new Text('Error de envío', style: appTextStyle.alertTitle),
             content: new Text(
-                'Lo sentimos. No pudimos enviar tu orden, verifica tu conexión a internet e inténtalo nuevamente'),
+                'Lo sentimos no pudimos enviar tu orden. Verifica tu conexión a internet e inténtalo nuevamente',
+                style: appTextStyle.body),
             actions: <Widget>[
               FlatButton(
                 child: Center(
                   child: Text('OK'),
                 ),
-                color: Color(0xFF00E676),
+                color: AppColorPalette["primaryGreen"],
                 // Back when pressed.
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -146,20 +134,16 @@ class OrderViewState extends State<OrderView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: new Text(
-              'Error de envío',
-              style: TextStyle(
-                color: Color(0xFF666666),
-              ),
-            ),
+            title: new Text('Error de envío', style: appTextStyle.alertTitle),
             content: new Text(
-                'Lo sentimos. No pudimos enviar tu orden, verifica tu conexión a internet e inténtalo nuevamente'),
+                'Lo sentimos. No pudimos enviar tu orden, verifica tu conexión a internet e inténtalo nuevamente',
+                style: appTextStyle.body),
             actions: <Widget>[
               FlatButton(
                 child: Center(
                   child: Text('OK'),
                 ),
-                color: Color(0xFF00E676),
+                color: AppColorPalette["primaryGreen"],
                 // Back when pressed.
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -180,7 +164,7 @@ class OrderViewState extends State<OrderView> {
             title: new Text(
               'Success',
               style: TextStyle(
-                color: Color(0xFF00E676),
+                color: AppColorPalette["primaryGreen"],
               ),
             ),
             content: new Text('Tu orden fue enviada correctamente'),
@@ -189,7 +173,7 @@ class OrderViewState extends State<OrderView> {
                 child: Center(
                   child: Text('OK'),
                 ),
-                color: Color(0xFF00E676),
+                color: AppColorPalette["primaryGreen"],
                 // Back when pressed.
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -204,6 +188,7 @@ class OrderViewState extends State<OrderView> {
   /// Shows alert message while system post the order
   static _postingOrder(BuildContext context) {
     /// Creates alert dialog.
+    var appTextStyle = AppTextStyle();
     try {
       showDialog(
           context: context,
@@ -213,8 +198,8 @@ class OrderViewState extends State<OrderView> {
                 direction: Axis.horizontal,
                 children: <Widget>[
                   new CircularProgressIndicator(
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(Color(0xFF00E676)),
+                    valueColor: new AlwaysStoppedAnimation<Color>(
+                        AppColorPalette["primaryGreen"]),
                     strokeWidth: 3.0,
                   ),
                   Padding(
@@ -222,13 +207,8 @@ class OrderViewState extends State<OrderView> {
                   ),
                   Flexible(
                       flex: 8,
-                      child: Text(
-                        'Estamos enviando tu orden',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF66666F)),
-                      )),
+                      child: Text('Estamos enviando tu orden',
+                          style: appTextStyle.alertTitle)),
                 ],
               ),
             );
@@ -326,9 +306,10 @@ class OrderViewState extends State<OrderView> {
       allowFontScaling: true,
     )..init(context);
     return Scaffold(
-        backgroundColor: Color(0xFF00E676),
+        backgroundColor: AppColorPalette["primaryGreen"],
         //backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
+
         /// Custom appBar for change size.
         appBar: new PreferredSize(
           preferredSize: Size.fromHeight(ScreenUtil.instance.setHeight(40.0)),
@@ -363,7 +344,7 @@ class OrderViewState extends State<OrderView> {
               child: Text(
                 'Ordenar',
                 style: TextStyle(
-                  color: Color(0xFF00E676),
+                  color: AppColorPalette["primaryGreen"],
                   fontSize: ScreenUtil.instance.setSp(20.0),
                   fontWeight: FontWeight.bold,
                 ),
@@ -373,7 +354,8 @@ class OrderViewState extends State<OrderView> {
               elevation: 1.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
-                side: BorderSide(color: Color(0xFF00E676), width: 2.0),
+                side: BorderSide(
+                    color: AppColorPalette["primaryGreen"], width: 2.0),
               ),
             ),
           ),

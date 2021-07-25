@@ -168,11 +168,11 @@ class MainPage extends State<HomePage> {
                           width: ScreenUtil.instance.setHeight(230.0),
                           height: ScreenUtil.instance.setHeight(40.0),
                           child: FlatButton.icon(
-                            color: Color(0xFF00E676),
+                            color: AppColorPalette["primaryGreen"],
                             onPressed: _scanQR,
                             icon: new Icon(
                               const IconData(0xE900, fontFamily: 'Qrcode'),
-                              color: Color(0xFFFFFFFF),
+                              color: Colors.white,
                               size: ScreenUtil.instance.setSp(13.0),
                             ),
                             label: Text("ESCANEAR CODIGO QR",
@@ -180,7 +180,7 @@ class MainPage extends State<HomePage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               side: BorderSide(
-                                  color: Color(0xFF00E676),
+                                  color: AppColorPalette["primaryGreen"],
                                   width: ScreenUtil.instance.setWidth(2.0)),
                             ),
                           ),
