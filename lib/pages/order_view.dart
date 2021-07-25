@@ -162,16 +162,17 @@ class OrderViewState extends State<OrderView> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text(
-              'Success',
+              'Completado',
               style: TextStyle(
                 color: AppColorPalette["primaryGreen"],
               ),
             ),
-            content: new Text('Tu orden fue enviada correctamente'),
+            content: new Text('Tu orden fue enviada correctamente',
+                style: appTextStyle.body),
             actions: <Widget>[
               FlatButton(
                 child: Center(
-                  child: Text('OK'),
+                  child: Text('OK', style: appTextStyle.textButton),
                 ),
                 color: AppColorPalette["primaryGreen"],
                 // Back when pressed.

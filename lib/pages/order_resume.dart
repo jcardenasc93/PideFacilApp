@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/platos_model.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../styles/app_style.dart';
 
 class OrderResume extends StatelessWidget {
   /// The list of dishes in final order.
@@ -35,6 +36,7 @@ class OrderResume extends StatelessWidget {
     MediaQueryData _mediaQueryData = MediaQuery.of(context);
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
+    var appTextStyle = AppTextStyle();
 
     //* Initialise ScreenUtil instance
     ScreenUtil.instance = ScreenUtil(
@@ -59,19 +61,10 @@ class OrderResume extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
-                    'TOTAL: ${formatPrice.format(valorTotal)}',
-                    style: TextStyle(
-                      color: Color(0xFF66666F),
-                      fontSize: ScreenUtil.instance.setSp(38.0),
-                    ),
-                  ),
-                  Text(
-                    'Tu orden ha sido confirmada',
-                    style: TextStyle(
-                        fontSize: ScreenUtil.instance.setSp(18.0),
-                        color: Color(0xFF66666F)),
-                  ),
+                  Text('TOTAL: ${formatPrice.format(valorTotal)}',
+                      style: appTextStyle.homeTitleLight),
+                  Text('Tu orden ha sido confirmada',
+                      style: appTextStyle.cardTitle),
                 ],
               ),
             ),
@@ -82,7 +75,7 @@ class OrderResume extends StatelessWidget {
             child: Container(
                 width: _mediaQueryData.size.width,
                 height: ScreenUtil.instance.setWidth(25.0),
-                color: Color(0xFF00E676),
+                color: AppColorPalette["primaryGreen"],
                 child: Center(
                   child: Text(
                     'Orden No.$orderID',
@@ -102,20 +95,13 @@ class OrderResume extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   // Display dish name.
-                  title: new Text(
-                    orden[index].nombrePlato,
-                    style: new TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(16.0),
-                    ),
-                  ),
+                  title: new Text(orden[index].nombrePlato,
+                      style: appTextStyle.body),
                   trailing:
                       // Display dish price.
                       new Text(
                     'x${orden[index].cantidad}  ${formatPrice.format(orden[index].precioTotalPlato)}',
-                    style: new TextStyle(
-                      color: Color(0xFF66666F),
-                      fontSize: ScreenUtil.instance.setSp(14.0),
-                    ),
+                    style: appTextStyle.body,
                     textAlign: TextAlign.end,
                   ),
                 );
@@ -125,11 +111,8 @@ class OrderResume extends StatelessWidget {
             // Acknowledgment text
             child: Text(
               'Gracias por usar nuestro servicio',
+              style: appTextStyle.cardTitleStrong,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color(0xFF66666F),
-                  fontSize: ScreenUtil.instance.setSp(18.0),
-                  fontWeight: FontWeight.bold),
             ),
           ),
           Padding(
@@ -138,10 +121,7 @@ class OrderResume extends StatelessWidget {
             child: Text(
               'Deseas calificar nuestro servicio?',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Color(0xFF66666F),
-                  fontSize: ScreenUtil.instance.setSp(18.0),
-                  fontWeight: FontWeight.bold),
+              style: appTextStyle.cardTitleStrong
             ),
           ),
           // Rate mechanism.
@@ -152,19 +132,19 @@ class OrderResume extends StatelessWidget {
             children: <Widget>[
               Icon(Icons.star_border,
                   size: ScreenUtil.instance.setSp(30.0),
-                  color: Color(0xFF00E676)),
+                  color: AppColorPalette["primaryGreen"]),
               Icon(Icons.star_border,
                   size: ScreenUtil.instance.setSp(30.0),
-                  color: Color(0xFF00E676)),
+                  color: AppColorPalette["primaryGreen"]),
               Icon(Icons.star_border,
                   size: ScreenUtil.instance.setSp(30.0),
-                  color: Color(0xFF00E676)),
+                  color: AppColorPalette["primaryGreen"]),
               Icon(Icons.star_border,
                   size: ScreenUtil.instance.setSp(30.0),
-                  color: Color(0xFF00E676)),
+                  color: AppColorPalette["primaryGreen"]),
               Icon(Icons.star_border,
                   size: ScreenUtil.instance.setSp(30.0),
-                  color: Color(0xFF00E676))
+                  color: AppColorPalette["primaryGreen"])
             ],
           )
         ],

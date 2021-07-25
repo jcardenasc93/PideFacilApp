@@ -38,15 +38,21 @@ const Map<String, Color> AppColorPalette = {
 /// App Text styles definition
 class AppTextStyle {
   TextStyle _homeTitle = TextStyle(
-      fontSize: 30.0,
+      fontSize: 35.0,
       fontWeight: FontWeight.bold,
       color: AppColorPalette["defaultAccent"]);
+  TextStyle _homeTitleLight =
+      TextStyle(fontSize: 35.0, color: AppColorPalette["defaultAccent"]);
   TextStyle _homeTitleAccent = TextStyle(
-      fontSize: 30.0,
+      fontSize: 35.0,
       fontWeight: FontWeight.bold,
       color: AppColorPalette["primaryGreen"]);
   TextStyle _body =
       TextStyle(fontSize: 17.0, color: AppColorPalette["default"]);
+  TextStyle _bodyStrong = TextStyle(
+      fontSize: 17.0,
+      fontWeight: FontWeight.w700,
+      color: AppColorPalette["default"]);
   TextStyle _cardTitle = TextStyle(
       fontSize: 18.0,
       color: AppColorPalette["default"],
@@ -86,12 +92,19 @@ class AppTextStyle {
     return _homeTitle;
   }
 
+  TextStyle get homeTitleLight {
+    return _homeTitleLight;
+  }
+
   TextStyle get homeTitleAccent {
     return _homeTitleAccent;
   }
 
   TextStyle get body {
     return _body;
+  }
+  TextStyle get bodyStrong {
+    return _bodyStrong;
   }
 
   TextStyle get cardTitle {
