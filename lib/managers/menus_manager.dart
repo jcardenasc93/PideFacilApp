@@ -5,6 +5,8 @@ import '../models/menu_model.dart';
 import '../models/platos_model.dart';
 import '../models/qr_model.dart';
 
+import '../styles/app_style.dart';
+
 /// Manage the rendering of menus.
 class MenusManager extends StatefulWidget {
   /// The list of menus.
@@ -35,6 +37,8 @@ class _MenusManagerState extends State<MenusManager> {
   List<Plato> ordenAct;
   // _MenusManagerState constructor.
   _MenusManagerState({this.listOfMenus});
+
+  var appTextStyle = AppTextStyle();
 
   /// Displays the dishes list of the [menu] tapped and wait for order changes.
   void _tappedMenu(String texto, Menu menu, BuildContext context) async {
@@ -81,7 +85,8 @@ class _MenusManagerState extends State<MenusManager> {
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: ListTile(
-                  title: new Text(listOfMenus[index].nombreMenu),
+                  title: new Text(listOfMenus[index].nombreMenu,
+                      style: appTextStyle.cardTitle),
                   trailing: Icon(Icons.keyboard_arrow_right),
                   onTap: () => _tappedMenu(listOfMenus[index].nombreMenu,
                       listOfMenus[index], context),

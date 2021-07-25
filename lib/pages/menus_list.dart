@@ -22,8 +22,8 @@ class MenusListPage extends StatefulWidget {
   /// Returns an [Restaurante] object if the API request is successful
   Future<Restaurante> getRestaurante() async {
     /// The response of the API get request.
-    final response = await http
-        .get(Uri.parse(qrResult.urlAPIGet), headers: {"Accept": "application/json"});
+    final response = await http.get(Uri.parse(qrResult.urlAPIGet),
+        headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       return Restaurante.fromJson(json.decode(utf8.decode(response.bodyBytes)));
     } else {

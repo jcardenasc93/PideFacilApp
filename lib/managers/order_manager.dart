@@ -1,9 +1,10 @@
 import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/platos_model.dart';
 import '../models/qr_model.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../styles/app_style.dart';
 
 /// Manage the order in the order view.
 class OrderManager extends StatefulWidget {
@@ -33,6 +34,8 @@ class OrderManagerState extends State<OrderManager> {
 
   /// The price wiht currency format.
   final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
+
+  var appTextStyle = AppTextStyle();
 
   /// Reduce minus 1 [orden(index).cantidad] if quantity is greater to zero
   void _restCant(int index) {
@@ -67,7 +70,7 @@ class OrderManagerState extends State<OrderManager> {
   }
 
   void _addComments(int index, String comments) {
-    setState((){
+    setState(() {
       orden[index].comment = comments.trim();
     });
   }
@@ -223,19 +226,10 @@ class OrderManagerState extends State<OrderManager> {
               Card(
                 elevation: ScreenUtil.instance.setWidth(3.5),
                 child: ListTile(
-                  title: Text(
-                    'Total',
-                    style: TextStyle(
-                        color: Color(0xFF66666F),
-                        fontWeight: FontWeight.bold,
-                        fontSize: ScreenUtil.instance.setSp(16.0)),
-                  ),
+                  title: Text('Total', style: appTextStyle.cardTitleStrong),
                   trailing: Text(
                     '${formatPrice.format(_totalValorOrden)}',
-                    style: TextStyle(
-                      color: Color(0xFF66666F),
-                      fontSize: ScreenUtil.instance.setSp(16.0),
-                    ),
+                    style: appTextStyle.cardTrailingBig,
                     textAlign: TextAlign.end,
                   ),
                 ),
@@ -258,12 +252,8 @@ class OrderManagerState extends State<OrderManager> {
                     title: new Row(
                       children: [
                         Expanded(
-                          child: Text(
-                            orden[index].nombrePlato,
-                            style: new TextStyle(
-                              fontSize: ScreenUtil.instance.setSp(15.0),
-                            ),
-                          ),
+                          child: Text(orden[index].nombrePlato,
+                              style: appTextStyle.cardSubtitle),
                         ),
                         Padding(
                           padding: EdgeInsets.only(
@@ -302,11 +292,7 @@ class OrderManagerState extends State<OrderManager> {
                             // Display dish price.
                             new Text(
                               '${formatPrice.format(orden[index].precioTotalPlato)}',
-                              style: new TextStyle(
-                                color: Color(0xFF66666F),
-                                fontSize: ScreenUtil.instance.setSp(12.0),
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: appTextStyle.cardTrailingTinyStrong,
                               textAlign: TextAlign.end,
                             ),
                             // Display dish quantity control.
@@ -348,13 +334,10 @@ class OrderManagerState extends State<OrderManager> {
                                             horizontal: 1.0, vertical: 1.0),
                                         // Display dish quantity.
                                         child: new Text(
-                                          orden[index].cantidad.toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize:
-                                                ScreenUtil.instance.setSp(12.0),
-                                          ),
-                                        ),
+                                            orden[index].cantidad.toString(),
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                appTextStyle.cardTrailingTiny),
                                       ),
                                     ),
                                     Container(

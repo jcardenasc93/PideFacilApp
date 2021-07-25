@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pide_facil/pages/cameraAccess.dart';
 
+import '../styles/app_style.dart';
+
 class HomePage extends StatefulWidget {
   MainPage createState() => MainPage();
 }
@@ -24,13 +26,12 @@ class MainPage extends State<HomePage> {
   /// Header text.
   String _header = '';
 
-  /// [TextField] handler that stores the input text.
-  final _manualCode = TextEditingController();
-
   /// Homepage welcome message.
   String _bodyMsj = 'Escanea el código QR ' +
       'en tus restaurantes favoritos' +
       ' y empieza ordenar lo que más te gusta. Pide fácil atenderá tu orden.';
+
+  var appTextStyle = AppTextStyle();
 
   /// Scan QR code. First time request access to the camera of the device.
   /// If scan a valid Qr code charge the restaurant's menu.
@@ -96,19 +97,11 @@ class MainPage extends State<HomePage> {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                         text: 'Pide ',
-                        style: TextStyle(
-                            fontSize: ScreenUtil.instance.setSp(28.0),
-                            //fontSize: ScaleUI.safeBlockVertical * 4.0,
-                            color: Color(0xFF666666),
-                            fontWeight: FontWeight.bold),
+                        style: appTextStyle.homeTitle,
                         children: <TextSpan>[
                           TextSpan(
-                            text: _header,
-                            style: TextStyle(
-                                fontSize: ScreenUtil.instance.setSp(28.0),
-                                color: Color(0xFF00E676),
-                                fontWeight: FontWeight.bold),
-                          )
+                              text: _header,
+                              style: appTextStyle.homeTitleAccent)
                         ]),
                   ),
                 ),
@@ -118,10 +111,7 @@ class MainPage extends State<HomePage> {
                 child: Container(
                   child: Text(
                     _bodyMsj,
-                    style: new TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(16.0),
-                      color: Color(0xFF666666),
-                    ),
+                    style: appTextStyle.body,
                     textAlign: TextAlign.justify,
                   ),
                   width: ScreenUtil.instance.setHeight(330.0),
@@ -143,31 +133,31 @@ class MainPage extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     //Container(
-                      //width: ScreenUtil.instance.setHeight(230.0),
-                      //height: ScreenUtil.instance.setHeight(40.0),
-                      //// TextField to handle input text form user.
-                      //child: TextField(
-                        //// Uppercase the input text.
-                        //textCapitalization: TextCapitalization.characters,
-                        //textAlign: TextAlign.center,
-                        //// Add style.
-                        //style: new TextStyle(
-                            //fontSize: ScreenUtil.instance.setSp(13.0),
-                            //color: new Color(0xFF666666)),
-                        //// Assign value to the handler var.
-                        //controller: _manualCode,
-                        //// Disable autocrrect.
-                        //autocorrect: false,
-                        //decoration: InputDecoration(
-                          //labelStyle: TextStyle(
-                              //fontSize: ScreenUtil.instance.setSp(13.0)),
-                          //// Preset hint.
-                          //labelText: 'Ingresa el código',
-                          //border: new OutlineInputBorder(
-                            //borderRadius: new BorderRadius.circular(8.0),
-                          //),
-                        //),
-                      //),
+                    //width: ScreenUtil.instance.setHeight(230.0),
+                    //height: ScreenUtil.instance.setHeight(40.0),
+                    //// TextField to handle input text form user.
+                    //child: TextField(
+                    //// Uppercase the input text.
+                    //textCapitalization: TextCapitalization.characters,
+                    //textAlign: TextAlign.center,
+                    //// Add style.
+                    //style: new TextStyle(
+                    //fontSize: ScreenUtil.instance.setSp(13.0),
+                    //color: new Color(0xFF666666)),
+                    //// Assign value to the handler var.
+                    //controller: _manualCode,
+                    //// Disable autocrrect.
+                    //autocorrect: false,
+                    //decoration: InputDecoration(
+                    //labelStyle: TextStyle(
+                    //fontSize: ScreenUtil.instance.setSp(13.0)),
+                    //// Preset hint.
+                    //labelText: 'Ingresa el código',
+                    //border: new OutlineInputBorder(
+                    //borderRadius: new BorderRadius.circular(8.0),
+                    //),
+                    //),
+                    //),
                     //),
                     Padding(
                         padding: EdgeInsets.only(
@@ -185,13 +175,8 @@ class MainPage extends State<HomePage> {
                               color: Color(0xFFFFFFFF),
                               size: ScreenUtil.instance.setSp(13.0),
                             ),
-                            label: Text(
-                              "ESCANEAR CODIGO QR",
-                              style: new TextStyle(
-                                fontSize: ScreenUtil.instance.setSp(13.0),
-                                color: Color(0xFFFFFFFF),
-                              ),
-                            ),
+                            label: Text("ESCANEAR CODIGO QR",
+                                style: appTextStyle.textButton),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               side: BorderSide(

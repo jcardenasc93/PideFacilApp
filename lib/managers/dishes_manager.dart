@@ -2,6 +2,7 @@ import "package:intl/intl.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../models/platos_model.dart';
+import '../styles/app_style.dart';
 
 /// Manage the dishes rendering.
 class DishManager extends StatefulWidget {
@@ -35,6 +36,8 @@ class _DishManagerState extends State<DishManager> {
   final formatPrice = new NumberFormat.simpleCurrency(decimalDigits: 0);
   // Local var to store changes in an order.
   var orderList;
+  var appTextStyle = AppTextStyle();
+
   // _DishManagerState constructor.
   _DishManagerState({this.listOfPlatos, this.orderList});
 
@@ -116,24 +119,16 @@ class _DishManagerState extends State<DishManager> {
               return Card(
                 child: ListTile(
                   // Display dish name.
-                  title: new Text(
-                    listOfPlatos[index].nombrePlato,
-                    style: new TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(15.0),
-                    ),
-                  ),
+                  title: new Text(listOfPlatos[index].nombrePlato,
+                      style: appTextStyle.cardTitle),
                   // Display dish description.
-                  subtitle: new Text(
-                    listOfPlatos[index].descripcionPlato,
-                    textAlign: TextAlign.justify,
-                    style: TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(13.0),
-                      color: Color(0xFF66666F),
-                    ),
-                  ),
+                  subtitle: new Text(listOfPlatos[index].descripcionPlato,
+                      textAlign: TextAlign.justify,
+                      style: appTextStyle.cardSubtitle),
                   trailing: new SizedBox(
                     child: Padding(
-                      padding: EdgeInsets.only(left: ScreenUtil.instance.setWidth(8.0)),
+                      padding: EdgeInsets.only(
+                          left: ScreenUtil.instance.setWidth(8.0)),
                       child: new Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
@@ -141,16 +136,13 @@ class _DishManagerState extends State<DishManager> {
                           // Display dish price.
                           new Text(
                             '${formatPrice.format(listOfPlatos[index].precioPlato)}',
-                            style: new TextStyle(
-                              color: Color(0xFF66666F),
-                              fontSize: ScreenUtil.instance.setSp(12.0),
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: appTextStyle.cardTrailingAccent,
                             textAlign: TextAlign.end,
                           ),
                           // Display dish quantity control.
                           new Container(
-                              margin: EdgeInsets.all(ScreenUtil.instance.setWidth(5.0)),
+                              margin: EdgeInsets.all(
+                                  ScreenUtil.instance.setWidth(5.0)),
                               alignment: Alignment(0.0, 0.0),
                               child: new Center(
                                   child: new Row(
@@ -186,12 +178,11 @@ class _DishManagerState extends State<DishManager> {
                                           horizontal: 1.0, vertical: 1.0),
                                       // Display dish quantity.
                                       child: new Text(
-                                        listOfPlatos[index].cantidad.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil.instance.setSp(12.0),
-                                        ),
-                                      ),
+                                          listOfPlatos[index]
+                                              .cantidad
+                                              .toString(),
+                                          textAlign: TextAlign.center,
+                                          style: appTextStyle.cardTrailing),
                                     ),
                                   ),
                                   Container(

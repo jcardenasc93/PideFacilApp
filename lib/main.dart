@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pide Facil',
-      theme: main_style.AppTheme,
+      theme: main_style.appTheme,
       home: HomePage(),
     );
   }
