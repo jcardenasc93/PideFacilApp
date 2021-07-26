@@ -12,6 +12,7 @@ import '../managers/menus_manager.dart';
 import '../models/restaurante_model.dart';
 import './order_view.dart';
 import '../models/qr_model.dart';
+import '../config/config.dart';
 
 /// Page that list all the menus of a restaurant.
 class MenusListPage extends StatefulWidget {
@@ -23,8 +24,10 @@ class MenusListPage extends StatefulWidget {
   /// Returns an [Restaurante] object if the API request is successful
   Future<Restaurante> getRestaurante() async {
     /// The response of the API get request.
-    final response = await http.get(Uri.parse(qrResult.urlAPIGet),
-        headers: {"Accept": "application/json"});
+    String requestURL =
+        '${Environment().config.apiHost}/restaurante/${qrResult.idRestaurante}';
+    final response = await http
+        .get(Uri.parse(requestURL), headers: {"Accept": "application/json"});
     if (response.statusCode == 200) {
       return Restaurante.fromJson(json.decode(utf8.decode(response.bodyBytes)));
     } else {

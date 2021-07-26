@@ -63,6 +63,10 @@ class AppTextStyle {
       fontWeight: FontWeight.w700);
   TextStyle _cardSubtitle =
       TextStyle(fontSize: 15.0, color: AppColorPalette["default"]);
+  TextStyle _cardSubtitleUnderlined = TextStyle(
+      fontSize: 15.0,
+      decoration: TextDecoration.underline,
+      color: AppColorPalette["default"]);
   TextStyle _cardTrailingAccent = TextStyle(
       fontSize: 14.0,
       color: AppColorPalette["default"],
@@ -103,6 +107,7 @@ class AppTextStyle {
   TextStyle get body {
     return _body;
   }
+
   TextStyle get bodyStrong {
     return _bodyStrong;
   }
@@ -117,6 +122,10 @@ class AppTextStyle {
 
   TextStyle get cardSubtitle {
     return _cardSubtitle;
+  }
+
+  TextStyle get cardSubtitleUnderlined {
+    return _cardSubtitleUnderlined;
   }
 
   TextStyle get cardTrailingAccent {

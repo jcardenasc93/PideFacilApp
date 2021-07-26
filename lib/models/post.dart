@@ -19,7 +19,7 @@ class PostApi {
   /// Serialize this [PostApi] object.
   Map<String, dynamic> toJson() => _bodyToJson(this);
 
-  String urlPost = '${Environment().config.apiHost}/api/orden-de-compra/';
+  String urlPost = '${Environment().config.apiHost}/orden-de-compra/';
 
   /// Encode the [toJson] string in json format
   String encodeBodyJson(PostApi body) {

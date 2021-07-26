@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
+import 'package:barcode_scan/barcode_scan.dart';
 
 import '../models/qr_model.dart';
-import 'package:barcode_scan/barcode_scan.dart';
 import './menus_list.dart';
+import '../styles/app_style.dart';
 
 class CameraAccess extends StatefulWidget {
   @override
@@ -26,8 +27,7 @@ class CameraAccessState extends State<CameraAccess> {
       var qrobj = json.decode(qrResult);
       QRobject qrobject = QRobject(
           idMesa: qrobj['id_mesa'],
-          idRestaurante: qrobj['id_restaurante'],
-          urlAPIGet: qrobj['url_get']);
+          idRestaurante: qrobj['id_restaurante']);
       _getMenu(qrobject);
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
@@ -46,13 +46,15 @@ class CameraAccessState extends State<CameraAccess> {
 
   /// Shows Alert dialog when camera permission was denied.
   Future _cameraDeniedAlert() {
+    var appTextStyle = AppTextStyle();
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             content: new Text(
               'El acceso a la cámara fue negado. Habilita el acceso para continuar',
-              style: TextStyle(color: Color(0xFF666666), fontSize: 18.0),
+              style: appTextStyle.body
             ),
             actions: <Widget>[
               FlatButton(
@@ -74,13 +76,14 @@ class CameraAccessState extends State<CameraAccess> {
 
   /// Shows alert dialog when error exists when accesing to the device camera.
   Future _errorAlert(String error) {
+    var appTextStyle = AppTextStyle();
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             content: new Text(
               error,
-              style: TextStyle(color: Color(0xFF666666), fontSize: 18.0),
+              style: appTextStyle.body
             ),
             actions: <Widget>[
               FlatButton(

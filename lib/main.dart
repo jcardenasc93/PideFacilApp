@@ -7,7 +7,8 @@ import './pages/home.dart';
 
 Future main() async {
   await dotenv.load(fileName: '.env');
-  Environment().initConfig();
+  String environment = dotenv.env["ENVIRONMENT"];
+  Environment().initConfig(environment);
   runApp(MyApp());
 }
 

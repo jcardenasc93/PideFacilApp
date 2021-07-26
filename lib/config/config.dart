@@ -40,8 +40,7 @@ class Environment {
 
   BaseConfig config;
 
-  Future initConfig() async {
-    String environment = dotenv.env["ENVIRONMENT"];
+  initConfig(String environment) {
     config = _getConfig(environment);
   }
 
