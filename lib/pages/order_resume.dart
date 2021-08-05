@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../models/platos_model.dart';
 import '../styles/app_style.dart';
@@ -116,35 +117,34 @@ class OrderResume extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(25.0)),
+            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(25.0), bottom: ScreenUtil.instance.setHeight(15.0)),
             // Acknowledgment text
-            child: Text(
-              'Deseas calificar nuestro servicio?',
-              textAlign: TextAlign.center,
-              style: appTextStyle.cardTitleStrong
-            ),
+            child: Text('Deseas calificar nuestro servicio?',
+                textAlign: TextAlign.center,
+                style: appTextStyle.cardTitleStrong),
           ),
-          // Rate mechanism.
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(30.0),
-                  color: AppColorPalette["primaryGreen"]),
-              Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(30.0),
-                  color: AppColorPalette["primaryGreen"]),
-              Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(30.0),
-                  color: AppColorPalette["primaryGreen"]),
-              Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(30.0),
-                  color: AppColorPalette["primaryGreen"]),
-              Icon(Icons.star_border,
-                  size: ScreenUtil.instance.setSp(30.0),
-                  color: AppColorPalette["primaryGreen"])
+            children: [
+              // Rate mechanism.
+              RatingBar.builder(
+                initialRating: 0,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: false,
+                itemCount: 5,
+                unratedColor: AppColorPalette["default"],
+                itemSize: 30.0,
+                itemPadding: EdgeInsets.symmetric(horizontal: 2.5),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  size: 1,
+                  color: AppColorPalette["primaryGreen"],
+                ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              )
             ],
           )
         ],

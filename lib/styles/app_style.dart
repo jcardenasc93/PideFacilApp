@@ -43,6 +43,8 @@ class AppTextStyle {
       color: AppColorPalette["defaultAccent"]);
   TextStyle _homeTitleLight =
       TextStyle(fontSize: 35.0, color: AppColorPalette["defaultAccent"]);
+  TextStyle _appBarTitle =
+      TextStyle(fontSize: 22.0, color: AppColorPalette["defaultAccent"]);
   TextStyle _homeTitleAccent = TextStyle(
       fontSize: 35.0,
       fontWeight: FontWeight.bold,
@@ -94,6 +96,10 @@ class AppTextStyle {
   /// Define getters
   TextStyle get homeTitle {
     return _homeTitle;
+  }
+
+  TextStyle get appBarTitle {
+    return _appBarTitle;
   }
 
   TextStyle get homeTitleLight {

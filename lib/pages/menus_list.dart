@@ -45,15 +45,14 @@ class _MenusListState extends State<MenusListPage> {
   /// The restaurant object to be displayed
   final Future<Restaurante> restaurante;
 
+  var appTextStyle = AppTextStyle();
+
   /// Store the order.
   List<Plato> order = [];
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   VoidCallback _showFinalOrderCallback;
   // _MenusListState constructor.
   _MenusListState({this.restaurante});
-  // TODO: Delete this variable after assets can be stored on server.
-  String imageUrl =
-      'https://pbs.twimg.com/profile_images/1280924607/LOGO_400x400.png';
 
   /// Update changes in the final order.
   getFinalOrder(finalOrder) {
@@ -89,6 +88,47 @@ class _MenusListState extends State<MenusListPage> {
           onPressed: _showFinalOrderCallback);
     }
     return ordenButton;
+  }
+
+  FutureBuilder<Restaurante> _appBarManager() {
+    return FutureBuilder<Restaurante>(
+      future: restaurante,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.urlImagRestaurante != '') {
+            return Container(
+                height: 55,
+                //child: Image.network(
+                //snapshot.data.urlImagRestaurante)),
+                child: Image.network(
+                  snapshot.data.urlImagRestaurante,
+                  errorBuilder: (BuildContext context, Object exception,
+                      StackTrace stackTrace) {
+                    return Container(
+                        height: 55,
+                        child: Center(
+                            child: Text(snapshot.data.nombreRestaurante,
+                                style: appTextStyle.appBarTitle)));
+                  },
+                ));
+          } else {
+            return Container(
+                height: 55,
+                child: Center(
+                    child: Text(snapshot.data.nombreRestaurante,
+                        style: appTextStyle.appBarTitle)));
+          }
+          //return Image.network(snapshot.data.urlImagRestaurante);
+        } else if (snapshot.hasError) {
+          return Icon(
+            Icons.warning,
+            color: AppColorPalette["defaultAccent"],
+          );
+        }
+        // While get image returns nothing.
+        return new SizedBox();
+      },
+    );
   }
 
   void _showOrderFun() {
@@ -160,46 +200,9 @@ class _MenusListState extends State<MenusListPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(2.0),
-                    // Display restaurant Image on top center.
-                    child: FutureBuilder<Restaurante>(
-                      future: restaurante,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Image.network(imageUrl);
-                          //return Image.network(snapshot.data.urlImagRestaurante);
-                        } else if (snapshot.hasError) {
-                          return Icon(
-                            Icons.warning,
-                            color: AppColorPalette["defaultAccent"],
-                          );
-                        }
-                        // While get image returns nothing.
-                        return new SizedBox();
-                      },
-                    ),
-                  ),
-                  // Optional restaurant text to be displayed on top center.
-                  FutureBuilder<Restaurante>(
-                    future: restaurante,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Text(
-                          //snapshot.data.nombreRestaurante,
-                          '',
-                          style: new TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                              color: AppColorPalette["defaultAccent"]),
-                          textAlign: TextAlign.center,
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('');
-                      }
-                      // While get restaurant name display nothing.
-                      return new SizedBox();
-                    },
-                  ),
+                      padding: EdgeInsets.all(2.0),
+                      // Display restaurant Image on top center.
+                      child: _appBarManager())
                 ],
               ),
               centerTitle: true,
