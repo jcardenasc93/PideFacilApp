@@ -3,32 +3,35 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../config/config.dart';
 
-class PostApi {
+class PostOrder {
   /// The restaurant id readed from QR.
   final int idRestaurante;
+
   /// The mesa id readed from QR.
   final int idMesa;
+
   /// The total value of the order.
   final int precioTotal;
+
   /// The serialized list of [Platos]
   final List ordenListJson;
 
-  PostApi(
+  PostOrder(
       {this.idRestaurante, this.idMesa, this.precioTotal, this.ordenListJson});
-
-  /// Serialize this [PostApi] object.
-  Map<String, dynamic> toJson() => _bodyToJson(this);
 
   String urlPost = '${Environment().config.apiHost}/orden-de-compra/';
 
   /// Encode the [toJson] string in json format
-  String encodeBodyJson(PostApi body) {
+  String encodeBodyJson(PostOrder body) {
     final dyn = body.toJson();
     return json.encode(dyn);
   }
 
+  /// Serialize this [PostOrder] object.
+  Map<String, dynamic> toJson() => _bodyToJson(this);
+
   /// Create json body with desired structure.
-  Map<String, dynamic> _bodyToJson(PostApi body) {
+  Map<String, dynamic> _bodyToJson(PostOrder body) {
     return {
       "id_restaurante": body.idRestaurante,
       "id_mesa": body.idMesa,
@@ -37,8 +40,8 @@ class PostApi {
     };
   }
 
-  /// Make the post request to the API to load the [PostApi] object in DB.
-  Future<int> postRequest(PostApi body) async {
+  /// Make the post request to the API to load the [PostOrder] object in DB.
+  Future<int> postRequest(PostOrder body) async {
     final response = await http.post(Uri.parse(Uri.encodeFull(urlPost)),
         body: encodeBodyJson(body),
         headers: {

@@ -6,7 +6,7 @@ import '../managers/order_manager.dart';
 import '../models/platos_model.dart';
 import './order_resume.dart';
 import '../models/qr_model.dart';
-import '../models/post.dart';
+import '../models/post_order.dart';
 import '../styles/app_style.dart';
 
 /// The view order for the user.
@@ -231,7 +231,7 @@ class OrderViewState extends State<OrderView> {
         if (ordenF.isNotEmpty) {
           _postingOrder(context);
           // Create json data to post the order
-          PostApi post = _createPostRequest();
+          PostOrder post = _createPostRequest();
           // Make the POST request to the API
           int orderID = await _makePost(post);
           if (orderID != 0) {
@@ -264,16 +264,16 @@ class OrderViewState extends State<OrderView> {
     }
   }
 
-  /// Create a [PostApi] object to create the json body.
-  PostApi _createPostRequest() {
+  /// Create a [PostOrder] object to create the json body.
+  PostOrder _createPostRequest() {
     // Calc the order total price.
     var _precioTotal = 0;
     // Transform the order list to a json
     List jsonOrden = Plato.encodeToJson(order);
 
     order.forEach((d) => _precioTotal += d.precioTotalPlato);
-    // Create the [PostApi] object with the data.
-    PostApi data = PostApi(
+    // Create the [PostOrder] object with the data.
+    PostOrder data = PostOrder(
         idRestaurante: widget.qrobject.idRestaurante,
         idMesa: widget.qrobject.idMesa,
         precioTotal: _precioTotal,
@@ -282,7 +282,7 @@ class OrderViewState extends State<OrderView> {
   }
 
   /// Make the post request to the API.
-  Future<int> _makePost(PostApi data) {
+  Future<int> _makePost(PostOrder data) {
     // var to check the result of the post
     var postResult = data.postRequest(data);
     return postResult;
