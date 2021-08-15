@@ -5,12 +5,15 @@ import '../config/config.dart';
 
 class PostScore {
   /// Score given by the user
-  final int score;
+  final double score;
 
   /// Comments
   final String comments;
 
-  PostScore({this.score, this.comments});
+  /// Order id
+  final int orderId;
+
+  PostScore({this.score, this.comments, this.orderId});
 
   String urlPost = '${Environment().config.apiHost}/score/';
 
@@ -25,7 +28,11 @@ class PostScore {
 
   /// Create json body with desired structure.
   Map<String, dynamic> _bodyToJson(PostScore body) {
-    return {"score": body.score, "comments": body.comments};
+    return {
+      "score": body.score.toInt(),
+      "comment": body.comments,
+      "id_orden": body.orderId
+    };
   }
 
   /// Make the post request to the API to load the [PostScore] object in DB.

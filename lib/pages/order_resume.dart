@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import "package:intl/intl.dart";
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'dart:io';
 
 import '../models/platos_model.dart';
 import '../styles/app_style.dart';
+import '../models/post_score.dart';
 
 class OrderResume extends StatelessWidget {
   /// The list of dishes in final order.
@@ -32,14 +34,155 @@ class OrderResume extends StatelessWidget {
       this.valorTotal,
       this.orderID});
 
+  final appTextStyle = AppTextStyle();
+
+  /// Create a [PostScore] object to create the json body.
+  PostScore _createPostRequest(double score, String comments) {
+    // Create the [PostScore] object with the data.
+    PostScore data =
+        PostScore(score: score, comments: comments, orderId: orderID);
+    return data;
+  }
+
+  /// Make the post request to the API.
+  Future<bool> _makePost(PostScore data) {
+    // var to check the result of the post
+    var postResult = data.postRequest(data);
+    return postResult;
+  }
+
+  void _addScore(BuildContext context, double score, String comments) async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        // Create json data to post the order
+        PostScore post = _createPostRequest(score, comments);
+        // Make the POST request to the API
+        bool status = await _makePost(post);
+        if (status == true) {
+          print(status);
+        } else {
+          _errorPost(context);
+        }
+      }
+    } on SocketException catch (_) {
+      _networkFail(context);
+    }
+  }
+
+  /// Shows alert message when the system cannot post the order.
+  Future _networkFail(BuildContext context) async {
+    /// Creates alert dialog.
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text('Error de envío', style: appTextStyle.alertTitle),
+            content: new Text(
+                'Lo sentimos. No pudimos enviar tu calificación, verifica tu conexión a internet e inténtalo nuevamente',
+                style: appTextStyle.body),
+            actions: <Widget>[
+              FlatButton(
+                child: Center(
+                  child: Text('OK'),
+                ),
+                color: AppColorPalette["primaryGreen"],
+                // Back when pressed.
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  /// Shows alert message when the system cannot post the order.
+  Future _errorPost(BuildContext context) async {
+    /// Creates alert dialog.
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text('Error de envío', style: appTextStyle.alertTitle),
+            content: new Text(
+                'Lo sentimos no pudimos enviar tu calificación. Verifica tu conexión a internet e inténtalo nuevamente',
+                style: appTextStyle.body),
+            actions: <Widget>[
+              FlatButton(
+                child: Center(
+                  child: Text('OK'),
+                ),
+                color: AppColorPalette["primaryGreen"],
+                // Back when pressed.
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  Future _confirmarScore(BuildContext context, double score) async {
+    final _commentsController = TextEditingController();
+    return showDialog(
+        context: context,
+        // User must choose an option to close dialog.
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text('Agrega un comentario',
+                style: appTextStyle.alertTitle),
+            content: new TextField(
+                controller: _commentsController,
+                decoration: InputDecoration(
+                  hintText: 'Escribe tus observaciones aquí',
+                  enabledBorder: new OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColorPalette["primaryGreen"]),
+                      borderRadius: new BorderRadius.circular(8.0)),
+                  focusedBorder: new OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColorPalette["primaryGreen"]),
+                      borderRadius: new BorderRadius.circular(8.0)),
+                ),
+                cursorColor: AppColorPalette["primaryGreen"],
+                maxLines: 5,
+                maxLength: 100),
+            // These are user options.
+            actions: <Widget>[
+              FlatButton(
+                child: Text(
+                  'NO, VOLVER',
+                  style: appTextStyle.textButton,
+                ),
+                color: Colors.grey.shade400,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              FlatButton.icon(
+                  color: AppColorPalette["primaryGreen"],
+                  icon: Icon(Icons.check_circle_rounded, color: Colors.white),
+                  label: Text('OK', style: appTextStyle.textButton),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _addScore(context, score, _commentsController.text);
+                  }),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData _mediaQueryData = MediaQuery.of(context);
     double defaultScreenWidth = 400.0;
     double defaultScreenHeight = 810.0;
-    var appTextStyle = AppTextStyle();
-
     //* Initialise ScreenUtil instance
+    var appTextStyle = AppTextStyle();
     ScreenUtil.instance = ScreenUtil(
       width: defaultScreenWidth,
       height: defaultScreenHeight,
@@ -117,7 +260,9 @@ class OrderResume extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(25.0), bottom: ScreenUtil.instance.setHeight(15.0)),
+            padding: EdgeInsets.only(
+                top: ScreenUtil.instance.setHeight(25.0),
+                bottom: ScreenUtil.instance.setHeight(15.0)),
             // Acknowledgment text
             child: Text('Deseas calificar nuestro servicio?',
                 textAlign: TextAlign.center,
@@ -142,7 +287,8 @@ class OrderResume extends StatelessWidget {
                   color: AppColorPalette["primaryGreen"],
                 ),
                 onRatingUpdate: (rating) {
-                  print(rating);
+                  _confirmarScore(context, rating);
+                  //print(rating);
                 },
               )
             ],
