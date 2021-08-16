@@ -13,6 +13,7 @@ import '../models/restaurante_model.dart';
 import './order_view.dart';
 import '../models/qr_model.dart';
 import '../config/config.dart';
+import '../pages/home.dart';
 
 /// Page that list all the menus of a restaurant.
 class MenusListPage extends StatefulWidget {
@@ -189,11 +190,13 @@ class _MenusListState extends State<MenusListPage> {
               automaticallyImplyLeading: true,
               // Add 'scan QR' button on top left.
               leading: IconButton(
-                icon: new Icon(const IconData(0xe900, fontFamily: 'Qrcode'),
-                    color: AppColorPalette["defaultAccent"]),
-                onPressed: () =>
-                    Navigator.popUntil(context, ModalRoute.withName('/')),
-              ),
+                  icon: new Icon(const IconData(0xe900, fontFamily: 'Qrcode'),
+                      color: AppColorPalette["defaultAccent"]),
+                  onPressed: () => Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          transitionDuration: Duration.zero,
+                          pageBuilder: (_, __, ___) => HomePage()))),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
