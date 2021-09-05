@@ -96,7 +96,13 @@ class _MenusListState extends State<MenusListPage> {
       future: restaurante,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          var restaurantImage = '';
           if (snapshot.data.urlImagRestaurante != '') {
+            restaurantImage = snapshot.data.urlImagRestaurante;
+          } else if (snapshot.data.externalImage != '') {
+            restaurantImage = snapshot.data.externalImage;
+          }
+          if (restaurantImage != '') {
             return Container(
                 height: 55,
                 //child: Image.network(
