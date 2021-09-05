@@ -64,6 +64,6 @@ class ResponsePost {
   ResponsePost({this.orderNumber});
   // Decode json response and extracts the id_orden value.
   factory ResponsePost.fromJson(Map<String, dynamic> parsedJson) {
-    return ResponsePost(orderNumber: parsedJson['id_orden']);
+    return ResponsePost(orderNumber: parsedJson['serial']);
   }
 }
