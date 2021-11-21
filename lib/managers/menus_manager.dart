@@ -61,15 +61,15 @@ class _MenusManagerState extends State<MenusManager> {
 
   @override
   Widget build(BuildContext context) {
-    double defaultScreenWidth = 400.0;
-    double defaultScreenHeight = 810.0;
-
-    //* Initialise ScreenUtil instance
-    ScreenUtil.instance = ScreenUtil(
-      width: defaultScreenWidth,
-      height: defaultScreenHeight,
-      allowFontScaling: true,
-    )..init(context);
+    //* Initialize ScreenUtil()
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height
+        ),
+        designSize: Size(400, 810),
+        orientation: Orientation.portrait
+    );
     return ListView(
       children: <Widget>[
         new Divider(
@@ -91,7 +91,7 @@ class _MenusManagerState extends State<MenusManager> {
                   onTap: () => _tappedMenu(listOfMenus[index].nombreMenu,
                       listOfMenus[index], context),
                 ),
-                margin: EdgeInsets.all(ScreenUtil.instance.setWidth(2.0)),
+                margin: EdgeInsets.all(ScreenUtil().setWidth(2.0)),
               );
             }),
       ],

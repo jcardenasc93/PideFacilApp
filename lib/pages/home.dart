@@ -72,15 +72,16 @@ class MainPage extends State<HomePage> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    double defaultScreenWidth = 400.0;
-    double defaultScreenHeight = 810.0;
 
     //* Initialise ScreenUtil instance
-    ScreenUtil.instance = ScreenUtil(
-      width: defaultScreenWidth,
-      height: defaultScreenHeight,
-      allowFontScaling: true,
-    )..init(context);
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height
+        ),
+        designSize: Size(400, 810),
+        orientation: Orientation.portrait
+    );
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -90,8 +91,8 @@ class MainPage extends State<HomePage> {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(
-                    top: ScreenUtil.instance.setWidth(65.0),
-                    bottom: ScreenUtil.instance.setWidth(45.0)),
+                    top: ScreenUtil().setWidth(65.0),
+                    bottom: ScreenUtil().setWidth(45.0)),
                 child: Container(
                   child: RichText(
                     textAlign: TextAlign.center,
@@ -107,14 +108,14 @@ class MainPage extends State<HomePage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(ScreenUtil.instance.setWidth(40.0)),
+                padding: EdgeInsets.all(ScreenUtil().setWidth(40.0)),
                 child: Container(
                   child: Text(
                     _bodyMsj,
                     style: appTextStyle.body,
                     textAlign: TextAlign.justify,
                   ),
-                  width: ScreenUtil.instance.setHeight(330.0),
+                  width: ScreenUtil().setHeight(330.0),
                 ),
               ),
               Container(
@@ -123,8 +124,8 @@ class MainPage extends State<HomePage> {
                           // Access to the assets directory and search for the img file.
                           image: ExactAssetImage('assets/pie_ex.gif'),
                           fit: BoxFit.cover)),
-                  width: ScreenUtil.instance.setHeight(330.0),
-                  height: ScreenUtil.instance.setHeight(380.0)),
+                  width: ScreenUtil().setHeight(330.0),
+                  height: ScreenUtil().setHeight(380.0)),
               Align(
                 // Uses the remaining space in the screen to position the widget on the bottom.
                 alignment: FractionalOffset.bottomCenter,
@@ -161,27 +162,31 @@ class MainPage extends State<HomePage> {
                     //),
                     Padding(
                         padding: EdgeInsets.only(
-                            top: ScreenUtil.instance.setWidth(30.0),
-                            bottom: ScreenUtil.instance.setWidth(10.0)),
+                            top: ScreenUtil().setWidth(30.0),
+                            bottom: ScreenUtil().setWidth(10.0)),
                         // The QR button.
                         child: Container(
-                          width: ScreenUtil.instance.setHeight(230.0),
-                          height: ScreenUtil.instance.setHeight(40.0),
+                          width: ScreenUtil().setHeight(230.0),
+                          height: ScreenUtil().setHeight(40.0),
                           child: FlatButton.icon(
                             color: AppColorPalette["primaryGreen"],
                             onPressed: _scanQR,
                             icon: new Icon(
                               const IconData(0xE900, fontFamily: 'Qrcode'),
                               color: Colors.white,
-                              size: ScreenUtil.instance.setSp(13.0),
+                              size: 13.sp,
                             ),
                             label: Text("ESCANEAR CODIGO QR",
-                                style: appTextStyle.textButton),
+                                //style: appTextStyle.textButton),
+                            style: TextStyle(
+                                fontSize:15.sp,
+                                color: Colors.white
+                            )),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               side: BorderSide(
                                   color: AppColorPalette["primaryGreen"],
-                                  width: ScreenUtil.instance.setWidth(2.0)),
+                                  width: ScreenUtil().setWidth(2.0)),
                             ),
                           ),
                         )),

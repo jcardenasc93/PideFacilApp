@@ -175,16 +175,16 @@ class _MenusListState extends State<MenusListPage> {
 
   @override
   Widget build(BuildContext context) {
-    double defaultScreenWidth = 400.0;
-    double defaultScreenHeight = 810.0;
 
-    //* Initialise ScreenUtil instance
-    ScreenUtil.instance = ScreenUtil(
-      width: defaultScreenWidth,
-      height: defaultScreenHeight,
-      allowFontScaling: true,
-    )..init(context);
-
+    //* Initialize ScreenUtil()
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height
+        ),
+        designSize: Size(400, 810),
+        orientation: Orientation.portrait
+    );
     // WillPopScope disables back action on Android devices.
     return new WillPopScope(
         onWillPop: () async => false,
@@ -230,25 +230,25 @@ class _MenusListState extends State<MenusListPage> {
                 } else if (snapshot.hasError) {
                   return new Center(
                       child: Container(
-                    height: ScreenUtil.instance.setHeight(250.0),
-                    width: ScreenUtil.instance.setHeight(330.0),
+                    height: ScreenUtil().setHeight(250.0),
+                    width: ScreenUtil().setHeight(330.0),
                     child: Column(
                       children: <Widget>[
                         Padding(
                           child: Icon(
                             Icons.cloud_off,
                             color: AppColorPalette["defaultAccent"],
-                            size: ScreenUtil.instance.setSp(40.0),
+                            size: ScreenUtil().setSp(40.0),
                           ),
                           padding: EdgeInsets.only(
-                              bottom: ScreenUtil.instance.setWidth(15.0)),
+                              bottom: ScreenUtil().setWidth(15.0)),
                         ),
                         Text(
                           'Lo sentimos! No podemos procesar tu solicitud. ' +
                               'Verifica tu conexión e inténtalo de nuevo',
                           style: new TextStyle(
                             color: AppColorPalette["defaultAccent"],
-                            fontSize: ScreenUtil.instance.setSp(16.0),
+                            fontSize: ScreenUtil().setSp(16.0),
                           ),
                           textAlign: TextAlign.justify,
                         ),
@@ -258,13 +258,13 @@ class _MenusListState extends State<MenusListPage> {
                               Icons.refresh,
                             ),
                             color: AppColorPalette["defaultAccent"],
-                            iconSize: ScreenUtil.instance.setSp(35.0),
+                            iconSize: ScreenUtil().setSp(35.0),
                             onPressed: () {
                               _refreshPage();
                             },
                           ),
                           padding: EdgeInsets.only(
-                              top: ScreenUtil.instance.setWidth(10.0)),
+                              top: ScreenUtil().setWidth(10.0)),
                         )
                       ],
                     ),
@@ -278,8 +278,8 @@ class _MenusListState extends State<MenusListPage> {
                           AppColorPalette["defaultAccent"]),
                       strokeWidth: 3.0,
                     ),
-                    height: ScreenUtil.instance.setWidth(40.0),
-                    width: ScreenUtil.instance.setWidth(40.0),
+                    height: ScreenUtil().setWidth(40.0),
+                    width: ScreenUtil().setWidth(40.0),
                   ),
                 );
               },

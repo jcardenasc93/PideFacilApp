@@ -186,27 +186,27 @@ class OrderManagerState extends State<OrderManager> {
 
   @override
   Widget build(BuildContext context) {
-    double defaultScreenWidth = 400.0;
-    double defaultScreenHeight = 810.0;
-
-    //* Initialise ScreenUtil instance
-    ScreenUtil.instance = ScreenUtil(
-      width: defaultScreenWidth,
-      height: defaultScreenHeight,
-      allowFontScaling: true,
-    )..init(context);
+    //* Initialize ScreenUtil()
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height
+        ),
+        designSize: Size(400, 810),
+        orientation: Orientation.portrait
+    );
     return Scaffold(
       appBar: new PreferredSize(
-          preferredSize: Size.fromHeight(ScreenUtil.instance.setWidth(95.0)),
+          preferredSize: Size.fromHeight(ScreenUtil().setWidth(95.0)),
           child: Column(
             children: <Widget>[
               Padding(
                 padding:
-                    EdgeInsets.only(top: ScreenUtil.instance.setWidth(3.0)),
+                    EdgeInsets.only(top: ScreenUtil().setWidth(3.0)),
                 child: Text(
                   "Tu orden",
                   style: new TextStyle(
-                    fontSize: ScreenUtil.instance.setSp(18.0),
+                    fontSize: ScreenUtil().setSp(18.0),
                     fontWeight: FontWeight.bold,
                     color: AppColorPalette["primaryGreen"]
                   ),
@@ -214,7 +214,7 @@ class OrderManagerState extends State<OrderManager> {
                 ),
               ),
               Card(
-                elevation: ScreenUtil.instance.setWidth(3.5),
+                elevation: ScreenUtil().setWidth(3.5),
                 child: ListTile(
                   title: Text('Total', style: appTextStyle.cardTitleStrong),
                   trailing: Text(
@@ -247,7 +247,7 @@ class OrderManagerState extends State<OrderManager> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              top: ScreenUtil.instance.setWidth(13.5)),
+                              top: ScreenUtil().setWidth(13.5)),
                           child: Container(
                             // Add minus button.
                             decoration: BoxDecoration(
@@ -261,7 +261,7 @@ class OrderManagerState extends State<OrderManager> {
                               child: Icon(
                                 Icons.message_rounded,
                                 color: Colors.grey,
-                                size: ScreenUtil.instance.setSp(24.0),
+                                size: ScreenUtil().setSp(24.0),
                               ),
 
                               /// Add comment to the selected dish
@@ -274,7 +274,7 @@ class OrderManagerState extends State<OrderManager> {
                     trailing: new SizedBox(
                       child: Padding(
                         padding: EdgeInsets.only(
-                            left: ScreenUtil.instance.setWidth(5.0)),
+                            left: ScreenUtil().setWidth(5.0)),
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
@@ -288,7 +288,7 @@ class OrderManagerState extends State<OrderManager> {
                             // Display dish quantity control.
                             new Container(
                                 margin: EdgeInsets.all(
-                                    ScreenUtil.instance.setWidth(5.0)),
+                                    ScreenUtil().setWidth(5.0)),
                                 alignment: Alignment(0.0, 0.0),
                                 child: new Center(
                                     child: new Row(
@@ -310,7 +310,7 @@ class OrderManagerState extends State<OrderManager> {
                                         child: Icon(
                                           Icons.remove,
                                           color: Colors.white,
-                                          size: ScreenUtil.instance.setSp(18.0),
+                                          size: ScreenUtil().setSp(19.0),
                                         ),
 
                                         /// Reduce minus 1 [orden(index).cantidad] if quantity is greater to zero
@@ -318,7 +318,7 @@ class OrderManagerState extends State<OrderManager> {
                                       ),
                                     ),
                                     Container(
-                                      width: ScreenUtil.instance.setWidth(35.0),
+                                      width: ScreenUtil().setWidth(35.0),
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 1.0, vertical: 1.0),
@@ -344,7 +344,7 @@ class OrderManagerState extends State<OrderManager> {
                                         child: Icon(
                                           Icons.add,
                                           color: Colors.white,
-                                          size: ScreenUtil.instance.setSp(18.0),
+                                          size: ScreenUtil().setSp(19.0),
                                         ),
 
                                         /// Increases dish quantity.
@@ -356,7 +356,7 @@ class OrderManagerState extends State<OrderManager> {
                           ],
                         ),
                       ),
-                      width: ScreenUtil.instance.setWidth(100.0),
+                      width: ScreenUtil().setWidth(100.0),
                     ),
                   ),
                   margin: EdgeInsets.all(2.0),
@@ -372,7 +372,7 @@ class OrderManagerState extends State<OrderManager> {
               tooltip: "Eliminar orden",
               color: Colors.redAccent,
               padding: EdgeInsets.all(2.0),
-              iconSize: ScreenUtil.instance.setSp(28.0),
+              iconSize: ScreenUtil().setSp(28.0),
             ),
           )
         ],

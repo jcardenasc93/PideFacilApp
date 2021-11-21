@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:permission_handler/permission_handler.dart';
 
 import '../models/qr_model.dart';
 import './menus_list.dart';
@@ -22,19 +23,33 @@ class CameraAccessState extends State<CameraAccess> {
   /// If scan a valid Qr code charge the restaurant's menu.
   Future _scanQR() async {
     try {
-      String qrResult = await BarcodeScanner.scan();
-      print(qrResult);
-      var qrobj = json.decode(qrResult);
-      QRobject qrobject = QRobject(
-          idMesa: qrobj['id_mesa'],
-          idRestaurante: qrobj['id_restaurante']);
-      _getMenu(qrobject);
-    } on PlatformException catch (ex) {
-      if (ex.code == BarcodeScanner.CameraAccessDenied) {
-        _cameraDeniedAlert();
-      } else {
-        _errorAlert(ex.toString());
+      var cameraStatus = await Permission.camera.status;
+
+      if(cameraStatus.isGranted) {
+        String qrResult = await scanner.scan();
+        print(qrResult);
+        var qrobj = json.decode(qrResult);
+        QRobject qrobject = QRobject(
+            idMesa: qrobj['id_mesa'],
+            idRestaurante: qrobj['id_restaurante']);
+        _getMenu(qrobject);
       }
+
+      else {
+        var cameraGranted = await Permission.camera.request();
+        if(cameraGranted.isGranted){
+          String qrResult = await scanner.scan();
+          print(qrResult);
+          var qrobj = json.decode(qrResult);
+          QRobject qrobject = QRobject(
+              idMesa: qrobj['id_mesa'],
+              idRestaurante: qrobj['id_restaurante']);
+          _getMenu(qrobject);
+        }
+      }
+
+    } on PlatformException catch (ex) {
+       _errorAlert(ex.toString());
     } on FormatException {
       Navigator.of(context).pop();
       //Navigator.popUntil(context, ModalRoute.withName('home'));

@@ -180,20 +180,21 @@ class OrderResume extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MediaQueryData _mediaQueryData = MediaQuery.of(context);
-    double defaultScreenWidth = 400.0;
-    double defaultScreenHeight = 810.0;
+
     void _scanQR() {
       Navigator.push(context,
           MaterialPageRoute(builder: (BuildContext context) => CameraAccess()));
     }
 
-    //* Initialise ScreenUtil instance
-    var appTextStyle = AppTextStyle();
-    ScreenUtil.instance = ScreenUtil(
-      width: defaultScreenWidth,
-      height: defaultScreenHeight,
-      allowFontScaling: true,
-    )..init(context);
+    //* Initialize ScreenUtil()
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height
+        ),
+        designSize: Size(400, 810),
+        orientation: Orientation.portrait
+    );
     return Scaffold(
         // Disable back button on appbar
         body: WillPopScope(
@@ -204,7 +205,7 @@ class OrderResume extends StatelessWidget {
             children: <Widget>[
               // Create a scrollable ListView with the order list.
               Padding(
-                padding: EdgeInsets.all(ScreenUtil.instance.setWidth(15.0)),
+                padding: EdgeInsets.all(ScreenUtil().setWidth(15.0)),
                 // Total order remarkable.
                 child: Container(
                   child: Column(
@@ -222,18 +223,18 @@ class OrderResume extends StatelessWidget {
               // Custom divider.
               Padding(
                 padding:
-                    EdgeInsets.only(bottom: ScreenUtil.instance.setWidth(3.0)),
+                    EdgeInsets.only(bottom: ScreenUtil().setWidth(3.0)),
                 child: Container(
                     width: _mediaQueryData.size.width,
-                    height: ScreenUtil.instance.setWidth(25.0),
+                    height: ScreenUtil().setWidth(25.0),
                     color: AppColorPalette["primaryGreen"],
                     child: Center(
                       child: Text(
-                        'Orden No.$orderID',
+                        'Orden No. $orderID',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: ScreenUtil.instance.setSp(20.0),
+                          fontSize: ScreenUtil().setSp(20.0),
                         ),
                       ),
                     )),
@@ -259,7 +260,7 @@ class OrderResume extends StatelessWidget {
                   }),
               Padding(
                 padding:
-                    EdgeInsets.only(top: ScreenUtil.instance.setHeight(25.0)),
+                    EdgeInsets.only(top: ScreenUtil().setHeight(25.0)),
                 // Acknowledgment text
                 child: Text(
                   'Gracias por usar nuestro servicio',
@@ -269,8 +270,8 @@ class OrderResume extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: ScreenUtil.instance.setHeight(25.0),
-                    bottom: ScreenUtil.instance.setHeight(15.0)),
+                    top: ScreenUtil().setHeight(25.0),
+                    bottom: ScreenUtil().setHeight(15.0)),
                 // Acknowledgment text
                 child: Text('Deseas calificar nuestro servicio?',
                     textAlign: TextAlign.center,
@@ -308,6 +309,6 @@ class OrderResume extends StatelessWidget {
             backgroundColor: AppColorPalette["primaryGreen"],
             onPressed: _scanQR,
             child: new Icon(const IconData(0xE900, fontFamily: 'Qrcode'),
-                color: Colors.white, size: ScreenUtil.instance.setSp(20.0))));
+                color: Colors.white, size: ScreenUtil().setSp(20.0))));
   }
 }

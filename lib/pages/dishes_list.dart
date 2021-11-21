@@ -121,15 +121,16 @@ class DishesPageState extends State<DishesPage> {
   @override
   Widget build(BuildContext context) {
     // WillPopScope disables back action on Android devices.
-    double defaultScreenWidth = 400.0;
-    double defaultScreenHeight = 810.0;
 
-    //* Initialise ScreenUtil instance
-    ScreenUtil.instance = ScreenUtil(
-      width: defaultScreenWidth,
-      height: defaultScreenHeight,
-      allowFontScaling: true,
-    )..init(context);
+    //* Initialize ScreenUtil()
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height
+        ),
+        designSize: Size(400, 810),
+        orientation: Orientation.portrait
+    );
     return new WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
@@ -155,7 +156,7 @@ class DishesPageState extends State<DishesPage> {
                 Text(
                   widget.menuText,
                   style: new TextStyle(
-                      fontSize: ScreenUtil.instance.setSp(18.0),
+                      fontSize: ScreenUtil().setSp(18.0),
                       fontWeight: FontWeight.bold,
                       color: AppColorPalette["defaultAccent"]),
                   textAlign: TextAlign.center,

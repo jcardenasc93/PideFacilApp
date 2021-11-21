@@ -297,15 +297,16 @@ class OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     // WillPopScope disables back action on Android devices.
-    double defaultScreenWidth = 400.0;
-    double defaultScreenHeight = 810.0;
 
-    //* Initialise ScreenUtil instance
-    ScreenUtil.instance = ScreenUtil(
-      width: defaultScreenWidth,
-      height: defaultScreenHeight,
-      allowFontScaling: true,
-    )..init(context);
+    //* Initialize ScreenUtil()
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height
+        ),
+        designSize: Size(400, 810),
+        orientation: Orientation.portrait
+    );
     return Scaffold(
         backgroundColor: AppColorPalette["primaryGreen"],
         //backgroundColor: Colors.white,
@@ -313,7 +314,7 @@ class OrderViewState extends State<OrderView> {
 
         /// Custom appBar for change size.
         appBar: new PreferredSize(
-          preferredSize: Size.fromHeight(ScreenUtil.instance.setHeight(40.0)),
+          preferredSize: Size.fromHeight(ScreenUtil().setHeight(40.0)),
           // AppBar title.
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -323,7 +324,7 @@ class OrderViewState extends State<OrderView> {
                 Icon(
                   Icons.drag_handle,
                   color: Colors.white,
-                  size: ScreenUtil.instance.setSp(20.0),
+                  size: ScreenUtil().setSp(20.0),
                 ),
               ]),
         ),
@@ -337,7 +338,7 @@ class OrderViewState extends State<OrderView> {
         bottomNavigationBar: new Container(
           color: Colors.white,
           child: Padding(
-            padding: EdgeInsets.all(ScreenUtil.instance.setWidth(8.0)),
+            padding: EdgeInsets.all(ScreenUtil().setWidth(8.0)),
             child: RaisedButton(
               onPressed: () {
                 _confimacionOrden(context);
@@ -346,7 +347,7 @@ class OrderViewState extends State<OrderView> {
                 'Ordenar',
                 style: TextStyle(
                   color: AppColorPalette["primaryGreen"],
-                  fontSize: ScreenUtil.instance.setSp(20.0),
+                  fontSize: ScreenUtil().setSp(20.0),
                   fontWeight: FontWeight.bold,
                 ),
               ),

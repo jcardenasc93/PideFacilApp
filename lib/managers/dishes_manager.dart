@@ -98,15 +98,15 @@ class _DishManagerState extends State<DishManager> {
 
   @override
   Widget build(BuildContext context) {
-    double defaultScreenWidth = 400.0;
-    double defaultScreenHeight = 810.0;
-
-    //* Initialise ScreenUtil instance
-    ScreenUtil.instance = ScreenUtil(
-      width: defaultScreenWidth,
-      height: defaultScreenHeight,
-      allowFontScaling: true,
-    )..init(context);
+    //* Initialize ScreenUtil()
+    ScreenUtil.init(
+        BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width,
+            maxHeight: MediaQuery.of(context).size.height
+        ),
+        designSize: Size(400, 810),
+        orientation: Orientation.portrait
+    );
     return ListView(
       children: <Widget>[
         // Create a scrollable ListView with the dishes list.
@@ -128,7 +128,7 @@ class _DishManagerState extends State<DishManager> {
                   trailing: new SizedBox(
                     child: Padding(
                       padding: EdgeInsets.only(
-                          left: ScreenUtil.instance.setWidth(8.0)),
+                          left: ScreenUtil().setWidth(8.0)),
                       child: new Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
@@ -142,7 +142,7 @@ class _DishManagerState extends State<DishManager> {
                           // Display dish quantity control.
                           new Container(
                               margin: EdgeInsets.all(
-                                  ScreenUtil.instance.setWidth(5.0)),
+                                  ScreenUtil().setWidth(5.0)),
                               alignment: Alignment(0.0, 0.0),
                               child: new Center(
                                   child: new Row(
@@ -164,7 +164,7 @@ class _DishManagerState extends State<DishManager> {
                                       child: Icon(
                                         Icons.remove,
                                         color: Colors.white,
-                                        size: ScreenUtil.instance.setSp(18.0),
+                                        size: ScreenUtil().setSp(19.0),
                                       ),
 
                                       /// Reduce minus 1 [listOfPlatos(index).cantidad] if quantity is greater to zero
@@ -172,7 +172,7 @@ class _DishManagerState extends State<DishManager> {
                                     ),
                                   ),
                                   Container(
-                                    width: ScreenUtil.instance.setWidth(35.0),
+                                    width: ScreenUtil().setWidth(35.0),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 1.0, vertical: 1.0),
@@ -199,7 +199,7 @@ class _DishManagerState extends State<DishManager> {
                                       child: Icon(
                                         Icons.add,
                                         color: Colors.white,
-                                        size: ScreenUtil.instance.setSp(18.0),
+                                        size: ScreenUtil().setSp(19.0),
                                       ),
 
                                       /// Increases dish quantity.
@@ -211,18 +211,18 @@ class _DishManagerState extends State<DishManager> {
                         ],
                       ),
                     ),
-                    width: ScreenUtil.instance.setWidth(100.0),
+                    width: ScreenUtil().setWidth(100.0),
                   ),
                   // Enable three line to dish description.
                   isThreeLine: true,
                 ),
-                margin: EdgeInsets.all(ScreenUtil.instance.setWidth(3.0)),
+                margin: EdgeInsets.all(ScreenUtil().setWidth(3.0)),
               );
             }),
         Padding(
             padding: EdgeInsets.only(
-                top: ScreenUtil.instance.setWidth(25.0),
-                bottom: ScreenUtil.instance.setWidth(15.0)),
+                top: ScreenUtil().setWidth(25.0),
+                bottom: ScreenUtil().setWidth(15.0)),
             child: Center(
               child: GestureDetector(
                 child: Text('Nueva Orden',
